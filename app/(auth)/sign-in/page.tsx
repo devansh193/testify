@@ -21,7 +21,10 @@ const SignIn = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const toastId = toast("Signing in...");
+    const toastId = toast('Signing in', {
+      duration: 5000,
+      icon: <Loader2 className="animate-spin" />,
+    });
 
     try {
       const result = await signIn("credentials", {
@@ -38,6 +41,7 @@ const SignIn = () => {
         console.error(result.error);
       } else {
         toast.success("Sign in successfully.", {
+          icon: "",
           id: toastId,
         });
         router.push("/dashboard");

@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card";
-import { Logo } from "@/components/Logo";
+import Logo  from "@/components/Logo";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,7 @@ const Slug = () => {
         <div className="mb-4">
           <CardHeader className="flex flex-col items-center justify-center gap-y-2">
             <CardTitle>
-              <Logo name={false} />
+              <Logo />
             </CardTitle>
             <CardTitle className="text-3xl">finance</CardTitle>
           </CardHeader>
