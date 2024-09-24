@@ -1,38 +1,54 @@
 "use client";
 
 import { Logo } from "@/components/Logo";
-// import { Button } from "./ui/button";
 import Link from "next/link";
-// import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
+import { useSession, signOut } from "next-auth/react";
+
+const navContent = [
+  {
+    label: "Features",
+    href: "/features"
+  },
+  {
+    label: "Pricing",
+    href: "/pricing"
+  },
+  {
+    label: "About",
+    href: "/about"
+  },
+
+];
 
 export const Navbar = () => {
-  // const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <header className="px-4 lg:px-6 h-16 bg-[#FFFFFF] flex items-center border-b border-gray-200">
-      <Logo name={true}/>
-        <nav className="ml-auto hidden md:flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:text-gray-900 transition-colors" href="#">
-            Features
+      <Logo name={true} />
+      <nav className="ml-auto hidden md:flex">
+        {navContent.map((item) => (
+          <Button variant={"link"} key={item.label}>
+            <Link href={item.href}>
+              {item.label}
+            </Link>
+          </Button>
+        ))}
+        {session ? (
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-600">{session.user?.email}</span>
+            <Button variant="secondary" onClick={() => signOut()}>
+              Logout
+            </Button>
+          </div>
+        ):
+         <Button variant={"link"}>
+         <Link href={"/sign-in"}>
+          Sign in
           </Link>
-          <Link className="text-sm font-medium hover:text-gray-900 transition-colors" href="#">
-            Pricing
-          </Link>
-          <Link className="text-sm font-medium hover:text-gray-900 transition-colors" href="#">
-            About
-          </Link>
-          <Link className="text-sm font-medium hover:text-gray-900 transition-colors" href="#">
-            Sign In
-          </Link>
-        </nav>
-        {/* <Button
-          className="ml-auto md:hidden"
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button> */}
-      </header>
+          </Button>}
+      </nav>
+    </header>
   );
 };

@@ -1,8 +1,9 @@
 import { ArrowRight, CheckCircle, Star } from "lucide-react";
 export const Work = () => {
   return (
+    <div className="flex items-center justify-center py-20">
       <div className="flex items-center justify-center">
-        <section className="w-full lg:py-32">
+        <section className="w-full lg:pb-12 lg:pt-6">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold text-center mb-8">
               How Testify Works
@@ -41,6 +42,7 @@ export const Work = () => {
             </div>
           </div>
         </section>
+      </div>
       </div>
   );
 };
