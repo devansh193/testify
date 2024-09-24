@@ -1,17 +1,10 @@
-import { Stamp } from "lucide-react";
-import Link from "next/link";
+import { Quote } from "lucide-react"
 
-interface LogoProps {
-    name: boolean;
+export default function TestifyLogo() {
+  return (
+    <div className="flex items-center space-x-2">
+      <Quote className="w-8 h-8 text-black" />
+      <span className="text-2xl font-bold text-black">Testify</span>
+    </div>
+  )
 }
-
-export const Logo = ({ name }: LogoProps) => {
-    return (
-        <Link href={"/"}>
-        <div className="px-2 py-1 flex items-center justify-center text-black">
-            <Stamp className="text-blue-500" />
-            {name && <h1 className="text-lg font-semibold">Testify</h1>}
-        </div>
-        </Link>
-    );
-};

@@ -43,6 +43,6 @@ export const Work = () => {
           </div>
         </section>
       </div>
-      </div>
+    </div>
   );
 };

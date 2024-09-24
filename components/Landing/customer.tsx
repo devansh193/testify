@@ -25,8 +25,8 @@ const testimonials = [
 export const Customer = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   return (
-    <div className="flex items-center justify-center bg-gray-50"> {/* Ensure full height and center content */}
-      <div className="w-full max-w-3xl"> {/* Full width with max width constraint */}
+    <div className="flex items-center justify-center bg-gray-50">
+      <div className="w-full max-w-3xl">
         <section className="py-12 md:py-24 lg:py-32">
           <h2 className="text-2xl font-bold text-center mb-8">
             What Our Customers Say
@@ -59,9 +59,7 @@ export const Customer = () => {
                   key={index}
                   onClick={() => setActiveTestimonial(index)}
                   className={`w-3 h-3 rounded-full ${
-                    index === activeTestimonial
-                      ? "bg-gray-800"
-                      : "bg-gray-300"
+                    index === activeTestimonial ? "bg-gray-800" : "bg-gray-300"
                   }`}
                 />
               ))}

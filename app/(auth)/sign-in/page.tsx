@@ -2,20 +2,13 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/Logo";
 import { toast } from "sonner";
-import { Loader } from "lucide-react";
+import Logo from "@/components/Logo";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -59,57 +52,77 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950">
-      <div className="grid grid-cols-2">
-        <div className="col-span-1 h-screen justify-center items-center hidden md:flex">
-          <div className="flex items-center justify-center">
-            <Logo name={true} />
-          </div>
+    <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center">
+          <Logo />
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            And start collecting powerful testimonials
+          </p>
         </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <Label htmlFor="email-address" className="sr-only">
+                Email address
+              </Label>
+              <Input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                disabled={loading}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="password" className="sr-only">
+                Password
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                disabled={loading}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
 
-        <div className="col-span-2 md:col-span-1 h-screen flex items-center justify-center bg-blue-50">
-          <Card className="min-w-[400px]">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-center">
-                Sign in to Testify
-              </CardTitle>
-              <CardDescription className="flex items-center justify-center">
-                Enter your credentials to access Testify
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label className="text-black font-semibold">Email</Label>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="devansh@domain.com"
-                    disabled={loading} 
-                  />
-                </div>
-                <div>
-                  <Label className="text-black font-semibold">Password</Label>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="password"
-                    disabled={loading}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full mt-4"
-                  disabled={loading}
-                >
-                  {loading ? <Loader className="animate-spin"/>  : "Submit"}{" "}
-                 
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <div>
+            <Button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+            >{loading? <Loader2 className="animate-spin"/> : "Sign in"}
+            </Button>
+          </div>
+        </form>
+        <div className="text-center">
+          <a href="#" className="font-medium text-black hover:text-gray-800">
+            Forgot your password?
+          </a>
+        </div>
+        <div className="text-center">
+          <p className="text-sm text-gray-600">
+            Don&apos;t have an account?{" "}
+            <Link href={"/sign-up"}>
+              <span className="font-medium text-black hover:text-gray-800">
+                Sign up
+              </span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>

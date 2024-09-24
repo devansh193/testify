@@ -8,12 +8,6 @@ import { Label } from "@/components/ui/label"
 import { Star } from "lucide-react"
 import Image from 'next/image'
 
-interface Question {
-  id: number
-  text: string
-  type: 'text' | 'rating'
-}
-
 export function ClientReviewCardComponent() {
   const [ratings, setRatings] = useState<{ [key: number]: number }>({})
   const [textAnswers, setTextAnswers] = useState<{ [key: number]: string }>({})

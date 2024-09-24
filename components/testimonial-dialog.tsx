@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Logo } from "./Logo";
+import Logo  from "./Logo";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Label } from "./ui/label";
@@ -58,7 +58,7 @@ export function TestimonialDialog() {
               <div className="mb-4">
                 <CardHeader className="flex flex-col items-center justify-center gap-y-2">
                   <CardTitle>
-                    <Logo name={false} />
+                    <Logo />
                   </CardTitle>
                   <CardTitle className="text-3xl">{title}</CardTitle>
                 </CardHeader>
