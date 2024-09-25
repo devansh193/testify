@@ -1,6 +1,6 @@
 "use client";
 
-import Logo  from "@/components/Logo";
+import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useSession, signOut } from "next-auth/react";
@@ -35,7 +35,10 @@ export const Navbar = () => {
         {session ? (
           <div className="flex items-center space-x-4">
             <span className="text-gray-600">{session.user?.email}</span>
-            <Button variant="secondary" onClick={() => signOut({callbackUrl:"/"})}>
+            <Button
+              variant="secondary"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
               Logout
             </Button>
           </div>

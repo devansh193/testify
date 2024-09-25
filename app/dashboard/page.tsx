@@ -1,17 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Plus, Edit, Trash2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import {
@@ -30,42 +25,46 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer"
 
 interface TestimonialCard {
   id: number
-  productName: string
-  testimonial: string
-  author: string
+  title: string
+  description: string
+  questions: { id: number; text: string; type: 'rating' | 'text' }[]
+  showLogo: boolean
+  logoUrl: string
 }
 
 export default function EnhancedDashboard() {
   const [testimonialCards, setTestimonialCards] = useState<TestimonialCard[]>([])
-  const [newCard, setNewCard] = useState<Omit<TestimonialCard, "id">>({
-    productName: "",
-    testimonial: "",
-    author: "",
-  })
-  const [editingCard, setEditingCard] = useState<TestimonialCard | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const itemsPerPage = 5
 
-  useEffect(() => {
-    // Simulating fetching data from an API
-    const mockData: TestimonialCard[] = [
-      { id: 1, productName: "Product A", testimonial: "Great product!", author: "John Doe" },
-      { id: 2, productName: "Product B", testimonial: "Awesome service!", author: "Jane Smith" },
-      // Add more mock data as needed
-    ]
-    setTestimonialCards(mockData)
-  }, [])
+  interface TestimonialCardConfig {
+    title: string
+    description: string
+    questions: { id: number; text: string; type: 'rating' | 'text' }[]
+    showLogo: boolean
+    logoUrl: string
+  }
+  
+  const handleCreateTestimonial = (config: TestimonialCardConfig) => {
+    const newTestimonial: TestimonialCard = { ...config, id: Date.now() }
+    setTestimonialCards([...testimonialCards, newTestimonial])
+    setIsDialogOpen(false)
+  }
+
+  const handleDeleteCard = (id: number) => {
+    setTestimonialCards(testimonialCards.filter(card => card.id !== id))
+  }
 
   const filteredCards = testimonialCards.filter(
     card =>
-      card.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      card.testimonial.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      card.author.toLowerCase().includes(searchTerm.toLowerCase())
+      card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      card.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const paginatedCards = filteredCards.slice(
@@ -75,33 +74,8 @@ export default function EnhancedDashboard() {
 
   const totalPages = Math.ceil(filteredCards.length / itemsPerPage)
 
-  const handleCreateCard = () => {
-    if (editingCard) {
-      setTestimonialCards(
-        testimonialCards.map(card =>
-          card.id === editingCard.id ? { ...card, ...newCard } : card
-        )
-      )
-      setEditingCard(null)
-    } else {
-      setTestimonialCards([...testimonialCards, { ...newCard, id: Date.now() }])
-    }
-    setNewCard({ productName: "", testimonial: "", author: "" })
-    setIsDialogOpen(false)
-  }
-
-  const handleEditCard = (card: TestimonialCard) => {
-    setEditingCard(card)
-    setNewCard({ productName: card.productName, testimonial: card.testimonial, author: card.author })
-    setIsDialogOpen(true)
-  }
-
-  const handleDeleteCard = (id: number) => {
-    setTestimonialCards(testimonialCards.filter(card => card.id !== id))
-  }
-
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className=" bg-white p-8">
       <h1 className="text-3xl font-bold text-black mb-8">Testimonial Dashboard</h1>
 
       <div className="flex justify-between items-center mb-6">
@@ -122,51 +96,8 @@ export default function EnhancedDashboard() {
               <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>{editingCard ? "Edit Testimonial" : "Create New Testimonial"}</DialogTitle>
-              <DialogDescription>
-                Enter the details for the testimonial card.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="productName" className="text-right">
-                  Product Name
-                </Label>
-                <Input
-                  id="productName"
-                  value={newCard.productName}
-                  onChange={(e) => setNewCard({ ...newCard, productName: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="testimonial" className="text-right">
-                  Testimonial
-                </Label>
-                <Textarea
-                  id="testimonial"
-                  value={newCard.testimonial}
-                  onChange={(e) => setNewCard({ ...newCard, testimonial: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="author" className="text-right">
-                  Author
-                </Label>
-                <Input
-                  id="author"
-                  value={newCard.author}
-                  onChange={(e) => setNewCard({ ...newCard, author: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-            </div>
-            <Button onClick={handleCreateCard} className="w-full bg-black text-white hover:bg-gray-800">
-              {editingCard ? "Update Testimonial" : "Create Testimonial"}
-            </Button>
+          <DialogContent className="max-h-screen overflow-auto p-8">
+            <TestimonialCardCustomizer onSave={handleCreateTestimonial} />
           </DialogContent>
         </Dialog>
       </div>
@@ -174,20 +105,20 @@ export default function EnhancedDashboard() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Product Name</TableHead>
-            <TableHead>Testimonial</TableHead>
-            <TableHead>Author</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Questions</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedCards.map((card) => (
             <TableRow key={card.id}>
-              <TableCell>{card.productName}</TableCell>
-              <TableCell>{card.testimonial}</TableCell>
-              <TableCell>{card.author}</TableCell>
+              <TableCell>{card.title}</TableCell>
+              <TableCell>{card.description}</TableCell>
+              <TableCell>{card.questions.length}</TableCell>
               <TableCell>
-                <Button variant="outline" size="icon" className="mr-2" onClick={() => handleEditCard(card)}>
+                <Button variant="outline" size="icon" className="mr-2">
                   <Edit className="h-4 w-4" />
                 </Button>
                 <Button variant="outline" size="icon" onClick={() => handleDeleteCard(card.id)}>
