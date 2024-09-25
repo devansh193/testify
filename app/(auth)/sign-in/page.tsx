@@ -37,6 +37,7 @@ const SignIn = () => {
         setError(result.error);
         toast.error("Failed to sign in. Please check your credentials.", {
           id: toastId,
+          icon:"",
         });
         console.error(result.error);
       } else {

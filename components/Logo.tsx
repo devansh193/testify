@@ -6,7 +6,7 @@ export default function TestifyLogo() {
     <Link href={'/'}>
     <div className="flex items-center space-x-2">
       <Quote className="w-8 h-8 text-black" />
-      <span className="text-2xl font-bold text-black">Testify</span>
+      <span className="text-2xl font-bold text-black">testify</span>
     </div>
     </Link>
   )

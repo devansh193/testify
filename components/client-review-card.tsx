@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Star, Lightbulb, ThumbsUp, Award } from "lucide-react"
 import Image from 'next/image'
 import { Progress } from "@/components/ui/progress"
+import Logo from './Logo'
 
 export function ClientReviewCardComponent() {
   const [ratings, setRatings] = useState<{ [key: number]: number }>({})
@@ -69,6 +70,9 @@ export function ClientReviewCardComponent() {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
+        <div className='flex items-center justify-center'>
+      <Logo/>
+      </div>
         <div className="flex items-center space-x-4">
           <Image src={courseInfo.logo} alt={`${courseInfo.name} logo`} width={80} height={80} />
           <div>

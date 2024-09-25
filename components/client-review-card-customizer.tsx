@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,6 +32,7 @@ interface Question {
 }
 
 interface TestimonialCardConfig {
+  id?: number; // Make id optional for editing existing cards
   title: string;
   description: string;
   questions: Question[];
@@ -41,10 +42,12 @@ interface TestimonialCardConfig {
 
 interface TestimonialCardCustomizerProps {
   onSave: (config: TestimonialCardConfig) => void;
+  existingData?: TestimonialCardConfig; 
 }
 
 export function TestimonialCardCustomizer({
   onSave,
+  existingData,
 }: TestimonialCardCustomizerProps) {
   const [title, setTitle] = useState("Your Product Name");
   const [description, setDescription] = useState(
@@ -55,6 +58,17 @@ export function TestimonialCardCustomizer({
   ]);
   const [showLogo, setShowLogo] = useState(true);
   const [logoUrl, setLogoUrl] = useState("/placeholder.svg?height=80&width=80");
+
+  // Load existing data when editing
+  useEffect(() => {
+    if (existingData) {
+      setTitle(existingData.title);
+      setDescription(existingData.description);
+      setQuestions(existingData.questions);
+      setShowLogo(existingData.showLogo);
+      setLogoUrl(existingData.logoUrl);
+    }
+  }, [existingData]);
 
   const addQuestion = () => {
     const newId =
@@ -93,6 +107,7 @@ export function TestimonialCardCustomizer({
       questions,
       showLogo,
       logoUrl,
+      id: existingData?.id, // Retain the original id if editing
     };
     onSave(testimonialCardConfig);
   };
@@ -101,7 +116,7 @@ export function TestimonialCardCustomizer({
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
         <CardTitle className="text-xl font-bold">
-          Customize Your Testimonial Card
+          {existingData ? "Edit Testimonial Card" : "Customize Your Testimonial Card"}
         </CardTitle>
         <CardDescription>
           Modify the details and questions for your audience
@@ -213,7 +228,7 @@ export function TestimonialCardCustomizer({
       </CardContent>
       <CardFooter>
         <Button onClick={handleSave} className="w-full">
-          <Save className="mr-2 h-4 w-4" /> Save Testimonial Card
+          <Save className="mr-2 h-4 w-4" /> {existingData ? "Update" : "Save"} Testimonial Card
         </Button>
       </CardFooter>
     </Card>

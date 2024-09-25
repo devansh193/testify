@@ -41,6 +41,7 @@ export default function EnhancedDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editCard, setEditCard] = useState<TestimonialCard | null>(null) // New state for editing card
   const itemsPerPage = 5
 
   interface TestimonialCardConfig {
@@ -50,11 +51,23 @@ export default function EnhancedDashboard() {
     showLogo: boolean
     logoUrl: string
   }
-  
-  const handleCreateTestimonial = (config: TestimonialCardConfig) => {
-    const newTestimonial: TestimonialCard = { ...config, id: Date.now() }
-    setTestimonialCards([...testimonialCards, newTestimonial])
+
+  // Create new testimonial or update existing one
+  const handleSaveTestimonial = (config: TestimonialCardConfig) => {
+    if (editCard) {
+      // Update the existing card
+      setTestimonialCards(
+        testimonialCards.map((card) =>
+          card.id === editCard.id ? { ...editCard, ...config } : card
+        )
+      )
+    } else {
+      // Create a new card
+      const newTestimonial: TestimonialCard = { ...config, id: Date.now() }
+      setTestimonialCards([...testimonialCards, newTestimonial])
+    }
     setIsDialogOpen(false)
+    setEditCard(null) // Clear edit state
   }
 
   const handleDeleteCard = (id: number) => {
@@ -74,6 +87,11 @@ export default function EnhancedDashboard() {
 
   const totalPages = Math.ceil(filteredCards.length / itemsPerPage)
 
+  const handleEditCard = (card: TestimonialCard) => {
+    setEditCard(card)
+    setIsDialogOpen(true) // Open the dialog with pre-filled data
+  }
+
   return (
     <div className=" bg-white p-8">
       <h1 className="text-3xl font-bold text-black mb-8">Testimonial Dashboard</h1>
@@ -92,12 +110,15 @@ export default function EnhancedDashboard() {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-black text-white hover:bg-gray-800">
+            <Button className="bg-black text-white hover:bg-gray-800" onClick={() => setEditCard(null)}>
               <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
             </Button>
           </DialogTrigger>
           <DialogContent className="max-h-screen overflow-auto p-8">
-            <TestimonialCardCustomizer onSave={handleCreateTestimonial} />
+            <TestimonialCardCustomizer
+              onSave={handleSaveTestimonial}
+              initialData={editCard} 
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -118,7 +139,7 @@ export default function EnhancedDashboard() {
               <TableCell>{card.description}</TableCell>
               <TableCell>{card.questions.length}</TableCell>
               <TableCell>
-                <Button variant="outline" size="icon" className="mr-2">
+                <Button variant="outline" size="icon" className="mr-2" onClick={() => handleEditCard(card)}>
                   <Edit className="h-4 w-4" />
                 </Button>
                 <Button variant="outline" size="icon" onClick={() => handleDeleteCard(card.id)}>
