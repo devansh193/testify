@@ -1,30 +1,67 @@
 "use client";
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Logo from "@/components/Logo"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Logo from "@/components/Logo";
 import Link from "next/link";
+import { toast } from "sonner";
 
+import { createUser } from "@/action/user";
+import { Loader } from "lucide-react";
 
 export default function SignUpPage() {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle sign-up logic here
-    console.log("Sign up with:", name, email, password)
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      const toastId = toast("Creating user...", {
+        duration: 5000,
+        icon: <Loader className="animate-spin" />,
+      });
+
+      const response = await createUser(name, email, password);
+
+      if (response.success) {
+        toast.success("User created successfully!", {
+          id: toastId,
+          icon: "",
+        });
+      } else {
+        toast.error(response.message, {
+          id: toastId,
+          icon:"",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to create user. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <Logo/>
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Create your account</h2>
+          <Logo />
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+            Create your account
+          </h2>
           <p className="mt-2 text-sm text-gray-600">
             Start collecting and sharing powerful testimonials
           </p>
@@ -101,8 +138,9 @@ export default function SignUpPage() {
             <Button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+              disabled={isSubmitting}
             >
-              Sign up
+              {isSubmitting ? "Signing up..." : "Sign up"}
             </Button>
           </div>
         </form>
@@ -110,13 +148,13 @@ export default function SignUpPage() {
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
             <Link href={"/sign-in"}>
-            <span className="font-medium text-black hover:text-gray-800">
-              Sign in
-            </span>
+              <span className="font-medium text-black hover:text-gray-800">
+                Sign in
+              </span>
             </Link>
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }

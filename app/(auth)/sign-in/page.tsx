@@ -21,7 +21,7 @@ const SignIn = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const toastId = toast('Signing in', {
+    const toastId = toast("Signing in", {
       duration: 5000,
       icon: <Loader2 className="animate-spin" />,
     });
@@ -109,7 +109,8 @@ const SignIn = () => {
             <Button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-            >{loading? <Loader2 className="animate-spin"/> : "Sign in"}
+            >
+              {loading ? <Loader2 className="animate-spin" /> : "Sign in"}
             </Button>
           </div>
         </form>

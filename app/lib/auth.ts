@@ -48,18 +48,8 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) {
-            const hashedPassword = await bcrypt.hash(
-              validatedPassword.data,
-              10
-            );
-
-            const newUser = await prisma.user.create({
-              data: {
-                email: validatedEmail.data,
-                password: hashedPassword,
-              },
-            });
-            return newUser;
+          
+            return {message: "User does not exist."};
           }
 
           if (!user.password) {
