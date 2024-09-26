@@ -16,7 +16,7 @@ model User {
 }
 
 model Product {
-  id          String        @id @default(uuid())
+  id          String     @id @default(uuid())
   title       String
   description String
   showLogo    Boolean
@@ -27,7 +27,7 @@ model Product {
 }
 
 model Question {
-  id        String        @id @default(uuid())
+  id        String       @id @default(uuid())
   text      String
   type      QuestionType
   product   Product      @relation(fields: [productId], references: [id])

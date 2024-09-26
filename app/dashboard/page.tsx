@@ -1,14 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Plus, Edit, Trash2, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { useState } from "react";
+import { Plus, Edit, Trash2, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -16,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import {
   Pagination,
   PaginationContent,
@@ -24,32 +20,34 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer"
+} from "@/components/ui/pagination";
+import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
 
 interface TestimonialCard {
-  id: number
-  title: string
-  description: string
-  questions: { id: number; text: string; type: 'rating' | 'text' }[]
-  showLogo: boolean
-  logoUrl: string
+  id: number;
+  title: string;
+  description: string;
+  questions: { id: number; text: string; type: "rating" | "text" }[];
+  showLogo: boolean;
+  logoUrl: string;
 }
 
 export default function EnhancedDashboard() {
-  const [testimonialCards, setTestimonialCards] = useState<TestimonialCard[]>([])
-  const [searchTerm, setSearchTerm] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [editCard, setEditCard] = useState<TestimonialCard | null>(null) // New state for editing card
-  const itemsPerPage = 5
+  const [testimonialCards, setTestimonialCards] = useState<TestimonialCard[]>(
+    []
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editCard, setEditCard] = useState<TestimonialCard | null>(null); // New state for editing card
+  const itemsPerPage = 5;
 
   interface TestimonialCardConfig {
-    title: string
-    description: string
-    questions: { id: number; text: string; type: 'rating' | 'text' }[]
-    showLogo: boolean
-    logoUrl: string
+    title: string;
+    description: string;
+    questions: { id: number; text: string; type: "rating" | "text" }[];
+    showLogo: boolean;
+    logoUrl: string;
   }
 
   // Create new testimonial or update existing one
@@ -60,41 +58,43 @@ export default function EnhancedDashboard() {
         testimonialCards.map((card) =>
           card.id === editCard.id ? { ...editCard, ...config } : card
         )
-      )
+      );
     } else {
       // Create a new card
-      const newTestimonial: TestimonialCard = { ...config, id: Date.now() }
-      setTestimonialCards([...testimonialCards, newTestimonial])
+      const newTestimonial: TestimonialCard = { ...config, id: Date.now() };
+      setTestimonialCards([...testimonialCards, newTestimonial]);
     }
-    setIsDialogOpen(false)
-    setEditCard(null) // Clear edit state
-  }
+    setIsDialogOpen(false);
+    setEditCard(null); // Clear edit state
+  };
 
   const handleDeleteCard = (id: number) => {
-    setTestimonialCards(testimonialCards.filter(card => card.id !== id))
-  }
+    setTestimonialCards(testimonialCards.filter((card) => card.id !== id));
+  };
 
   const filteredCards = testimonialCards.filter(
-    card =>
+    (card) =>
       card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       card.description.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   const paginatedCards = filteredCards.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  )
+  );
 
-  const totalPages = Math.ceil(filteredCards.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
 
   const handleEditCard = (card: TestimonialCard) => {
-    setEditCard(card)
-    setIsDialogOpen(true) // Open the dialog with pre-filled data
-  }
+    setEditCard(card);
+    setIsDialogOpen(true);
+  };
 
   return (
     <div className=" bg-white p-8">
-      <h1 className="text-3xl font-bold text-black mb-8">Testimonial Dashboard</h1>
+      <h1 className="text-3xl font-bold text-black mb-8">
+        Testimonial Dashboard
+      </h1>
 
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-64">
@@ -110,14 +110,15 @@ export default function EnhancedDashboard() {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-black text-white hover:bg-gray-800" onClick={() => setEditCard(null)}>
+            <Button
+              className="bg-black text-white hover:bg-gray-800"
+              onClick={() => setEditCard(null)}
+            >
               <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-screen overflow-auto p-8">
-            <TestimonialCardCustomizer
-              onSave={handleSaveTestimonial}
-            />
+            <TestimonialCardCustomizer onSave={handleSaveTestimonial} />
           </DialogContent>
         </Dialog>
       </div>
@@ -138,10 +139,19 @@ export default function EnhancedDashboard() {
               <TableCell>{card.description}</TableCell>
               <TableCell>{card.questions.length}</TableCell>
               <TableCell>
-                <Button variant="outline" size="icon" className="mr-2" onClick={() => handleEditCard(card)}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="mr-2"
+                  onClick={() => handleEditCard(card)}
+                >
                   <Edit className="h-4 w-4" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={() => handleDeleteCard(card.id)}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleDeleteCard(card.id)}
+                >
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </TableCell>
@@ -153,9 +163,11 @@ export default function EnhancedDashboard() {
       <Pagination className="mt-4">
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+            <PaginationPrevious
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className={
+                currentPage === 1 ? "pointer-events-none opacity-50" : ""
+              }
             />
           </PaginationItem>
           {[...Array(totalPages)].map((_, index) => (
@@ -170,12 +182,18 @@ export default function EnhancedDashboard() {
           ))}
           <PaginationItem>
             <PaginationNext
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              className={
+                currentPage === totalPages
+                  ? "pointer-events-none opacity-50"
+                  : ""
+              }
             />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
     </div>
-  )
+  );
 }

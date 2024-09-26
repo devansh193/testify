@@ -27,14 +27,6 @@ export function ClientReviewCardComponent() {
   const description = useRecoilValue(descriptionAtom);
   const questions = useRecoilValue(questionsAtom);
 
-  const courseInfo = {
-    name: "LearnHub",
-    courseName: "Advanced Web Development Masterclass",
-    logo: "/placeholder.svg?height=80&width=80",
-    description: "Master the latest web technologies and best practices!",
-    
-  };
-
   const handleRatingChange = (questionId: number, rating: number) => {
     setRatings((prev) => ({ ...prev, [questionId]: rating }));
   };
@@ -85,9 +77,7 @@ export function ClientReviewCardComponent() {
         </div>
         <div className="flex items-center  justify-center">
           <div className="flex flex-col items-center justify-center">
-            <CardTitle className="text-2xl font-bold">
-              {title}
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </div>
         </div>
@@ -97,7 +87,10 @@ export function ClientReviewCardComponent() {
           {questions.map((question) => (
             <div key={question.id} className="space-y-2">
               <Label className="flex items-center space-x-2">
-                <span className="flex items-center justify-between"><Lightbulb className="h-5 w-5 mr-2" />{question.text}</span>
+                <span className="flex items-center justify-between">
+                  <Lightbulb className="h-5 w-5 mr-2" />
+                  {question.text}
+                </span>
               </Label>
               {question.type === "rating" ? (
                 <div className="flex space-x-2">

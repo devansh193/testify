@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useSession, signOut } from "next-auth/react";
+import { Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const navContent = [
   {
@@ -22,37 +25,61 @@ const navContent = [
 
 export const Navbar = () => {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const NavItems = () => (
+    <>
+      {session ? (
+        <div className="flex items-center space-x-4">
+          <span className="text-sm font-semibold text-gray-700">
+            Welcome back, {session.user?.name}
+          </span>
+          <Button
+            variant="outline"
+            onClick={() => signOut({ callbackUrl: "/" })}
+          >
+            Logout
+          </Button>
+        </div>
+      ) : (
+        <>
+          {navContent.map((item) => (
+            <Button variant="link" key={item.label} asChild>
+              <Link href={item.href}>{item.label}</Link>
+            </Button>
+          ))}
+          <Button variant="link" asChild>
+            <Link href="/sign-in">Sign in</Link>
+          </Button>
+          <Button variant="default" asChild>
+            <Link href="/sign-up">Sign up</Link>
+          </Button>
+        </>
+      )}
+    </>
+  );
 
   return (
-    <header className="px-4 lg:px-6 h-16 bg-[#FFFFFF] flex items-center border-b border-gray-200">
-      <Logo />
-      <nav className="ml-auto hidden md:flex">
-        {session ? (
-          <div className="flex items-center space-x-4">
-            <span className="text-gray-900 font-semibold">Welcome back, {session.user?.name}</span>
-            <Button
-              variant="secondary"
-              onClick={() => signOut({ callbackUrl: "/" })}
-            >
-              Logout
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <Logo />
+        <nav className="hidden md:flex md:items-center md:space-x-4">
+          <NavItems />
+        </nav>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Toggle menu</span>
             </Button>
-          </div>
-        ) : (
-          <>
-            {navContent.map((item) => (
-              <Button variant={"link"} key={item.label}>
-                <Link href={item.href}>{item.label}</Link>
-              </Button>
-            ))}
-            <Button variant={"link"}>
-              <Link href={"/sign-in"}>Sign in</Link>
-            </Button>
-            <Button variant={"link"}>
-              <Link href={"/sign-up"}>Sign up</Link>
-            </Button>
-          </>
-        )}
-      </nav>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <nav className="flex flex-col space-y-4">
+              <NavItems />
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 };

@@ -12,11 +12,11 @@ export const Main = () => {
           Customer <span className="text-blue-600">Testimonials</span>
         </h1>
       </div>
-      <p className="mx-auto max-w-[700px] text-center text-gray-500 md:text-xl dark:text-gray-400 mt-2"> 
+      <p className="mx-auto max-w-[700px] text-center text-gray-500 md:text-xl dark:text-gray-400 mt-2">
         credibility and convert more customers.
       </p>
       <div className="w-full flex flex-col items-center max-w-sm space-y-2 mt-6">
-          <Link href={"/dashboard"}>
+        <Link href={"/dashboard"}>
           <Button
             type="submit"
             className="bg-black text-white hover:bg-gray-800 transition-colors"
@@ -24,7 +24,7 @@ export const Main = () => {
             Get Started
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-          </Link>
+        </Link>
         <p className="text-xs text-gray-500 mt-2">
           Start your 14-day free trial. No credit card required.
         </p>

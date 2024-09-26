@@ -1,9 +1,9 @@
 import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/navbar";
 
 const LandingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen min-w-max">
+    <div className="">
       <Navbar />
       <main className="">{children}</main>
       <Footer/>

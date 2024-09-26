@@ -29,7 +29,7 @@ import {
   questionsAtom,
   showLogoAtom,
   logoUrlAtom,
-} from "@/recoil/atom"; 
+} from "@/recoil/atom";
 
 type QuestionType = "rating" | "text";
 
@@ -40,7 +40,7 @@ interface Question {
 }
 
 interface TestimonialCardConfig {
-  id?: number; 
+  id?: number;
   title: string;
   description: string;
   questions: Question[];
@@ -57,7 +57,6 @@ export function TestimonialCardCustomizer({
   onSave,
   existingData,
 }: TestimonialCardCustomizerProps) {
-
   const [title, setTitle] = useRecoilState(titleAtom);
   const [description, setDescription] = useRecoilState(descriptionAtom);
   const [questions, setQuestions] = useRecoilState(questionsAtom);
@@ -101,7 +100,7 @@ export function TestimonialCardCustomizer({
       questions,
       showLogo,
       logoUrl,
-      id: existingData?.id, 
+      id: existingData?.id,
     };
     onSave(testimonialCardConfig);
   };
@@ -109,7 +108,10 @@ export function TestimonialCardCustomizer({
   return (
     <div className="grid grid-cols-2 w-full gap-x-4">
       <div className="col-span-1">
-        <ClientReviewCardComponent /> 
+        <h1 className="text-md text-neutral-500 font-semibold my-1 mx-1">
+          Live preview
+        </h1>
+        <ClientReviewCardComponent />
       </div>
       <div className="col-span-1">
         <Card className="w-full mx-auto">
