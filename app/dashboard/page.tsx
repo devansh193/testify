@@ -114,10 +114,9 @@ export default function EnhancedDashboard() {
               <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-h-screen overflow-auto p-8">
+          <DialogContent className="max-w-4xl max-h-screen overflow-auto p-8">
             <TestimonialCardCustomizer
               onSave={handleSaveTestimonial}
-              initialData={editCard} 
             />
           </DialogContent>
         </Dialog>

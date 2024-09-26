@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,6 +22,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ClientReviewCardComponent } from "./client-review-card";
+import {
+  titleAtom,
+  descriptionAtom,
+  questionsAtom,
+  showLogoAtom,
+  logoUrlAtom,
+} from "@/recoil/atom"; 
 
 type QuestionType = "rating" | "text";
 
@@ -32,7 +40,7 @@ interface Question {
 }
 
 interface TestimonialCardConfig {
-  id?: number; // Make id optional for editing existing cards
+  id?: number; 
   title: string;
   description: string;
   questions: Question[];
@@ -42,33 +50,19 @@ interface TestimonialCardConfig {
 
 interface TestimonialCardCustomizerProps {
   onSave: (config: TestimonialCardConfig) => void;
-  existingData?: TestimonialCardConfig; 
+  existingData?: TestimonialCardConfig;
 }
 
 export function TestimonialCardCustomizer({
   onSave,
   existingData,
 }: TestimonialCardCustomizerProps) {
-  const [title, setTitle] = useState("Your Product Name");
-  const [description, setDescription] = useState(
-    "Describe your product or service here"
-  );
-  const [questions, setQuestions] = useState<Question[]>([
-    { id: 1, text: "How would you rate our product?", type: "rating" },
-  ]);
-  const [showLogo, setShowLogo] = useState(true);
-  const [logoUrl, setLogoUrl] = useState("/placeholder.svg?height=80&width=80");
 
-  // Load existing data when editing
-  useEffect(() => {
-    if (existingData) {
-      setTitle(existingData.title);
-      setDescription(existingData.description);
-      setQuestions(existingData.questions);
-      setShowLogo(existingData.showLogo);
-      setLogoUrl(existingData.logoUrl);
-    }
-  }, [existingData]);
+  const [title, setTitle] = useRecoilState(titleAtom);
+  const [description, setDescription] = useRecoilState(descriptionAtom);
+  const [questions, setQuestions] = useRecoilState(questionsAtom);
+  const [showLogo, setShowLogo] = useRecoilState(showLogoAtom);
+  const [logoUrl, setLogoUrl] = useRecoilState(logoUrlAtom);
 
   const addQuestion = () => {
     const newId =
@@ -107,130 +101,144 @@ export function TestimonialCardCustomizer({
       questions,
       showLogo,
       logoUrl,
-      id: existingData?.id, // Retain the original id if editing
+      id: existingData?.id, 
     };
     onSave(testimonialCardConfig);
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold">
-          {existingData ? "Edit Testimonial Card" : "Customize Your Testimonial Card"}
-        </CardTitle>
-        <CardDescription>
-          Modify the details and questions for your audience
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="space-y-2">
-          <Label htmlFor="title">Title</Label>
-          <Input
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter your product or service name"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe your product or service"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="logo-toggle">Show Logo</Label>
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="logo-toggle"
-              checked={showLogo}
-              onCheckedChange={setShowLogo}
-            />
-            <Label htmlFor="logo-toggle">
-              {showLogo ? "Logo Visible" : "Logo Hidden"}
-            </Label>
-          </div>
-        </div>
-        {showLogo && (
-          <div className="space-y-2">
-            <Label htmlFor="logo-url">Logo URL</Label>
-            <Input
-              id="logo-url"
-              value={logoUrl}
-              onChange={(e) => setLogoUrl(e.target.value)}
-              placeholder="Enter the URL of your logo"
-            />
-          </div>
-        )}
-        <div className="space-y-2">
-          <Label>Questions</Label>
-          {questions.map((question, index) => (
-            <Card key={question.id} className="p-4">
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Input
-                    value={question.text}
-                    onChange={(e) =>
-                      updateQuestion(question.id, e.target.value, question.type)
-                    }
-                    placeholder="Enter your question"
-                  />
-                  <Select
-                    value={question.type}
-                    onValueChange={(value: QuestionType) =>
-                      updateQuestion(question.id, question.text, value)
-                    }
-                  >
-                    <SelectTrigger className="w-[120px]">
-                      <SelectValue placeholder="Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="rating">Rating</SelectItem>
-                      <SelectItem value="text">Text</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => moveQuestion(question.id, "up")}
-                    disabled={index === 0}
-                  >
-                    <Move className="h-4 w-4 rotate-180" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => moveQuestion(question.id, "down")}
-                    disabled={index === questions.length - 1}
-                  >
-                    <Move className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => removeQuestion(question.id)}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                </div>
+    <div className="grid grid-cols-2 w-full gap-x-4">
+      <div className="col-span-1">
+        <ClientReviewCardComponent /> 
+      </div>
+      <div className="col-span-1">
+        <Card className="w-full mx-auto">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold">
+              {existingData
+                ? "Edit Testimonial Card"
+                : "Customize Your Testimonial Card"}
+            </CardTitle>
+            <CardDescription>
+              Modify the details and questions for your audience
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter your product or service name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe your product or service"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="logo-toggle">Show Logo</Label>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="logo-toggle"
+                  checked={showLogo}
+                  onCheckedChange={setShowLogo}
+                />
+                <Label htmlFor="logo-toggle">
+                  {showLogo ? "Logo Visible" : "Logo Hidden"}
+                </Label>
               </div>
-            </Card>
-          ))}
-          <Button onClick={addQuestion} className="w-full">
-            <Plus className="mr-2 h-4 w-4" /> Add Question
-          </Button>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button onClick={handleSave} className="w-full">
-          <Save className="mr-2 h-4 w-4" /> {existingData ? "Update" : "Save"} Testimonial Card
-        </Button>
-      </CardFooter>
-    </Card>
+            </div>
+            {showLogo && (
+              <div className="space-y-2">
+                <Label htmlFor="logo-url">Logo URL</Label>
+                <Input
+                  id="logo-url"
+                  value={logoUrl}
+                  onChange={(e) => setLogoUrl(e.target.value)}
+                  placeholder="Enter the URL of your logo"
+                />
+              </div>
+            )}
+            <div className="space-y-2">
+              <Label>Questions</Label>
+              {questions.map((question, index) => (
+                <Card key={question.id} className="p-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        value={question.text}
+                        onChange={(e) =>
+                          updateQuestion(
+                            question.id,
+                            e.target.value,
+                            question.type
+                          )
+                        }
+                        placeholder="Enter your question"
+                      />
+                      <Select
+                        value={question.type}
+                        onValueChange={(value: QuestionType) =>
+                          updateQuestion(question.id, question.text, value)
+                        }
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue placeholder="Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="rating">Rating</SelectItem>
+                          <SelectItem value="text">Text</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => moveQuestion(question.id, "up")}
+                        disabled={index === 0}
+                      >
+                        <Move className="h-4 w-4 rotate-180" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => moveQuestion(question.id, "down")}
+                        disabled={index === questions.length - 1}
+                      >
+                        <Move className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => removeQuestion(question.id)}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+              <Button onClick={addQuestion} className="w-full">
+                <Plus className="mr-2 h-4 w-4" /> Add Question
+              </Button>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button onClick={handleSave} className="w-full">
+              <Save className="mr-2 h-4 w-4" />{" "}
+              {existingData ? "Update" : "Save"} Testimonial Card
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 }
