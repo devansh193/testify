@@ -32,7 +32,7 @@ export const Footer = () => {
           </div>
           <div className="mt-8 pt-8 border-t border-gray-200">
             <p className="text-sm text-gray-500 text-center">
-              © 2024 TestiFlow. All rights reserved.
+              © 2024 Testify. All rights reserved.
             </p>
           </div>
         </div>

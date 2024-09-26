@@ -16,7 +16,7 @@ model User {
 }
 
 model Product {
-  id          Int        @id @default(autoincrement())
+  id          String        @id @default(uuid())
   title       String
   description String
   showLogo    Boolean
@@ -27,11 +27,11 @@ model Product {
 }
 
 model Question {
-  id        Int          @id @default(autoincrement())
+  id        String        @id @default(uuid())
   text      String
   type      QuestionType
   product   Product      @relation(fields: [productId], references: [id])
-  productId Int
+  productId String
 }
 
 enum QuestionType {

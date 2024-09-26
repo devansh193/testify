@@ -27,14 +27,9 @@ export const Navbar = () => {
     <header className="px-4 lg:px-6 h-16 bg-[#FFFFFF] flex items-center border-b border-gray-200">
       <Logo />
       <nav className="ml-auto hidden md:flex">
-        {navContent.map((item) => (
-          <Button variant={"link"} key={item.label}>
-            <Link href={item.href}>{item.label}</Link>
-          </Button>
-        ))}
         {session ? (
           <div className="flex items-center space-x-4">
-            <span className="text-gray-600">{session.user?.email}</span>
+            <span className="text-gray-900 font-semibold">Welcome back, {session.user?.name}</span>
             <Button
               variant="secondary"
               onClick={() => signOut({ callbackUrl: "/" })}
@@ -43,9 +38,19 @@ export const Navbar = () => {
             </Button>
           </div>
         ) : (
-          <Button variant={"link"}>
-            <Link href={"/sign-in"}>Sign in</Link>
-          </Button>
+          <>
+            {navContent.map((item) => (
+              <Button variant={"link"} key={item.label}>
+                <Link href={item.href}>{item.label}</Link>
+              </Button>
+            ))}
+            <Button variant={"link"}>
+              <Link href={"/sign-in"}>Sign in</Link>
+            </Button>
+            <Button variant={"link"}>
+              <Link href={"/sign-up"}>Sign up</Link>
+            </Button>
+          </>
         )}
       </nav>
     </header>
