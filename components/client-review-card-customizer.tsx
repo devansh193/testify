@@ -45,7 +45,6 @@ interface TestimonialCardConfig {
   showLogo: boolean;
   logoUrl: string;
   questions: Question[];
-  userId: string;
 }
 
 interface TestimonialCardCustomizerProps {
@@ -62,6 +61,7 @@ export function TestimonialCardCustomizer({
   const [questions, setQuestions] = useRecoilState(questionsAtom);
   const [showLogo, setShowLogo] = useRecoilState(showLogoAtom);
   const [logoUrl, setLogoUrl] = useRecoilState(logoUrlAtom);
+
 
   const addQuestion = () => {
     const newId =
@@ -94,13 +94,13 @@ export function TestimonialCardCustomizer({
   };
 
   const handleSave = () => {
+
     const testimonialCardConfig: TestimonialCardConfig = {
       title,
       description,
       questions,
       showLogo,
       logoUrl,
-      userId,
     };
     onSave(testimonialCardConfig);
   };

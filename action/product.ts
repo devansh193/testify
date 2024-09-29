@@ -12,6 +12,7 @@ interface ProductProp {
 
 export const createProduct = async ({ data }: { data: ProductProp }) => {
   try {
+    
     const { title, description, showLogo, logoUrl, questions, userId } = data;
 
     const newProduct = await db.product.create({
