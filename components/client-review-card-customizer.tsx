@@ -40,12 +40,12 @@ interface Question {
 }
 
 interface TestimonialCardConfig {
-  id?: number;
   title: string;
   description: string;
-  questions: Question[];
   showLogo: boolean;
   logoUrl: string;
+  questions: Question[];
+  userId: string;
 }
 
 interface TestimonialCardCustomizerProps {
@@ -100,7 +100,7 @@ export function TestimonialCardCustomizer({
       questions,
       showLogo,
       logoUrl,
-      id: existingData?.id,
+      userId,
     };
     onSave(testimonialCardConfig);
   };
