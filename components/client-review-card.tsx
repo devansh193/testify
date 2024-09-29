@@ -53,7 +53,7 @@ export function ClientReviewCardComponent() {
 
   if (submitted) {
     return (
-      <Card className="w-full max-w-2xl mx-auto">
+      <Card className="w-full mx-auto">
         <CardContent className="pt-6">
           <div className="text-center space-y-4">
             <ThumbsUp className="h-16 w-16 mx-auto text-green-500" />
