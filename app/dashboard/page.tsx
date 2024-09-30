@@ -22,6 +22,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
+import { useRecoilState } from "recoil";
+import { dialogAtom } from "@/recoil/atom";
 
 interface TestimonialCard {
   id: number;
@@ -45,7 +47,7 @@ export default function Dashboard() {
   );
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useRecoilState(dialogAtom);
   const [editCard, setEditCard] = useState<TestimonialCard | null>(null); // New state for editing card
   const itemsPerPage = 5;
 

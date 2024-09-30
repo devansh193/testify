@@ -38,3 +38,8 @@ export const logoUrlAtom = atom<string>({
   key: "logoUrlAtom",
   default: "/placeholder.svg?height=80&width=80",
 });
+
+export const dialogAtom = atom<boolean>({
+  key: "isDialogOpen",
+  default: false,
+});

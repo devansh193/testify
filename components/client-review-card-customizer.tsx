@@ -95,12 +95,13 @@ export function TestimonialCardCustomizer({
       setQuestions(newQuestions);
     }
   };
-
-  const handleSave = () => {
+  
+  const handleSave = async () => {
     let userId = "";
     if (session && session.user) {
       userId = session.user.id;
     }
+  
     const testimonialCardConfig: ProductDetails = {
       title,
       description,
@@ -109,23 +110,36 @@ export function TestimonialCardCustomizer({
       logoUrl,
       userId,
     };
+  
+
     const toastId = toast("Creating product...", {
       duration: 5000,
       icon: <Loader2 className="animate-spin" />,
     });
+  
     try {
-      createProduct({ data: testimonialCardConfig });
-      toast.success("Product created successfully!", {
-        id: toastId,
-        icon: "",
-      });
+
+      const result = await createProduct({ data: testimonialCardConfig });
+      if (result.success) {
+        toast.success(result.message, {
+          id: toastId, 
+          icon:"",
+        });
+      } else {
+        toast.error(result.message, {
+          id: toastId,
+          icon:"",
+        });
+      }
     } catch (error) {
-      toast.error("Failed to create product", {
+      console.log(error);
+      toast.error("Failed to create product due to an error.", {
         id: toastId,
-        icon: "",
+        icon:"",
       });
     }
   };
+  
 
   return (
     <div className="grid grid-cols-2 w-full gap-x-4">
@@ -135,6 +149,7 @@ export function TestimonialCardCustomizer({
         </h1>
         <ClientReviewCardComponent />
       </div>
+      {/* Live preview ends */}
       <div className="col-span-1">
         <Card className="w-full mx-auto">
           <CardHeader>
