@@ -1,3 +1,4 @@
+import { Github, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
 
 export const Footer = () => {
@@ -10,7 +11,7 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/features"
                   className="text-sm text-gray-500 hover:text-gray-900"
                 >
                   Features
@@ -39,7 +40,7 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/about"
                   className="text-sm text-gray-500 hover:text-gray-900"
                 >
                   About
@@ -55,7 +56,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/contact"
                   className="text-sm text-gray-500 hover:text-gray-900"
                 >
                   Contact
@@ -93,10 +94,27 @@ export const Footer = () => {
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-gray-200">
+        <div className="mt-8 pt-8 border-t flex items-center justify-between border-gray-200">
           <p className="text-sm text-gray-500 text-center">
             © 2024 Testify. All rights reserved.
           </p>
+          <div className="flex space-x-6">
+            <Link href="#" className="text-gray-400 hover:text-gray-500">
+              <span className="sr-only">Facebook</span>
+              <Instagram />
+            </Link>
+            <Link href="#" className="text-gray-400 hover:text-gray-500">
+              <span className="sr-only">Twitter</span>
+              <Twitter />
+            </Link>
+            <Link
+              href="https://github.com/devansh193/testify"
+              className="text-gray-400 hover:text-gray-500"
+            >
+              <span className="sr-only">GitHub</span>
+              <Github />
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
