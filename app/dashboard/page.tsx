@@ -51,8 +51,6 @@ export default function Dashboard() {
   const [editCard, setEditCard] = useState<TestimonialCard | null>(null); // New state for editing card
   const itemsPerPage = 5;
 
-
-
   // Create new testimonial or update existing one
   const handleSaveTestimonial = (config: TestimonialCardConfig) => {
     if (editCard) {

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ const SignIn = () => {
     setLoading(true);
     const toastId = toast("Signing in", {
       duration: 5000,
-      icon: <Loader2 className="animate-spin" />,
+      icon: <Loader className="animate-spin" />,
     });
 
     try {
@@ -37,7 +37,7 @@ const SignIn = () => {
         setError(result.error);
         toast.error("Failed to sign in. Please check your credentials.", {
           id: toastId,
-          icon:"",
+          icon: "",
         });
         console.error(result.error);
       } else {
@@ -111,7 +111,7 @@ const SignIn = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
             >
-              {loading ? <Loader2 className="animate-spin" /> : "Sign in"}
+              {loading ? <Loader className="animate-spin" /> : "Sign in"}
             </Button>
           </div>
         </form>

@@ -43,7 +43,7 @@ export default function SignUpPage() {
       } else {
         toast.error(response.message, {
           id: toastId,
-          icon:"",
+          icon: "",
         });
       }
     } catch (error) {

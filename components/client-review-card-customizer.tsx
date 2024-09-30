@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Minus, Move, Save, Loader2 } from "lucide-react";
+import { Plus, Minus, Move, Save, Loader } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -95,13 +95,13 @@ export function TestimonialCardCustomizer({
       setQuestions(newQuestions);
     }
   };
-  
+
   const handleSave = async () => {
     let userId = "";
     if (session && session.user) {
       userId = session.user.id;
     }
-  
+
     const testimonialCardConfig: ProductDetails = {
       title,
       description,
@@ -110,36 +110,33 @@ export function TestimonialCardCustomizer({
       logoUrl,
       userId,
     };
-  
 
     const toastId = toast("Creating product...", {
       duration: 5000,
-      icon: <Loader2 className="animate-spin" />,
+      icon: <Loader className="animate-spin" />,
     });
-  
-    try {
 
+    try {
       const result = await createProduct({ data: testimonialCardConfig });
       if (result.success) {
         toast.success(result.message, {
-          id: toastId, 
-          icon:"",
+          id: toastId,
+          icon: "",
         });
       } else {
         toast.error(result.message, {
           id: toastId,
-          icon:"",
+          icon: "",
         });
       }
     } catch (error) {
       console.log(error);
       toast.error("Failed to create product due to an error.", {
         id: toastId,
-        icon:"",
+        icon: "",
       });
     }
   };
-  
 
   return (
     <div className="grid grid-cols-2 w-full gap-x-4">
