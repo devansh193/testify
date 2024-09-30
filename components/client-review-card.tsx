@@ -72,12 +72,9 @@ export function ClientReviewCardComponent() {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <div className="flex items-center justify-center">
-          <Logo />
-        </div>
         <div className="flex items-center  justify-center">
-          <div className="flex flex-col items-center justify-center">
-            <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+          <div className="flex flex-col items-center justify-center mb-1">
+            <CardTitle className="text-2xl font-bold mb-1">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </div>
         </div>
