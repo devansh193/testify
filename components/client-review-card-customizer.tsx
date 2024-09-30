@@ -1,5 +1,5 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Minus, Move, Save } from "lucide-react";
+import { Plus, Minus, Move, Save, Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -30,6 +30,8 @@ import {
   showLogoAtom,
   logoUrlAtom,
 } from "@/recoil/atom";
+import { createProduct } from "@/action/product";
+import { toast } from "sonner";
 
 type QuestionType = "rating" | "text";
 
@@ -39,21 +41,21 @@ interface Question {
   type: QuestionType;
 }
 
-interface TestimonialCardConfig {
+interface ProductDetails {
   title: string;
   description: string;
   showLogo: boolean;
   logoUrl: string;
   questions: Question[];
+  userId: string;
 }
 
 interface TestimonialCardCustomizerProps {
-  onSave: (config: TestimonialCardConfig) => void;
-  existingData?: TestimonialCardConfig;
+  onSave: (config: ProductDetails) => void;
+  existingData?: ProductDetails;
 }
 
 export function TestimonialCardCustomizer({
-  onSave,
   existingData,
 }: TestimonialCardCustomizerProps) {
   const [title, setTitle] = useRecoilState(titleAtom);
@@ -62,6 +64,7 @@ export function TestimonialCardCustomizer({
   const [showLogo, setShowLogo] = useRecoilState(showLogoAtom);
   const [logoUrl, setLogoUrl] = useRecoilState(logoUrlAtom);
 
+  const { data: session } = useSession();
 
   const addQuestion = () => {
     const newId =
@@ -94,15 +97,34 @@ export function TestimonialCardCustomizer({
   };
 
   const handleSave = () => {
-
-    const testimonialCardConfig: TestimonialCardConfig = {
+    let userId = "";
+    if (session && session.user) {
+      userId = session.user.id;
+    }
+    const testimonialCardConfig: ProductDetails = {
       title,
       description,
       questions,
       showLogo,
       logoUrl,
+      userId,
     };
-    onSave(testimonialCardConfig);
+    const toastId = toast("Creating product...", {
+      duration: 5000,
+      icon: <Loader2 className="animate-spin" />,
+    });
+    try {
+      createProduct({ data: testimonialCardConfig });
+      toast.success("Product created successfully!", {
+        id: toastId,
+        icon: "",
+      });
+    } catch (error) {
+      toast.error("Failed to create product", {
+        id: toastId,
+        icon: "",
+      });
+    }
   };
 
   return (

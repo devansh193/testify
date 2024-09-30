@@ -31,8 +31,15 @@ interface TestimonialCard {
   showLogo: boolean;
   logoUrl: string;
 }
+interface TestimonialCardConfig {
+  title: string;
+  description: string;
+  questions: { id: number; text: string; type: "rating" | "text" }[];
+  showLogo: boolean;
+  logoUrl: string;
+}
 
-export default function EnhancedDashboard() {
+export default function Dashboard() {
   const [testimonialCards, setTestimonialCards] = useState<TestimonialCard[]>(
     []
   );
@@ -42,13 +49,7 @@ export default function EnhancedDashboard() {
   const [editCard, setEditCard] = useState<TestimonialCard | null>(null); // New state for editing card
   const itemsPerPage = 5;
 
-  interface TestimonialCardConfig {
-    title: string;
-    description: string;
-    questions: { id: number; text: string; type: "rating" | "text" }[];
-    showLogo: boolean;
-    logoUrl: string;
-  }
+
 
   // Create new testimonial or update existing one
   const handleSaveTestimonial = (config: TestimonialCardConfig) => {
