@@ -88,7 +88,7 @@ export default function AboutPage() {
             <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
               Our Team
             </h3>
-            <div className="flex items-center justify-center gap-x-8">
+            <div className="flex items-center justify-around gap-x-8">
               {[
                 {
                   name: "Devansh Verma",
@@ -127,7 +127,7 @@ export default function AboutPage() {
                     alt={member.name.charAt(0)}
                     width={150}
                     height={150}
-                    className="rounded-full bg-neutral-200 mx-auto mb-4"
+                    className="rounded-full bg-neutral-200  mx-auto mb-4"
                   />
                   <h4 className="text-lg font-semibold">{member.name}</h4>
                   <p className="text-gray-500">{member.role}</p>
