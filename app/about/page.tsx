@@ -107,12 +107,12 @@ export default function AboutPage() {
                 },
                 {
                   name: "Akshit Rawat",
-                  role: "Head of finance",
+                  role: "Head of Finance",
                   image: "",
                 },
                 {
                   name: "Uzair",
-                  role: "Head of operations",
+                  role: "Head of Operations",
                   image: "",
                 },
                 {

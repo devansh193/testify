@@ -1,161 +1,165 @@
-"use client";
-
-import { useState } from "react";
+import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin } from "lucide-react";
-import { toast } from "sonner";
-export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState({ name: "", email: "", message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-  const validateForm = () => {
-    let isValid = true;
-    const newErrors = { name: "", email: "", message: "" };
-
-    if (name.length < 2) {
-      newErrors.name = "Name must be at least 2 characters.";
-      isValid = false;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Invalid email address.";
-      isValid = false;
-    }
-
-    if (message.length < 10) {
-      newErrors.message = "Message must be at least 10 characters.";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log({ name, email, message });
-    setIsSubmitting(false);
-    toast.success("Message sent. We'll get back to you.");
-    setName("");
-    setEmail("");
-    setMessage("");
-  };
-
+export default function GetInTouchPage() {
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <main className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-8">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Get in touch
-            </h1>
-            <p className="mt-4 text-lg text-gray-500">
-              We&apos;d love to hear from you. Please fill out this form or use
-              our contact information below.
-            </p>
-            <dl className="mt-8 space-y-6">
-              <dt className="sr-only">Email</dt>
-              <dd className="flex items-center">
-                <Mail className="h-6 w-6 text-gray-400" aria-hidden="true" />
-                <span className="ml-3 text-base text-gray-500">
-                  support@testify.com
-                </span>
-              </dd>
-              <dt className="sr-only">Phone number</dt>
-              <dd className="flex items-center">
-                <Phone className="h-6 w-6 text-gray-400" aria-hidden="true" />
-                <span className="ml-3 text-base text-gray-500">
-                  +91 999999999
-                </span>
-              </dd>
-              <dt className="sr-only">Address</dt>
-              <dd className="flex items-center">
-                <MapPin className="h-6 w-6 text-gray-400" aria-hidden="true" />
-                <span className="ml-3 text-base text-gray-500">
-                  Testify, Alpha-2, Greater Noida
-                </span>
-              </dd>
-            </dl>
-          </div>
-          <div className="bg-white">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Name
-                </label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Message
-                </label>
-                <Textarea
-                  id="message"
-                  rows={4}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
-                {errors.message && (
-                  <p className="mt-1 text-sm text-red-600">{errors.message}</p>
-                )}
-              </div>
-              <div>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-black text-white hover:bg-gray-800"
-                >
-                  {isSubmitting ? "Sending..." : "Send message"}
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-black sm:text-5xl">
+            Get in Touch
+          </h2>
+          <p className="mt-4 text-xl text-gray-500 max-w-3xl mx-auto">
+            Have questions about Testify? We&apos;re here to help. Reach out to
+            our team and we&apos;ll get back to you as soon as possible.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <Card className="bg-white shadow-lg col-span-2 sm:col-span-1">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold text-black">
+                Send us a message
+              </CardTitle>
+              <CardDescription>
+                Fill out the form below and we&apos;ll get back to you shortly.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">First name</Label>
+                    <Input id="first-name" placeholder="Devansh" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="last-name">Last name</Label>
+                    <Input id="last-name" placeholder="Verma" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="devansh@domain.com"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="subject">Subject</Label>
+                  <Input id="" placeholder="How can we help you?" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Tell us more about your inquiry..."
+                  />
+                </div>
+                <Button className="w-full bg-black text-white hover:bg-gray-800">
+                  Send Message
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-              </div>
-            </form>
+              </form>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-8">
+            <Card className="bg-white shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-black">
+                  Contact Information
+                </CardTitle>
+                <CardDescription>
+                  Reach out to us through any of these channels.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <MapPin className="h-6 w-6 text-gray-400" />
+                  <p className="text-gray-600">
+                    Testify, Alpha-2, Greater Noida. 201310
+                  </p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <Phone className="h-6 w-6 text-gray-400" />
+                  <p className="text-gray-600">+91 999999999</p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <Mail className="h-6 w-6 text-gray-400" />
+                  <p className="text-gray-600">support@testify.com</p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <Clock className="h-6 w-6 text-gray-400" />
+                  <p className="text-gray-600">
+                    Monday - Friday, 9am - 5pm IST
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-black">
+                  FAQ
+                </CardTitle>
+                <CardDescription>
+                  Quick answers to common questions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-black">
+                    How long is the free trial?
+                  </h4>
+                  <p className="text-gray-600">
+                    Our free trial lasts for 14 days, no credit card required.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-black">
+                    Can I cancel my subscription anytime?
+                  </h4>
+                  <p className="text-gray-600">
+                    Yes, you can cancel your subscription at any time without
+                    penalties.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-black">
+                    Do you offer customer support?
+                  </h4>
+                  <p className="text-gray-600">
+                    We offer 24/7 customer support via email and live chat for
+                    all paid plans.
+                  </p>
+                </div>
+                <Link
+                  href="/faq"
+                  className="text-black font-semibold hover:underline inline-flex items-center"
+                >
+                  View all FAQs
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
