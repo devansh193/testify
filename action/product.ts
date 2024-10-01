@@ -1,8 +1,11 @@
 "use server";
 
 import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { Product, Question } from "@prisma/client";
 
-interface ProductProp {
+export interface ProductProp {
+  id: string;
   title: string;
   description: string;
   showLogo: boolean;
@@ -47,6 +50,7 @@ export const createProduct = async ({ data }: { data: ProductProp }) => {
         },
       },
     });
+    revalidatePath("/dashboard");
     return {
       success: true,
       data: newProduct,
@@ -109,5 +113,41 @@ export const getProduct = async ({
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
+  }
+};
+
+type ProductWithQuestions = Product & { questions: Question[] };
+
+import { notFound } from "next/navigation";
+
+export const getProductByTitle = async (
+  title: string
+): Promise<ProductWithQuestions> => {
+  if (!title.trim()) {
+    console.error("Product title cannot be empty");
+    notFound();
+  }
+
+  try {
+    const products = await db.product.findMany({
+      where: { title: { equals: title, mode: "insensitive" } },
+      include: { questions: true },
+    });
+
+    if (products.length === 0) {
+      console.log(`No product found with title: "${title}"`);
+      notFound();
+    }
+
+    if (products.length > 1) {
+      console.warn(
+        `Multiple products found with title: "${title}". Returning the first one.`
+      );
+    }
+
+    return products[0];
+  } catch (error) {
+    console.error(`Error fetching product with title "${title}":`, error);
+    notFound();
   }
 };

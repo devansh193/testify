@@ -1,6 +1,6 @@
 "use client";
-
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { Plus, Edit, Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,65 +13,45 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
 import { useRecoilState } from "recoil";
 import { dialogAtom } from "@/recoil/atom";
-
-interface TestimonialCard {
-  id: number;
-  title: string;
-  description: string;
-  questions: { id: number; text: string; type: "rating" | "text" }[];
-  showLogo: boolean;
-  logoUrl: string;
-}
-interface TestimonialCardConfig {
-  title: string;
-  description: string;
-  questions: { id: number; text: string; type: "rating" | "text" }[];
-  showLogo: boolean;
-  logoUrl: string;
-}
+import { getProduct, ProductProp } from "@/action/product";
 
 export default function Dashboard() {
-  const [testimonialCards, setTestimonialCards] = useState<TestimonialCard[]>(
-    []
-  );
+  const [testimonialCards, setTestimonialCards] = useState<ProductProp[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useRecoilState(dialogAtom);
-  const [editCard, setEditCard] = useState<TestimonialCard | null>(null); // New state for editing card
-  const itemsPerPage = 5;
+  const { data: session, status } = useSession();
 
-  // Create new testimonial or update existing one
-  const handleSaveTestimonial = (config: TestimonialCardConfig) => {
-    if (editCard) {
-      // Update the existing card
-      setTestimonialCards(
-        testimonialCards.map((card) =>
-          card.id === editCard.id ? { ...editCard, ...config } : card
-        )
-      );
-    } else {
-      // Create a new card
-      const newTestimonial: TestimonialCard = { ...config, id: Date.now() };
-      setTestimonialCards([...testimonialCards, newTestimonial]);
+  const fetchTestimonials = async () => {
+    if (status === "loading") return;
+    try {
+      let userId: string | undefined;
+
+      if (session && session.user) {
+        userId = session.user.id;
+      }
+
+      if (!userId) {
+        throw new Error("User is not authenticated");
+      }
+
+      const { products } = await getProduct({
+        userId,
+        page: 1,
+        pageSize: 100,
+      });
+
+      setTestimonialCards(products);
+    } catch (error) {
+      console.error("Failed to fetch testimonials:", error);
     }
-    setIsDialogOpen(false);
-    setEditCard(null); // Clear edit state
   };
 
-  const handleDeleteCard = (id: number) => {
-    setTestimonialCards(testimonialCards.filter((card) => card.id !== id));
-  };
+  useEffect(() => {
+    fetchTestimonials();
+  }, [session, status]);
 
   const filteredCards = testimonialCards.filter(
     (card) =>
@@ -79,20 +59,8 @@ export default function Dashboard() {
       card.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const paginatedCards = filteredCards.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
-
-  const handleEditCard = (card: TestimonialCard) => {
-    setEditCard(card);
-    setIsDialogOpen(true);
-  };
-
   return (
-    <div className=" bg-white p-8">
+    <div className="bg-white p-8">
       <h1 className="text-3xl font-bold text-black mb-8">
         Testimonial Dashboard
       </h1>
@@ -113,13 +81,13 @@ export default function Dashboard() {
           <DialogTrigger asChild>
             <Button
               className="bg-black text-white hover:bg-gray-800"
-              onClick={() => setEditCard(null)}
+              onClick={() => {}}
             >
               <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-screen overflow-auto p-8">
-            <TestimonialCardCustomizer onSave={handleSaveTestimonial} />
+            <TestimonialCardCustomizer onSave={() => {}} />
           </DialogContent>
         </Dialog>
       </div>
@@ -134,7 +102,7 @@ export default function Dashboard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedCards.map((card) => (
+          {filteredCards.map((card) => (
             <TableRow key={card.id}>
               <TableCell>{card.title}</TableCell>
               <TableCell>{card.description}</TableCell>
@@ -144,15 +112,11 @@ export default function Dashboard() {
                   variant="outline"
                   size="icon"
                   className="mr-2"
-                  onClick={() => handleEditCard(card)}
+                  onClick={() => {}}
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleDeleteCard(card.id)}
-                >
+                <Button variant="outline" size="icon" onClick={() => {}}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </TableCell>
@@ -160,41 +124,6 @@ export default function Dashboard() {
           ))}
         </TableBody>
       </Table>
-
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className={
-                currentPage === 1 ? "pointer-events-none opacity-50" : ""
-              }
-            />
-          </PaginationItem>
-          {[...Array(totalPages)].map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                onClick={() => setCurrentPage(index + 1)}
-                isActive={currentPage === index + 1}
-              >
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              className={
-                currentPage === totalPages
-                  ? "pointer-events-none opacity-50"
-                  : ""
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </div>
   );
 }

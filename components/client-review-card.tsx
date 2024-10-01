@@ -14,7 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Star, Lightbulb, ThumbsUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import Logo from "./Logo";
 import { useRecoilValue } from "recoil";
 import { descriptionAtom, questionsAtom, titleAtom } from "@/recoil/atom";
 
