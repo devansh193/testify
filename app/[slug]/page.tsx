@@ -5,10 +5,11 @@ import { useParams } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { titleAtom, descriptionAtom } from "@/recoil/atom";
 import { getProductByTitle, ProductWithQuestions } from "@/action/product";
-import { notFound } from "next/navigation";
 import LoadingPage from "@/app/loading";
 import { ClientReviewCardComponent } from "@/components/client-review-card";
 import { Card } from "@/components/ui/card";
+import NotFound from "../not-found";
+
 export default function ProductPage() {
   const params = useParams();
   const slug = params?.slug as string;
@@ -47,7 +48,7 @@ export default function ProductPage() {
   }
 
   if (!product) {
-    notFound();
+    return <NotFound />;
   }
 
   return (

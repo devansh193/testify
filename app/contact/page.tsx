@@ -91,7 +91,7 @@ export default function GetInTouchPage() {
                 <div className="flex items-center space-x-4">
                   <MapPin className="h-6 w-6 text-gray-400" />
                   <p className="text-gray-600">
-                    Testify, Alpha-2, Greater Noida. 201310
+                    Testify, Kotdwar, Uttarakhand. 246149
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
