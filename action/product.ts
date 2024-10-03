@@ -4,6 +4,8 @@ import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Product, Question } from "@prisma/client";
 
+export type ProductWithQuestions = Product & { questions: Question[] };
+
 export interface ProductProp {
   id: string;
   title: string;
@@ -30,6 +32,19 @@ interface PaginatedProductResult {
 export const createProduct = async ({ data }: { data: ProductProp }) => {
   try {
     const { title, description, showLogo, logoUrl, questions, userId } = data;
+
+    const existingProduct = await db.product.findUnique({
+      where: {
+        title: title,
+      },
+    });
+
+    if (existingProduct) {
+      return {
+        success: false,
+        message: "🤨 susss!, Product already exists.",
+      };
+    }
 
     const newProduct = await db.product.create({
       data: {
@@ -116,16 +131,9 @@ export const getProduct = async ({
   }
 };
 
-type ProductWithQuestions = Product & { questions: Question[] };
-
-import { notFound } from "next/navigation";
-
-export const getProductByTitle = async (
-  title: string
-): Promise<ProductWithQuestions> => {
+export const getProductByTitle = async (title: string) => {
   if (!title.trim()) {
     console.error("Product title cannot be empty");
-    notFound();
   }
 
   try {
@@ -136,7 +144,6 @@ export const getProductByTitle = async (
 
     if (products.length === 0) {
       console.log(`No product found with title: "${title}"`);
-      notFound();
     }
 
     if (products.length > 1) {
@@ -148,6 +155,5 @@ export const getProductByTitle = async (
     return products[0];
   } catch (error) {
     console.error(`Error fetching product with title "${title}":`, error);
-    notFound();
   }
 };
