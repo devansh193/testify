@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Plus, Edit, Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ import { useRecoilState } from "recoil";
 import { dialogAtom } from "@/recoil/atom";
 import { getProduct, ProductProp } from "@/action/product";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false);
@@ -25,20 +26,21 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useRecoilState(dialogAtom);
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const testimonialsFetched = useRef(false);
 
   const fetchTestimonials = async () => {
-    if (status === "loading") return;
+    if (testimonialsFetched.current || status !== "authenticated") return;
 
     setLoading(true);
 
     try {
       let userId: string | undefined;
 
-      if (session && session.user) {
+      if (session?.user?.id) {
         userId = session.user.id;
-      }
-
-      if (!userId) {
+      } else {
         throw new Error("User is not authenticated");
       }
 
@@ -49,6 +51,7 @@ export default function Dashboard() {
       });
 
       setTestimonialCards(products);
+      testimonialsFetched.current = true;
     } catch (error) {
       console.error("Failed to fetch testimonials:", error);
     } finally {
@@ -57,15 +60,20 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchTestimonials();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+    if (status === "authenticated" && !testimonialsFetched.current) {
+      fetchTestimonials();
+    }
+  }, [status, session]);
 
   const filteredCards = testimonialCards.filter(
     (card) =>
       card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       card.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleRowClick = (productId: string) => {
+    router.push(`/product/${productId}`);
+  };
 
   return (
     <div className="bg-white p-8">
@@ -135,7 +143,11 @@ export default function Dashboard() {
         ) : (
           <TableBody>
             {filteredCards.map((card) => (
-              <TableRow key={card.id} onClick={() => {}}>
+              <TableRow
+                key={card.id}
+                onClick={() => handleRowClick(card.id)}
+                className="hover:cursor-pointer"
+              >
                 <TableCell>{card.title}</TableCell>
                 <TableCell>{card.description}</TableCell>
                 <TableCell>{card.questions.length}</TableCell>
@@ -144,11 +156,19 @@ export default function Dashboard() {
                     variant="outline"
                     size="icon"
                     className="mr-2"
-                    onClick={() => {}}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent row click from triggering
+                    }}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => {}}>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent row click from triggering
+                    }}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </TableCell>

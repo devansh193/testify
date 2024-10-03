@@ -17,6 +17,7 @@ import {
   Globe,
 } from "lucide-react";
 import Image from "next/image";
+import testie from "@/public/testie.png";
 
 export default function FeaturesPage() {
   const features = [
@@ -135,9 +136,10 @@ export default function FeaturesPage() {
             </div>
             <div className="relative h-96 md:h-auto">
               <Image
-                src="/placeholder.svg?height=600&width=600"
+                src={testie}
+                height={500}
+                width={500}
                 alt="Testify workflow illustration"
-                layout="fill"
                 objectFit="contain"
                 className="rounded-lg"
               />
