@@ -17,8 +17,10 @@ import { TestimonialCardCustomizer } from "@/components/client-review-card-custo
 import { useRecoilState } from "recoil";
 import { dialogAtom } from "@/recoil/atom";
 import { getProduct, ProductProp } from "@/action/product";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(false);
   const [testimonialCards, setTestimonialCards] = useState<ProductProp[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useRecoilState(dialogAtom);
@@ -26,6 +28,9 @@ export default function Dashboard() {
 
   const fetchTestimonials = async () => {
     if (status === "loading") return;
+
+    setLoading(true);
+
     try {
       let userId: string | undefined;
 
@@ -46,13 +51,15 @@ export default function Dashboard() {
       setTestimonialCards(products);
     } catch (error) {
       console.error("Failed to fetch testimonials:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchTestimonials();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, status]);
+  }, [session]);
 
   const filteredCards = testimonialCards.filter(
     (card) =>
@@ -102,28 +109,53 @@ export default function Dashboard() {
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {filteredCards.map((card) => (
-            <TableRow key={card.id}>
-              <TableCell>{card.title}</TableCell>
-              <TableCell>{card.description}</TableCell>
-              <TableCell>{card.questions.length}</TableCell>
-              <TableCell>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="mr-2"
-                  onClick={() => {}}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={() => {}}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+
+        {loading ? (
+          <TableBody>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-[200px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[300px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[50px]" />
+                </TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : (
+          <TableBody>
+            {filteredCards.map((card) => (
+              <TableRow key={card.id} onClick={() => {}}>
+                <TableCell>{card.title}</TableCell>
+                <TableCell>{card.description}</TableCell>
+                <TableCell>{card.questions.length}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="mr-2"
+                    onClick={() => {}}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={() => {}}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
     </div>
   );
