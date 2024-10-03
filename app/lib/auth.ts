@@ -48,8 +48,7 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) {
-          
-            return {message: "User does not exist."};
+            return null;
           }
 
           if (!user.password) {

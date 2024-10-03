@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { titleAtom, descriptionAtom } from "@/recoil/atom";
+import { titleAtom, descriptionAtom, questionsAtom } from "@/recoil/atom";
 import { getProductByTitle, ProductWithQuestions } from "@/action/product";
 import LoadingPage from "@/app/loading";
 import { ClientReviewCardComponent } from "@/components/client-review-card";
@@ -18,6 +18,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const setTitle = useSetRecoilState(titleAtom);
   const setDescription = useSetRecoilState(descriptionAtom);
+  const setQuestions = useSetRecoilState(questionsAtom);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -32,6 +33,12 @@ export default function ProductPage() {
           setProduct(fetchedProduct);
           setTitle(fetchedProduct.title);
           setDescription(fetchedProduct.description);
+          setQuestions(
+            fetchedProduct.questions.map((question) => ({
+              ...question,
+              id: parseInt(question.id, 10),
+            }))
+          );
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -41,7 +48,7 @@ export default function ProductPage() {
     };
 
     fetchProduct();
-  }, [slug, setTitle, setDescription]);
+  }, [slug, setTitle, setDescription, setQuestions]);
 
   if (loading) {
     return <LoadingPage />;

@@ -42,6 +42,7 @@ interface Question {
 }
 
 interface ProductDetails {
+  id: string;
   title: string;
   description: string;
   showLogo: boolean;
@@ -103,6 +104,7 @@ export function TestimonialCardCustomizer({
     }
 
     const testimonialCardConfig: ProductDetails = {
+      id: existingData?.id || "", // Add this line to include the id
       title,
       description,
       questions,
