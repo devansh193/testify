@@ -95,10 +95,7 @@ export default function Dashboard() {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button
-              className="bg-black text-white hover:bg-gray-800"
-              onClick={() => {}}
-            >
+            <Button className="bg-black text-white hover:bg-gray-800">
               <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
             </Button>
           </DialogTrigger>
@@ -157,7 +154,7 @@ export default function Dashboard() {
                     size="icon"
                     className="mr-2"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent row click from triggering
+                      e.stopPropagation();
                     }}
                   >
                     <Edit className="h-4 w-4" />
@@ -166,7 +163,7 @@ export default function Dashboard() {
                     variant="outline"
                     size="icon"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent row click from triggering
+                      e.stopPropagation();
                     }}
                   >
                     <Trash2 className="h-4 w-4" />

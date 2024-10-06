@@ -33,9 +33,12 @@ export const createProduct = async ({ data }: { data: ProductProp }) => {
   try {
     const { title, description, showLogo, logoUrl, questions, userId } = data;
 
-    const existingProduct = await db.product.findUnique({
+    const existingProduct = await db.product.findFirst({
       where: {
-        title: title,
+        title: {
+          equals: title,
+          mode: "insensitive",
+        },
       },
     });
 
@@ -155,5 +158,25 @@ export const getProductByTitle = async (title: string) => {
     return products[0];
   } catch (error) {
     console.error(`Error fetching product with title "${title}":`, error);
+  }
+};
+
+export const getProductById = async (productId: string) => {
+  try {
+    const product = await db.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+    if (!product) {
+      return {
+        success: false,
+        message: `No product with ${productId} exists.`,
+      };
+    } else {
+      return product;
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
