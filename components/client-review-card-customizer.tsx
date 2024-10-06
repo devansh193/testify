@@ -32,6 +32,7 @@ import {
 } from "@/recoil/atom";
 import { createProduct } from "@/action/product";
 import { toast } from "sonner";
+import { Badge } from "./ui/badge";
 
 type QuestionType = "rating" | "text";
 
@@ -143,9 +144,9 @@ export function TestimonialCardCustomizer({
   return (
     <div className="grid grid-cols-2 w-full gap-x-4">
       <div className="col-span-1">
-        <h1 className="text-md text-neutral-500 font-semibold my-1 mx-1">
+        <Badge variant={"default"} className="my-2">
           Live preview
-        </h1>
+        </Badge>
         <ClientReviewCardComponent />
       </div>
       {/* Live preview ends */}

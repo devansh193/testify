@@ -10,14 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import {
-  Star,
-  ArrowLeft,
-  ThumbsUp,
-  Share2,
-  Eye,
-  MessageSquare,
-} from "lucide-react";
+import { Star, ArrowLeft, Share2, Eye, MessageSquare } from "lucide-react";
 
 export default function ProductDetails() {
   const [showAllReviews, setShowAllReviews] = useState(false);
@@ -146,14 +139,7 @@ export default function ProductDetails() {
             </div>
 
             <div className="mt-10 flex items-center justify-between">
-              <span className="text-2xl font-bold text-gray-900">
-                {product.price}
-              </span>
               <div className="space-x-2">
-                <Button>
-                  <ThumbsUp className="mr-2 h-4 w-4" />
-                  Endorse
-                </Button>
                 <Button variant="outline">
                   <Share2 className="mr-2 h-4 w-4" />
                   Share
