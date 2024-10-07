@@ -3,6 +3,8 @@
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Product, Question } from "@prisma/client";
+import { productIdSchema, productSchema } from "@/schema/schema";
+import { QuestionType } from "@prisma/client";
 
 export type ProductWithQuestions = Product & { questions: Question[] };
 
@@ -29,9 +31,23 @@ interface PaginatedProductResult {
   currentPage: number;
 }
 
-export const createProduct = async ({ data }: { data: ProductProp }) => {
+export const createProduct = async ({
+  data,
+}: {
+  data: typeof productSchema;
+}) => {
   try {
-    const { title, description, showLogo, logoUrl, questions, userId } = data;
+    const validatedData = productSchema.safeParse(data);
+    if (!validatedData.success) {
+      return {
+        success: false,
+        message: "Validation failed",
+        error: validatedData.error.errors,
+      };
+    }
+
+    const { title, description, showLogo, logoUrl, questions, userId } =
+      validatedData.data;
 
     const existingProduct = await db.product.findFirst({
       where: {
@@ -63,12 +79,14 @@ export const createProduct = async ({ data }: { data: ProductProp }) => {
         questions: {
           create: questions.map((question) => ({
             text: question.text,
-            type: question.type,
+            type: question.type as QuestionType,
           })),
         },
       },
     });
+
     revalidatePath("/dashboard");
+
     return {
       success: true,
       data: newProduct,
@@ -162,16 +180,25 @@ export const getProductByTitle = async (title: string) => {
 };
 
 export const getProductById = async (productId: string) => {
+  const validatedId = productIdSchema.safeParse(productId);
+
   try {
+    if (!validatedId) {
+      return {
+        success: false,
+        message: "Slug error",
+      };
+    }
+    const validatedProductId = validatedId.data;
     const product = await db.product.findFirst({
       where: {
-        id: productId,
+        id: validatedProductId,
       },
     });
     if (!product) {
       return {
         success: false,
-        message: `No product with id ${productId} exists.`,
+        message: `No product with id ${validatedProductId} exists.`,
       };
     } else {
       return {

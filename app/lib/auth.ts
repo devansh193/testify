@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 
-import { emailSchema, passwordSchema } from "@/schema/credential-schema";
+import { emailSchema, passwordSchema } from "@/schema/schema";
 import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 import prisma from "@/lib/db";
 
