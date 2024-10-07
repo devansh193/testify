@@ -28,6 +28,7 @@ export default function ProductPage() {
       }
 
       try {
+        console.log(`Slig------${slug}`);
         const fetchedProduct = await getProductByTitle(slug);
         if (fetchedProduct) {
           setProduct(fetchedProduct);

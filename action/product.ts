@@ -163,7 +163,7 @@ export const getProductByTitle = async (title: string) => {
 
 export const getProductById = async (productId: string) => {
   try {
-    const product = await db.product.findUnique({
+    const product = await db.product.findFirst({
       where: {
         id: productId,
       },
@@ -171,12 +171,19 @@ export const getProductById = async (productId: string) => {
     if (!product) {
       return {
         success: false,
-        message: `No product with ${productId} exists.`,
+        message: `No product with id ${productId} exists.`,
       };
     } else {
-      return product;
+      return {
+        success: true,
+        product,
+      };
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return {
+      success: false,
+      message: "An error occurred while fetching the product.",
+    };
   }
 };

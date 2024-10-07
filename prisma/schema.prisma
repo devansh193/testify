@@ -16,14 +16,22 @@ model User {
 }
 
 model Product {
-  id          String     @id @default(uuid())
-  title       String     @unique
-  description String
-  showLogo    Boolean
-  logoUrl     String
-  questions   Question[]
-  userId      String
-  user        User       @relation(fields: [userId], references: [id])
+  id           String        @id @default(uuid())
+  title        String        @unique
+  description  String
+  showLogo     Boolean
+  logoUrl      String
+  questions    Question[]
+  testimonials Testimonial[]
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  answers   Answer[]
 }
 
 model Question {
@@ -32,6 +40,17 @@ model Question {
   type      QuestionType
   product   Product      @relation(fields: [productId], references: [id])
   productId String
+  answers   Answer[]
+}
+
+model Answer {
+  id            String      @id @default(uuid())
+  textResponse  String?
+  rating        Int?
+  questionId    String
+  question      Question    @relation(fields: [questionId], references: [id])
+  testimonialId String
+  testimonial   Testimonial @relation(fields: [testimonialId], references: [id])
 }
 
 enum QuestionType {

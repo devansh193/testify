@@ -1,5 +1,3 @@
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,8 +14,6 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
-import Image from "next/image";
-import testie from "@/public/testie.png";
 
 export default function FeaturesPage() {
   const features = [
@@ -61,7 +57,6 @@ export default function FeaturesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
@@ -134,16 +129,7 @@ export default function FeaturesPage() {
                 our analytics tools.
               </p>
             </div>
-            <div className="relative h-96 md:h-auto">
-              <Image
-                src={testie}
-                height={500}
-                width={500}
-                alt="Testify workflow illustration"
-                objectFit="contain"
-                className="rounded-lg"
-              />
-            </div>
+            <div className="relative h-96 md:h-auto"></div>
           </div>
         </section>
         <section className="bg-gray-100 rounded-lg p-8 mb-16">
@@ -198,7 +184,6 @@ export default function FeaturesPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
