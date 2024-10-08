@@ -42,6 +42,7 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import Image from "next/image";
+import EmptyDashboard from "@/components/dashboard-components/empty-dash";
 
 export default function ProductDashboard() {
   const [products, setProducts] = useState([
@@ -110,6 +111,9 @@ export default function ProductDashboard() {
     conversions: product.conversions,
   }));
 
+  if (products.length === 0) {
+    return <EmptyDashboard />;
+  }
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

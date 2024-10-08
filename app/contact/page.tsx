@@ -123,19 +123,21 @@ export default function GetInTouchPage() {
               <CardContent className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-black">
-                    How long is the free trial?
+                    How do I add a new product?
                   </h4>
                   <p className="text-gray-600">
-                    Our free trial lasts for 14 days, no credit card required.
+                    To add a new product, click the Add New Product button on
+                    your dashboard, fill in the required information, and click
+                    Save.
                   </p>
                 </div>
                 <div>
                   <h4 className="font-semibold text-black">
-                    Can I cancel my subscription anytime?
+                    How can I collect testimonials from my customers?
                   </h4>
                   <p className="text-gray-600">
-                    Yes, you can cancel your subscription at any time without
-                    penalties.
+                    Gather testimonials by sharing your unique link with your
+                    valued customers effectively.
                   </p>
                 </div>
                 <div>
@@ -148,7 +150,7 @@ export default function GetInTouchPage() {
                   </p>
                 </div>
                 <Link
-                  href="/faq"
+                  href="/help"
                   className="text-black font-semibold hover:underline inline-flex items-center"
                 >
                   View all FAQs

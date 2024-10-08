@@ -17,16 +17,23 @@ export const nameSchema = z
   .min(2, { message: "Too short" });
 
 export const productSchema = z.object({
-  title: z.string({
-    required_error: "Title is required.",
-    invalid_type_error: "Invalid type.",
-  }),
+  title: z
+    .string()
+    .min(1, { message: "Title is required." })
+    .max(255, { message: "Title cannot exceed 255 characters." })
+    .regex(/^[a-zA-Z0-9\s\-_.]+$/, {
+      message:
+        "Title must contain only letters, numbers, spaces, and allowed symbols (-, _, .).",
+    }),
   description: z.string({
     required_error: "Description is required.",
     invalid_type_error: "Invalid type of description.",
   }),
-  showLogo: z.boolean().optional(),
-  logoUrl: z.string().url().optional(),
+  showLogo: z.boolean(),
+  logoUrl: z
+    .string()
+    .nullable()
+    .transform((val) => val ?? null),
   questions: z
     .array(
       z.object({
@@ -42,8 +49,10 @@ export const productSchema = z.object({
     )
     .nonempty({ message: "At least one question is required." }),
   userId: z.string({
-    required_error: "UsedID error.",
+    required_error: "User ID error.",
   }),
 });
 
 export const productIdSchema = z.string().uuid();
+export const userIdSchema = z.string().uuid();
+export type ProductDetails = z.infer<typeof productSchema>;

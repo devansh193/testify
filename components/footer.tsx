@@ -19,7 +19,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/pricing"
                   className="text-sm text-gray-500 hover:text-gray-900"
                 >
                   Pricing
@@ -48,7 +48,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/blog"
                   className="text-sm text-gray-500 hover:text-gray-900"
                 >
                   Blog

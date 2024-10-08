@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,24 +33,24 @@ import {
 import { createProduct } from "@/action/product";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
+import { ProductDetails, productSchema } from "@/schema/schema";
 
 type QuestionType = "rating" | "text";
 
-interface Question {
-  id: number;
-  text: string;
-  type: QuestionType;
-}
+// interface Question {
+//   id: number;
+//   text: string;
+//   type: QuestionType;
+// }
 
-interface ProductDetails {
-  id: string;
-  title: string;
-  description: string;
-  showLogo: boolean;
-  logoUrl: string;
-  questions: Question[];
-  userId: string;
-}
+// export interface ProductDetails {
+//   title: string;
+//   description: string;
+//   showLogo: boolean;
+//   logoUrl: string | null;
+//   questions: Question[];
+//   userId: string;
+// }
 
 interface TestimonialCardCustomizerProps {
   onSave: (config: ProductDetails) => void;
@@ -65,8 +65,6 @@ export function TestimonialCardCustomizer({
   const [questions, setQuestions] = useRecoilState(questionsAtom);
   const [showLogo, setShowLogo] = useRecoilState(showLogoAtom);
   const [logoUrl, setLogoUrl] = useRecoilState(logoUrlAtom);
-
-  const { data: session } = useSession();
 
   const addQuestion = () => {
     const newId =
@@ -99,13 +97,18 @@ export function TestimonialCardCustomizer({
   };
 
   const handleSave = async () => {
-    let userId = "";
-    if (session && session.user) {
-      userId = session.user.id;
+    const session = await getSession();
+    console.log("Session data:", session);
+
+    if (!session || !session.user || !session.user.id) {
+      console.log("Session or user ID is not available.");
+      toast.error("Failed to retrieve user session. User ID is required.");
+      return;
     }
 
+    const userId = session.user.id;
+
     const testimonialCardConfig: ProductDetails = {
-      id: existingData?.id || "", // Add this line to include the id
       title,
       description,
       questions,
@@ -118,6 +121,18 @@ export function TestimonialCardCustomizer({
       duration: 5000,
       icon: <Loader className="animate-spin" />,
     });
+
+    const validatedData = productSchema.safeParse(testimonialCardConfig);
+    if (!validatedData.success) {
+      const errors = validatedData.error.errors
+        .map((err) => err.message)
+        .join(", ");
+      toast.error(`Validation errors: ${errors}`, {
+        id: toastId,
+        icon: "",
+      });
+      return;
+    }
 
     try {
       const result = await createProduct({ data: testimonialCardConfig });

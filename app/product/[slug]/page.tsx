@@ -103,7 +103,7 @@ export default function ProductDetails() {
               </div>
             </div>
 
-            <div className="mt-8 flex items-center">
+            {/* <div className="mt-8 flex items-center">
               <Avatar className="h-12 w-12 rounded-full">
                 <AvatarImage src={product.userId} alt={product.userId} />
                 <AvatarFallback>
@@ -119,7 +119,7 @@ export default function ProductDetails() {
                   {product.userId}
                 </p>
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-10 flex items-center justify-between">
               <div className="space-x-2">

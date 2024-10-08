@@ -20,7 +20,7 @@ model Product {
   title        String        @unique
   description  String
   showLogo     Boolean
-  logoUrl      String
+  logoUrl      String?
   questions    Question[]
   testimonials Testimonial[]
   userId       String

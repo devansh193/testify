@@ -3,45 +3,24 @@
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Product, Question } from "@prisma/client";
-import { productIdSchema, productSchema } from "@/schema/schema";
+import {
+  ProductDetails,
+  productIdSchema,
+  productSchema,
+  userIdSchema,
+} from "@/schema/schema";
 import { QuestionType } from "@prisma/client";
 
 export type ProductWithQuestions = Product & { questions: Question[] };
 
-export interface ProductProp {
-  id: string;
-  title: string;
-  description: string;
-  showLogo: boolean;
-  logoUrl: string;
-  questions: { text: string; type: "rating" | "text" }[];
-  userId: string;
-}
-
-interface GetProductProps {
-  userId: string;
-  page?: number;
-  pageSize?: number;
-}
-
-interface PaginatedProductResult {
-  products: ProductProp[];
-  totalCount: number;
-  totalPages: number;
-  currentPage: number;
-}
-
-export const createProduct = async ({
-  data,
-}: {
-  data: typeof productSchema;
-}) => {
+export const createProduct = async ({ data }: { data: ProductDetails }) => {
   try {
     const validatedData = productSchema.safeParse(data);
     if (!validatedData.success) {
       return {
         success: false,
-        message: "Validation failed",
+        //fix error type.
+        message: `${validatedData.error}`,
         error: validatedData.error.errors,
       };
     }
@@ -101,50 +80,39 @@ export const createProduct = async ({
   }
 };
 
-export const getProduct = async ({
-  userId,
-  page = 1,
-  pageSize = 5,
-}: GetProductProps): Promise<PaginatedProductResult> => {
-  try {
-    const skip = (page - 1) * pageSize;
+export const getProduct = async ({ userId }: { userId: string }) => {
+  const validatedId = userIdSchema.safeParse(userId);
 
-    const [products, totalCount] = await Promise.all([
-      db.product.findMany({
-        where: {
-          userId: userId,
-        },
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          showLogo: true,
-          logoUrl: true,
-          userId: true,
-          questions: {
-            select: {
-              text: true,
-              type: true,
-            },
+  try {
+    if (!validatedId) {
+      return {
+        success: false,
+        message: "User id validation error.",
+      };
+    }
+    const products = await db.product.findMany({
+      where: {
+        userId: validatedId.data,
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        showLogo: true,
+        logoUrl: true,
+        userId: true,
+        questions: {
+          select: {
+            text: true,
+            type: true,
           },
         },
-        skip: skip,
-        take: pageSize,
-      }),
-      db.product.count({
-        where: {
-          userId: userId,
-        },
-      }),
-    ]);
-
-    const totalPages = Math.ceil(totalCount / pageSize);
+      },
+    });
 
     return {
       products,
-      totalCount,
-      totalPages,
-      currentPage: page,
+      totalCount: products.length,
     };
   } catch (error) {
     console.error("Error fetching products:", error);
