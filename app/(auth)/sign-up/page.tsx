@@ -7,15 +7,15 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 import { toast } from "sonner";
 
-import { createUser } from "@/action/user";
-import { Loader } from "lucide-react";
+import { useCreateAccount } from "@/features/user/api/use-create-account";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { mutate: createAccount } = useCreateAccount();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,31 +26,10 @@ export default function SignUpPage() {
     }
 
     try {
-      setIsSubmitting(true);
-
-      const toastId = toast("Creating user...", {
-        duration: 5000,
-        icon: <Loader className="animate-spin" />,
-      });
-
-      const response = await createUser(name, email, password);
-
-      if (response.success) {
-        toast.success("User created successfully!", {
-          id: toastId,
-          icon: "",
-        });
-      } else {
-        toast.error(response.message, {
-          id: toastId,
-          icon: "",
-        });
-      }
+      await createAccount({ name, email, password });
     } catch (error) {
       console.error(error);
       toast.error("Failed to create user. Please try again.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -138,9 +117,8 @@ export default function SignUpPage() {
             <Button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-              disabled={isSubmitting}
             >
-              {isSubmitting ? "Signing up..." : "Sign up"}
+              Sign up
             </Button>
           </div>
         </form>

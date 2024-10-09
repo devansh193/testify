@@ -13,7 +13,15 @@ import { QuestionType } from "@prisma/client";
 
 export type ProductWithQuestions = Product & { questions: Question[] };
 
-export const createProduct = async ({ data }: { data: ProductDetails }) => {
+export const createProduct = async (
+  title: string,
+  description: string,
+  showLogo: boolean,
+  logoUrl: string | undefined,
+  questions: { text: string; type: QuestionType }[],
+  userId: string,
+  { data }: { data: ProductDetails }
+) => {
   try {
     const validatedData = productSchema.safeParse(data);
     if (!validatedData.success) {

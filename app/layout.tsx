@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import RecoilContextProvider from "./providers/recoil-context-provider";
-import { Providers } from "./providers/provider";
-import { Toaster } from "sonner"
+import RecoilContextProvider from "../providers/recoil-context-provider";
+import { Providers } from "../providers/session-provider";
+import { Toaster } from "sonner";
+import QueryProviders from "@/providers/query-client-provider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <RecoilContextProvider>
-          <Toaster richColors/>
-          <Providers>{children}</Providers>
-        </RecoilContextProvider>
+        <QueryProviders>
+          <RecoilContextProvider>
+            <Toaster richColors />
+            <Providers>{children}</Providers>
+          </RecoilContextProvider>
+        </QueryProviders>
       </body>
     </html>
   );

@@ -35,11 +35,11 @@ const SignIn = () => {
 
       if (result?.error) {
         setError(result.error);
-        toast.error(`Error occurred ${error}`, {
+        toast.error(`${result.error}`, {
           id: toastId,
           icon: "",
         });
-        console.error(result.error);
+        //console.error(result.error);
       } else {
         toast.success("Sign in successfully.", {
           icon: "",
