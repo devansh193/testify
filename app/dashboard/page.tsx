@@ -16,13 +16,16 @@ import {
 import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
 import { useRecoilState } from "recoil";
 import { dialogAtom } from "@/recoil/atom";
-import { getProduct, ProductProp } from "@/action/product";
+import { getProduct } from "@/action/product";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
+import { ProductDetails } from "@/schema/schema";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false);
-  const [testimonialCards, setTestimonialCards] = useState<ProductProp[]>([]);
+  const [testimonialCards, setTestimonialCards] = useState<ProductDetails[]>(
+    []
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useRecoilState(dialogAtom);
   const { data: session, status } = useSession();
@@ -46,11 +49,9 @@ export default function Dashboard() {
 
       const { products } = await getProduct({
         userId,
-        page: 1,
-        pageSize: 100,
       });
 
-      setTestimonialCards(products);
+      setTestimonialCards(products || []);
       testimonialsFetched.current = true;
     } catch (error) {
       console.error("Failed to fetch testimonials:", error);

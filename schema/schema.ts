@@ -17,6 +17,7 @@ export const nameSchema = z
   .min(2, { message: "Too short" });
 
 export const productSchema = z.object({
+  id: z.string(),
   title: z
     .string()
     .min(1, { message: "Title is required." })
@@ -34,20 +35,18 @@ export const productSchema = z.object({
     .string()
     .nullable()
     .transform((val) => val ?? null),
-  questions: z
-    .array(
-      z.object({
-        text: z.string({
-          required_error: "Question text is required.",
-          invalid_type_error: "Invalid type for question text.",
-        }),
-        type: z.string({
-          required_error: "Question type is required.",
-          invalid_type_error: "Invalid type for question type.",
-        }),
-      })
-    )
-    .nonempty({ message: "At least one question is required." }),
+  questions: z.array(
+    z.object({
+      text: z.string({
+        required_error: "Question text is required.",
+        invalid_type_error: "Invalid type for question text.",
+      }),
+      type: z.string({
+        required_error: "Question type is required.",
+        invalid_type_error: "Invalid type for question type.",
+      }),
+    })
+  ),
   userId: z.string({
     required_error: "User ID error.",
   }),
