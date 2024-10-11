@@ -1,57 +1,61 @@
 import { z } from "zod";
 
-export const emailSchema = z
-  .string({ message: "Email is required" })
-  .email({ message: "Invalid email" });
+const QuestionTypeEnum = z.enum(["rating", "text"]);
 
-export const passwordSchema = z
-  .string({ message: "Password is required" })
-  .min(8, { message: "Password must be at least 8 characters" })
-  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, {
-    message:
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-  });
-
-export const nameSchema = z
-  .string({ message: "Name is required" })
-  .min(2, { message: "Too short" });
-
-export const productSchema = z.object({
-  id: z.string(),
-  title: z
-    .string()
-    .min(1, { message: "Title is required." })
-    .max(255, { message: "Title cannot exceed 255 characters." })
-    .regex(/^[a-zA-Z0-9\s\-_.]+$/, {
-      message:
-        "Title must contain only letters, numbers, spaces, and allowed symbols (-, _, .).",
-    }),
-  description: z.string({
-    required_error: "Description is required.",
-    invalid_type_error: "Invalid type of description.",
-  }),
-  showLogo: z.boolean(),
-  logoUrl: z
-    .string()
-    .nullable()
-    .transform((val) => val ?? null),
-  questions: z.array(
-    z.object({
-      text: z.string({
-        required_error: "Question text is required.",
-        invalid_type_error: "Invalid type for question text.",
-      }),
-      type: z.string({
-        required_error: "Question type is required.",
-        invalid_type_error: "Invalid type for question type.",
-      }),
-    })
-  ),
-  userId: z.string({
-    required_error: "User ID error.",
+const signInFormSchema = z.object({
+  email: z.string().email({
+    message: "Email is required.",
   }),
 });
+const signUpFormSchema = z.object({
+  name: z.string({ message: "Name is required." }),
+  email: z.string().email({ message: "Email is required." }),
+  passwordSchema: z
+    .string({ message: "Password is required." })
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+      "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+    ),
+});
+const AnswerSchema = z.object({
+  id: z.string().uuid(),
+  textResponse: z.string().nullable(),
+  rating: z.number().int().min(1).max(5).nullable(),
+  questionId: z.string().uuid(),
+  testimonialId: z.string().uuid(),
+});
 
-export const productIdSchema = z.string().uuid();
-export const userIdSchema = z.string().uuid();
-export type ProductDetails = z.infer<typeof productSchema>;
+const QuestionSchema = z.object({
+  id: z.string().uuid(),
+  text: z.string(),
+  type: QuestionTypeEnum,
+  productId: z.string().uuid(),
+  answers: z.array(AnswerSchema),
+});
+
+const TestimonialSchema = z.object({
+  id: z.string().uuid(),
+  productId: z.string().uuid(),
+  answers: z.array(AnswerSchema),
+});
+
+const ProductSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  description: z.string(),
+  showLogo: z.boolean(),
+  logoUrl: z.string().url().nullable(),
+  userId: z.string(),
+  questions: z.array(QuestionSchema),
+  testimonials: z.array(TestimonialSchema),
+});
+
+export {
+  ProductSchema,
+  TestimonialSchema,
+  QuestionSchema,
+  AnswerSchema,
+  QuestionTypeEnum,
+  signInFormSchema,
+  signUpFormSchema,
+};

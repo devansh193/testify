@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,11 +11,7 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 
-const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState("");
+export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -23,10 +20,13 @@ const SignIn = () => {
     inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
     const toastId = toast("Signing in", {
       duration: 5000,
       icon: <Loader className="animate-spin" />,
@@ -40,22 +40,21 @@ const SignIn = () => {
       });
 
       if (result?.error) {
-        setError(result.error);
         toast.error(`${result.error}`, {
           id: toastId,
           icon: "",
         });
-        //console.error(result.error);
       } else {
-        toast.success("Sign in successfully.", {
+        toast.success("Sign in successful.", {
           icon: "",
           id: toastId,
         });
         router.push("/dashboard");
       }
     } catch (error) {
-      toast.error("An unexpected error occurred.");
-      setError("An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred.", {
+        id: toastId,
+      });
       console.error("Unexpected error:", error);
     } finally {
       setLoading(false);
@@ -63,8 +62,8 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
-      <div className="max-w-md w-full space-y-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white p-4">
+      <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <Logo />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
@@ -75,7 +74,7 @@ const SignIn = () => {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="-space-y-px rounded-md shadow-sm">
             <div>
               <Label htmlFor="email-address" className="sr-only">
                 Email address
@@ -88,10 +87,8 @@ const SignIn = () => {
                 autoComplete="email"
                 required
                 disabled={loading}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm"
+                className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -105,10 +102,8 @@ const SignIn = () => {
                 autoComplete="current-password"
                 required
                 disabled={loading}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm"
+                className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -116,30 +111,33 @@ const SignIn = () => {
           <div>
             <Button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+              disabled={loading}
+              className="group relative flex w-full justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
             >
               {loading ? <Loader className="animate-spin" /> : "Sign in"}
             </Button>
           </div>
         </form>
         <div className="text-center">
-          <a href="#" className="font-medium text-black hover:text-gray-800">
+          <a
+            href="#"
+            className="font-medium text-black hover:text-gray-800 hover:underline"
+          >
             Forgot your password?
           </a>
         </div>
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <Link href={"/sign-up"}>
-              <span className="font-medium text-black hover:text-gray-800">
-                Sign up
-              </span>
+            <Link
+              href="/sign-up"
+              className="font-medium text-black hover:text-gray-800 hover:underline"
+            >
+              Sign up
             </Link>
           </p>
         </div>
       </div>
     </div>
   );
-};
-
-export default SignIn;
+}
