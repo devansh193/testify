@@ -3,43 +3,30 @@
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Product, Question } from "@prisma/client";
-import {
-  ProductDetails,
-  productIdSchema,
-  productSchema,
-  userIdSchema,
-} from "@/schema/schema";
-import { QuestionType } from "@prisma/client";
+import { z } from "zod";
+import { CreateProductSchema } from "@/schema/schema";
 
 export type ProductWithQuestions = Product & { questions: Question[] };
 
+const UserIdSchema = z.string().uuid();
+const ProductIdSchema = z.string().uuid();
+const TitleSchema = z.string().min(1);
+
 export const createProduct = async (
-  title: string,
-  description: string,
-  showLogo: boolean,
-  logoUrl: string | undefined,
-  questions: { text: string; type: QuestionType }[],
-  userId: string,
-  { data }: { data: ProductDetails }
+  data: z.infer<typeof CreateProductSchema>
 ) => {
   try {
-    const validatedData = productSchema.safeParse(data);
-    if (!validatedData.success) {
+    const validatedData = CreateProductSchema.parse(data);
+    if (!validatedData) {
       return {
         success: false,
-        //fix error type.
-        message: `${validatedData.error}`,
-        error: validatedData.error.errors,
+        message: "Schema validation failed",
       };
     }
-
-    const { title, description, showLogo, logoUrl, questions, userId } =
-      validatedData.data;
-
     const existingProduct = await db.product.findFirst({
       where: {
         title: {
-          equals: title,
+          equals: validatedData.title,
           mode: "insensitive",
         },
       },
@@ -54,20 +41,17 @@ export const createProduct = async (
 
     const newProduct = await db.product.create({
       data: {
-        title,
-        description,
-        showLogo,
-        logoUrl,
+        title: validatedData.title,
+        description: validatedData.description,
+        showLogo: validatedData.showLogo,
+        logoUrl: validatedData.logoUrl,
         user: {
           connect: {
-            id: userId,
+            id: validatedData.userId,
           },
         },
         questions: {
-          create: questions.map((question) => ({
-            text: question.text,
-            type: question.type as QuestionType,
-          })),
+          create: validatedData.questions,
         },
       },
     });
@@ -80,6 +64,13 @@ export const createProduct = async (
       message: "Product created successfully!",
     };
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        message: "Invalid input data.",
+        error: error.errors,
+      };
+    }
     return {
       success: false,
       message: "Failed to create product.",
@@ -89,18 +80,12 @@ export const createProduct = async (
 };
 
 export const getProduct = async ({ userId }: { userId: string }) => {
-  const validatedId = userIdSchema.safeParse(userId);
-
   try {
-    if (!validatedId) {
-      return {
-        success: false,
-        message: "User id validation error.",
-      };
-    }
+    const validatedId = UserIdSchema.parse(userId);
+
     const products = await db.product.findMany({
       where: {
-        userId: validatedId.data,
+        userId: validatedId,
       },
       select: {
         id: true,
@@ -123,58 +108,64 @@ export const getProduct = async ({ userId }: { userId: string }) => {
       totalCount: products.length,
     };
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error("User id validation error:", error.errors);
+      return {
+        success: false,
+        message: "Invalid user ID.",
+        error: error.errors,
+      };
+    }
     console.error("Error fetching products:", error);
     throw error;
   }
 };
 
 export const getProductByTitle = async (title: string) => {
-  if (!title.trim()) {
-    console.error("Product title cannot be empty");
-  }
-
   try {
+    const validatedTitle = TitleSchema.parse(title);
+
     const products = await db.product.findMany({
-      where: { title: { equals: title, mode: "insensitive" } },
+      where: { title: { equals: validatedTitle, mode: "insensitive" } },
       include: { questions: true },
     });
 
     if (products.length === 0) {
-      console.log(`No product found with title: "${title}"`);
+      console.log(`No product found with title: "${validatedTitle}"`);
+      return null;
     }
 
     if (products.length > 1) {
       console.warn(
-        `Multiple products found with title: "${title}". Returning the first one.`
+        `Multiple products found with title: "${validatedTitle}". Returning the first one.`
       );
     }
 
     return products[0];
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error("Title validation error:", error.errors);
+      return null;
+    }
     console.error(`Error fetching product with title "${title}":`, error);
+    throw error;
   }
 };
 
 export const getProductById = async (productId: string) => {
-  const validatedId = productIdSchema.safeParse(productId);
-
   try {
-    if (!validatedId) {
-      return {
-        success: false,
-        message: "Slug error",
-      };
-    }
-    const validatedProductId = validatedId.data;
+    const validatedId = ProductIdSchema.parse(productId);
+
     const product = await db.product.findFirst({
       where: {
-        id: validatedProductId,
+        id: validatedId,
       },
     });
+
     if (!product) {
       return {
         success: false,
-        message: `No product with id ${validatedProductId} exists.`,
+        message: `No product with id ${validatedId} exists.`,
       };
     } else {
       return {
@@ -183,6 +174,14 @@ export const getProductById = async (productId: string) => {
       };
     }
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error("Product ID validation error:", error.errors);
+      return {
+        success: false,
+        message: "Invalid product ID.",
+        error: error.errors,
+      };
+    }
     console.error(error);
     return {
       success: false,

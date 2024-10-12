@@ -1,24 +1,14 @@
-import { QuestionType } from "@prisma/client";
+import { z } from "zod";
+import { ProductSchema } from "@/schema/schema";
 
-export interface RequestType {
-  title: string;
-  description: string;
-  showLogo: boolean;
-  logoUrl?: string;
-  questions: {
-    text: string;
-    type: QuestionType;
-  }[];
-  userId: string;
-}
+export type RequestType = z.infer<typeof ProductSchema>;
 
-export interface ResponseType {
+export type ResponseType = {
   success: boolean;
   message: string;
-  data?: unknown;
-  error?: unknown;
-}
+  product?: z.infer<typeof ProductSchema>;
+};
 
-export interface Context {
-  toastId: string | number;
-}
+export type Context = {
+  toastId: string;
+};

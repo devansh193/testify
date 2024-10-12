@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Loader } from "lucide-react";
+import { signInFormSchema } from "@/schema/schema";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,9 @@ export default function SignIn() {
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-
+    const validatedEmail = signInFormSchema.safeParse(email);
+    if (!validatedEmail) {
+    }
     const toastId = toast("Signing in", {
       duration: 5000,
       icon: <Loader className="animate-spin" />,

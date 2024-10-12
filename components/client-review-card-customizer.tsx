@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Minus, Move, Save, Loader } from "lucide-react";
+import { Plus, Minus, Move, Save, Loader, icons } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -33,7 +33,7 @@ import {
 import { createProduct } from "@/action/product";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
-import { ProductDetails, productSchema } from "@/schema/schema";
+import { CreateProductSchema } from "@/schema/schema";
 
 type QuestionType = "rating" | "text";
 
@@ -53,8 +53,8 @@ type QuestionType = "rating" | "text";
 // }
 
 interface TestimonialCardCustomizerProps {
-  onSave: (config: ProductDetails) => void;
-  existingData?: ProductDetails;
+  onSave: (config: typeof CreateProductSchema) => void;
+  existingData?: typeof CreateProductSchema;
 }
 
 export function TestimonialCardCustomizer({
@@ -97,62 +97,57 @@ export function TestimonialCardCustomizer({
   };
 
   const handleSave = async () => {
-    const session = await getSession();
-    console.log("Session data:", session);
-
-    if (!session || !session.user || !session.user.id) {
-      console.log("Session or user ID is not available.");
-      toast.error("Failed to retrieve user session. User ID is required.");
-      return;
-    }
-
-    const userId = session.user.id;
-
-    const testimonialCardConfig: ProductDetails = {
-      title,
-      description,
-      questions,
-      showLogo,
-      logoUrl,
-      userId,
-    };
-
-    const toastId = toast("Creating product...", {
+    const toastId = toast("Preparing to create product...", {
       duration: 5000,
       icon: <Loader className="animate-spin" />,
     });
 
-    const validatedData = productSchema.safeParse(testimonialCardConfig);
-    if (!validatedData.success) {
-      const errors = validatedData.error.errors
-        .map((err) => err.message)
-        .join(", ");
-      toast.error(`Validation errors: ${errors}`, {
-        id: toastId,
-        icon: "",
-      });
-      return;
-    }
-
     try {
-      const result = await createProduct({ data: testimonialCardConfig });
+      const session = await getSession();
+      if (!session?.user?.id) {
+        throw new Error("User session not available");
+      }
+
+      const userId = session.user.id;
+      const productData = {
+        title,
+        description,
+        showLogo,
+        logoUrl: showLogo ? logoUrl : undefined,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        questions: questions.map(({ id, ...rest }) => rest),
+        userId,
+      };
+
+      const validationResult = CreateProductSchema.safeParse(productData);
+
+      if (!validationResult.success) {
+        const errorMessages = validationResult.error.issues
+          .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+          .join("; ");
+        throw new Error(`Validation failed: ${errorMessages}`);
+      }
+
+      toast.loading("Creating product...", { id: toastId, icon: <Loader /> });
+
+      const result = await createProduct(validationResult.data);
+
       if (result.success) {
-        toast.success(result.message, {
-          id: toastId,
-          icon: "",
-        });
+        toast.success(result.message, { id: toastId, icon: "" });
       } else {
-        toast.error(result.message, {
-          id: toastId,
-          icon: "",
-        });
+        throw new Error(result.message || "Failed to create product");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to create product due to an error.", {
-        id: toastId,
-        icon: "",
-      });
+      console.error("Error in handleSave:", error);
+
+      let errorMessage = "An unexpected error occurred";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+
+      toast.error(errorMessage, { id: toastId });
     }
   };
 
