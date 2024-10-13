@@ -20,6 +20,7 @@ export default function SignUpPage() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

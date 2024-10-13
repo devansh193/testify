@@ -2,16 +2,13 @@ import { ResponseType, RequestType, Context } from "../types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createProduct } from "@/action/product";
-import { Loader } from "lucide-react";
 
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType, Context>({
     onMutate: () => {
-      const toastId = toast("Creating product...", {
-        icon: <Loader className="animate-spin" />,
-      });
+      const toastId = toast("Creating product...", {});
       return { toastId };
     },
     mutationFn: async (data) => {

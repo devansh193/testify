@@ -73,10 +73,8 @@ export default function ProductPage() {
             We value your opinion. Please take a moment to share your experience
             with us.
           </p>
-
           <ClientReviewCardComponent />
         </div>
-
         <div className="px-4 py-4 bg-gray-50 sm:px-6">
           <p className="text-xs text-center text-gray-500">
             Your review helps us improve our services and assists other

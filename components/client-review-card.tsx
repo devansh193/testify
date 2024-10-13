@@ -21,6 +21,8 @@ export function ClientReviewCardComponent() {
   const [ratings, setRatings] = useState<{ [key: number]: number }>({});
   const [textAnswers, setTextAnswers] = useState<{ [key: number]: string }>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const title = useRecoilValue(titleAtom);
   const description = useRecoilValue(descriptionAtom);
@@ -28,19 +30,33 @@ export function ClientReviewCardComponent() {
 
   const handleRatingChange = (questionId: number, rating: number) => {
     setRatings((prev) => ({ ...prev, [questionId]: rating }));
+    console.log(rating);
   };
 
   const handleTextChange = (questionId: number, text: string) => {
     setTextAnswers((prev) => ({ ...prev, [questionId]: text }));
+    console.log(textAnswers);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setError(null);
+
     const reviewData = {
+      title,
       ratings,
       textAnswers,
     };
-    console.log("Submitting review:", reviewData);
-    setSubmitted(true);
+
+    try {
+    } catch (err) {
+      setError(
+        "An error occurred while submitting your review. Please try again."
+      );
+      console.error("Error submitting review:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const calculateProgress = () => {
@@ -71,7 +87,7 @@ export function ClientReviewCardComponent() {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <div className="flex items-center  justify-center">
+        <div className="flex items-center justify-center">
           <div className="flex flex-col items-center justify-center mb-1">
             <CardTitle className="text-2xl font-bold mb-1">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
@@ -117,8 +133,13 @@ export function ClientReviewCardComponent() {
       </CardContent>
       <CardFooter className="flex-col space-y-4">
         <Progress value={calculateProgress()} className="w-full" />
-        <Button className="w-full" onClick={handleSubmit}>
-          Submit Review
+        {error && <div className="text-red-500">{error}</div>}
+        <Button
+          className="w-full"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Submitting..." : "Submit Review"}
         </Button>
       </CardFooter>
     </Card>

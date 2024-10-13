@@ -35,17 +35,17 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import Image from "next/image";
-import EmptyDashboard from "@/components/dashboard-components/empty-dash";
+//import EmptyDashboard from "@/components/dashboard-components/empty-dash";
 import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
 import { getProduct } from "@/action/product";
 import { useRouter } from "next/navigation";
 import { ProductDetails } from "@/schema/schema";
-import LoadingPage from "../loading";
+//import LoadingPage from "../loading";
 import LoadingDashboard from "./loading";
 
 export default function ProductDashboard() {
   const [products, setProducts] = useState<ProductDetails[]>([]);
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
 

@@ -1,5 +1,4 @@
 "use client";
-import { getSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Minus, Move, Save, Loader } from "lucide-react";
+import { Plus, Minus, Move, Loader } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -30,21 +29,15 @@ import {
   showLogoAtom,
   logoUrlAtom,
 } from "@/recoil/atom";
-//import { createProduct } from "@/action/product";
-import { toast } from "sonner";
 import { Badge } from "./ui/badge";
+import { getSession } from "next-auth/react";
+import { toast } from "sonner";
 import { CreateProductSchema } from "@/schema/schema";
 import { useCreateProduct } from "@/features/product/api/use-create-product";
+
 type QuestionType = "rating" | "text";
 
-interface TestimonialCardCustomizerProps {
-  onSave: (config: typeof CreateProductSchema) => void;
-  existingData?: typeof CreateProductSchema;
-}
-
-export function TestimonialCardCustomizer({
-  existingData,
-}: TestimonialCardCustomizerProps) {
+export function TestimonialCardCustomizer() {
   const [title, setTitle] = useRecoilState(titleAtom);
   const [description, setDescription] = useRecoilState(descriptionAtom);
   const [questions, setQuestions] = useRecoilState(questionsAtom);
@@ -82,8 +75,7 @@ export function TestimonialCardCustomizer({
     }
   };
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = async () => {
     toast("Preparing to create product...", {
       duration: 2000,
       icon: <Loader className="animate-spin" />,
@@ -128,140 +120,134 @@ export function TestimonialCardCustomizer({
         </Badge>
         <ClientReviewCardComponent />
       </div>
-      {/* Live preview ends */}
       <div className="col-span-1">
         <Card className="w-full mx-auto">
           <CardHeader>
             <CardTitle className="text-xl font-bold">
-              {existingData
-                ? "Edit Testimonial Card"
-                : "Customize Your Testimonial Card"}
+              Customize Your Testimonial Card
             </CardTitle>
             <CardDescription>
               Modify the details and questions for your audience
             </CardDescription>
           </CardHeader>
-          <form onSubmit={handleSave}>
-            <CardContent className="space-y-2">
+          <CardContent className="space-y-2">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter your product or service name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe your product or service"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="logo-toggle">Show Logo</Label>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="logo-toggle"
+                  checked={showLogo}
+                  onCheckedChange={setShowLogo}
+                />
+                <Label htmlFor="logo-toggle">
+                  {showLogo ? "Logo Visible" : "Logo Hidden"}
+                </Label>
+              </div>
+            </div>
+            {showLogo && (
               <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="logo-url">Logo URL</Label>
                 <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter your product or service name"
+                  id="logo-url"
+                  value={logoUrl}
+                  onChange={(e) => setLogoUrl(e.target.value)}
+                  placeholder="Enter the URL of your logo"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Describe your product or service"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="logo-toggle">Show Logo</Label>
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="logo-toggle"
-                    checked={showLogo}
-                    onCheckedChange={setShowLogo}
-                  />
-                  <Label htmlFor="logo-toggle">
-                    {showLogo ? "Logo Visible" : "Logo Hidden"}
-                  </Label>
-                </div>
-              </div>
-              {showLogo && (
-                <div className="space-y-2">
-                  <Label htmlFor="logo-url">Logo URL</Label>
-                  <Input
-                    id="logo-url"
-                    value={logoUrl}
-                    onChange={(e) => setLogoUrl(e.target.value)}
-                    placeholder="Enter the URL of your logo"
-                  />
-                </div>
-              )}
-              <div className="space-y-2">
-                <Label>Questions</Label>
-                {questions.map((question, index) => (
-                  <Card key={question.id} className="p-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2">
-                        <Input
-                          value={question.text}
-                          onChange={(e) =>
-                            updateQuestion(
-                              question.id,
-                              e.target.value,
-                              question.type
-                            )
-                          }
-                          placeholder="Enter your question"
-                        />
-                        <Select
-                          value={question.type}
-                          onValueChange={(value: QuestionType) =>
-                            updateQuestion(question.id, question.text, value)
-                          }
-                        >
-                          <SelectTrigger className="w-[120px]">
-                            <SelectValue placeholder="Type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="rating">Rating</SelectItem>
-                            <SelectItem value="text">Text</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="flex justify-end space-x-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => moveQuestion(question.id, "up")}
-                          disabled={index === 0}
-                        >
-                          <Move className="h-4 w-4 rotate-180" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => moveQuestion(question.id, "down")}
-                          disabled={index === questions.length - 1}
-                        >
-                          <Move className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="link"
-                          size="icon"
-                          onClick={() => removeQuestion(question.id)}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                      </div>
+            )}
+            <div className="space-y-2">
+              <Label>Questions</Label>
+              {questions.map((question, index) => (
+                <Card key={question.id} className="p-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        value={question.text}
+                        onChange={(e) =>
+                          updateQuestion(
+                            question.id,
+                            e.target.value,
+                            question.type
+                          )
+                        }
+                        placeholder="Enter your question"
+                      />
+                      <Select
+                        value={question.type}
+                        onValueChange={(value: QuestionType) =>
+                          updateQuestion(question.id, question.text, value)
+                        }
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue placeholder="Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="rating">Rating</SelectItem>
+                          <SelectItem value="text">Text</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
-                  </Card>
-                ))}
-                <Button
-                  variant="outline"
-                  onClick={addQuestion}
-                  className="w-full justify-center"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Question
-                </Button>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button type="submit" variant={"default"} className="w-full">
-                <Save className="mr-2 h-4" />
-                Save
+                    <div className="flex justify-end space-x-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => moveQuestion(question.id, "up")}
+                        disabled={index === 0}
+                      >
+                        <Move className="h-4 w-4 rotate-180" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => moveQuestion(question.id, "down")}
+                        disabled={index === questions.length - 1}
+                      >
+                        <Move className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="link"
+                        size="icon"
+                        onClick={() => removeQuestion(question.id)}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+              <Button
+                variant="outline"
+                onClick={addQuestion}
+                className="w-full justify-center"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Question
               </Button>
-            </CardFooter>
-          </form>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-end">
+            <Button onClick={handleSave} variant={"default"} className="w-full">
+              Save
+            </Button>
+          </CardFooter>
         </Card>
       </div>
     </div>

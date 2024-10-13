@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+//import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 //import { Progress } from "@/components/ui/progress";
 import { Star, ArrowLeft, Share2, Eye, MessageSquare } from "lucide-react";
 

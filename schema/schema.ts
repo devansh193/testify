@@ -13,6 +13,18 @@ export const CreateProductSchema = z.object({
   questions: z.array(QuestionSchema).min(1),
   userId: z.string().uuid(),
 });
+export const emailSchema = z
+  .string()
+  .email({ message: "Invalid email address" });
+export const passwordSchema = z
+  .string()
+  .regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    {
+      message:
+        "Password must be at least 8 characters long, and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    }
+  );
 
 export const UserIdSchema = z.string().uuid();
 export const ProductIdSchema = z.string().uuid();
