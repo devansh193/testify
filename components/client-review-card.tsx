@@ -14,12 +14,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Star, Lightbulb, ThumbsUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { useRecoilValue } from "recoil";
-import { descriptionAtom, questionsAtom, titleAtom } from "@/recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  descriptionAtom,
+  questionsAtom,
+  ratingsAtom,
+  textAnswersAtom,
+  titleAtom,
+} from "@/recoil/atom";
 
 export function ClientReviewCardComponent() {
-  const [ratings, setRatings] = useState<{ [key: number]: number }>({});
-  const [textAnswers, setTextAnswers] = useState<{ [key: number]: string }>({});
+  const [ratings, setRatings] = useRecoilState(ratingsAtom);
+  const [textAnswers, setTextAnswers] = useRecoilState(textAnswersAtom);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,13 +35,41 @@ export function ClientReviewCardComponent() {
   const questions = useRecoilValue(questionsAtom);
 
   const handleRatingChange = (questionId: number, rating: number) => {
-    setRatings((prev) => ({ ...prev, [questionId]: rating }));
+    setRatings((prevRatings) => {
+      const existingRatingIndex = prevRatings.findIndex(
+        (item) => item.questionId === questionId
+      );
+
+      if (existingRatingIndex !== -1) {
+        const updatedRatings = [...prevRatings];
+        updatedRatings[existingRatingIndex].rating = rating;
+        return updatedRatings;
+      } else {
+        return [...prevRatings, { questionId, rating }];
+      }
+    });
     console.log(rating);
   };
 
-  const handleTextChange = (questionId: number, text: string) => {
-    setTextAnswers((prev) => ({ ...prev, [questionId]: text }));
-    console.log(textAnswers);
+  const handleTextChange = (questionId: number, answer: string) => {
+    setTextAnswers((prevTextAnswers) => {
+      const existingTextIndex = prevTextAnswers.findIndex(
+        (item) => item.questionId === questionId
+      );
+
+      if (existingTextIndex !== -1) {
+        const updatedTextAnswers = prevTextAnswers.map((item, index) =>
+          index === existingTextIndex
+            ? { ...item, answer } // Return a new object with the updated answer
+            : item
+        );
+        return updatedTextAnswers;
+      } else {
+        // Add a new text answer for the new questionId
+        return [...prevTextAnswers, { questionId, answer }];
+      }
+    });
+    console.log(answer);
   };
 
   const handleSubmit = async () => {
@@ -106,21 +140,29 @@ export function ClientReviewCardComponent() {
               </Label>
               {question.type === "rating" ? (
                 <div className="flex space-x-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`h-6 w-6 cursor-pointer ${
-                        star <= (ratings[question.id] || 0)
-                          ? "text-yellow-400 fill-yellow-400"
-                          : "text-gray-300"
-                      }`}
-                      onClick={() => handleRatingChange(question.id, star)}
-                    />
-                  ))}
+                  {[1, 2, 3, 4, 5].map((star) => {
+                    const ratingForQuestion =
+                      ratings.find((item) => item.questionId === question.id)
+                        ?.rating || 0;
+                    return (
+                      <Star
+                        key={star}
+                        className={`h-6 w-6 cursor-pointer ${
+                          star <= ratingForQuestion
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-300"
+                        }`}
+                        onClick={() => handleRatingChange(question.id, star)}
+                      />
+                    );
+                  })}
                 </div>
               ) : (
                 <Textarea
-                  value={textAnswers[question.id] || ""}
+                  value={
+                    textAnswers.find((item) => item.questionId === question.id)
+                      ?.answer || ""
+                  }
                   onChange={(e) =>
                     handleTextChange(question.id, e.target.value)
                   }

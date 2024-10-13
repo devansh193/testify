@@ -8,6 +8,15 @@ interface Question {
   type: QuestionType;
 }
 
+interface RatingType {
+  questionId: number;
+  rating: number;
+}
+interface TextType {
+  questionId: number;
+  answer: string;
+}
+
 export const titleAtom = atom<string>({
   key: "titleAtom",
   default: "Your Product Name",
@@ -36,4 +45,14 @@ export const logoUrlAtom = atom<string>({
 export const dialogAtom = atom<boolean>({
   key: "isDialogOpen",
   default: false,
+});
+
+export const ratingsAtom = atom<RatingType[]>({
+  key: "ratingsAtom",
+  default: [],
+});
+
+export const textAnswersAtom = atom<TextType[]>({
+  key: "textAnswersAtom",
+  default: [],
 });
