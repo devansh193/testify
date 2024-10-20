@@ -23,24 +23,25 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+
     const toastId = toast("Signing in", {
       duration: 5000,
       icon: <Loader className="animate-spin" />,
     });
 
     try {
-      const result = await signIn("credentials", {
+      const response = await signIn("credentials", {
         redirect: false,
         email,
         password,
       });
 
-      if (result?.error) {
-        console.log(result.error);
-        toast.error(`${result.error}`, {
+      if (!response?.ok) {
+        toast.error(`${response?.error}|"Internal server error"`, {
           id: toastId,
           icon: "",
         });

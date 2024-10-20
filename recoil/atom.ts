@@ -1,22 +1,17 @@
 import { atom } from "recoil";
 
-type QuestionType = "rating" | "text";
-
 interface Question {
   id: number;
   text: string;
-  type: QuestionType;
 }
-
-interface RatingType {
-  questionId: number;
-  rating: number;
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  showLogo: boolean;
+  logoUrl: string | null;
+  userId: string;
 }
-interface TextType {
-  questionId: number;
-  answer: string;
-}
-
 export const titleAtom = atom<string>({
   key: "titleAtom",
   default: "Your Product Name",
@@ -29,7 +24,7 @@ export const descriptionAtom = atom<string>({
 
 export const questionsAtom = atom<Question[]>({
   key: "questionsAtom",
-  default: [{ id: 1, text: "How would you rate our product?", type: "rating" }],
+  default: [{ id: 1, text: "How would you rate our product?" }],
 });
 
 export const showLogoAtom = atom<boolean>({
@@ -47,12 +42,17 @@ export const dialogAtom = atom<boolean>({
   default: false,
 });
 
-export const ratingsAtom = atom<RatingType[]>({
+export const ratingsAtom = atom({
   key: "ratingsAtom",
-  default: [],
+  default: 0,
 });
 
-export const textAnswersAtom = atom<TextType[]>({
-  key: "textAnswersAtom",
+export const textReviewAtom = atom({
+  key: "textReviewAtom",
+  default: "",
+});
+
+export const productsAtom = atom<Product[]>({
+  key: "productsAtom",
   default: [],
 });

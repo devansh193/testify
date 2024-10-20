@@ -1,5 +1,7 @@
 "use server";
 import db from "@/lib/db";
+import { ErrorHandler } from "@/lib/error";
+import { SuccessResponse } from "@/lib/success";
 import bcrypt from "bcrypt";
 
 export async function createUser(
@@ -13,24 +15,21 @@ export async function createUser(
     });
 
     if (existingUser) {
-      return { success: false, message: "User with this email already exists" };
+      throw new ErrorHandler("User with email already exist.", "CONFLICT");
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await db.user.create({
+    await db.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
       },
     });
-
-    return {
-      success: true,
-      message: "User created successfully",
-      user: newUser,
-    };
-  } catch (error) {
-    console.error("Error creating user:", error);
-    return { success: false, message: "Failed to create user" };
+    throw new SuccessResponse("User created successfully.", 201);
+  } catch (_error) {
+    if (_error instanceof ErrorHandler) {
+      throw _error;
+    }
+    throw new ErrorHandler("Internal server error.", "INTERNAL_SERVER_ERROR");
   }
 }

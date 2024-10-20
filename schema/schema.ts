@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const QuestionSchema = z.object({
   text: z.string().min(1),
-  type: z.enum(["rating", "text"]),
 });
 
 export const CreateProductSchema = z.object({
@@ -29,3 +28,8 @@ export const passwordSchema = z
 export const UserIdSchema = z.string().uuid();
 export const ProductIdSchema = z.string().uuid();
 export const TitleSchema = z.string().min(1);
+
+export const SigninSchema = z.object({
+  email: z.string().email("Email is invalid").min(1, "Email is required"),
+  password: z.string().min(1, "Password is required"),
+});

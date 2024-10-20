@@ -1,106 +1,69 @@
 "use client";
 
 import { useState } from "react";
+import { Lightbulb, Star, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Star, Lightbulb, ThumbsUp } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   descriptionAtom,
   questionsAtom,
   ratingsAtom,
-  textAnswersAtom,
+  textReviewAtom,
   titleAtom,
 } from "@/recoil/atom";
 
-export function ClientReviewCardComponent() {
-  const [ratings, setRatings] = useRecoilState(ratingsAtom);
-  const [textAnswers, setTextAnswers] = useRecoilState(textAnswersAtom);
-  const [submitted, setSubmitted] = useState(false);
+const ReviewCard = () => {
+  const [overallReview, setOverallReview] = useRecoilState(textReviewAtom);
+  const [overallRating, setOverallRating] = useRecoilState(ratingsAtom);
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const title = useRecoilValue(titleAtom);
   const description = useRecoilValue(descriptionAtom);
   const questions = useRecoilValue(questionsAtom);
 
-  const handleRatingChange = (questionId: number, rating: number) => {
-    setRatings((prevRatings) => {
-      const existingRatingIndex = prevRatings.findIndex(
-        (item) => item.questionId === questionId
-      );
-
-      if (existingRatingIndex !== -1) {
-        const updatedRatings = [...prevRatings];
-        updatedRatings[existingRatingIndex].rating = rating;
-        return updatedRatings;
-      } else {
-        return [...prevRatings, { questionId, rating }];
-      }
-    });
-    console.log(rating);
-  };
-
-  const handleTextChange = (questionId: number, answer: string) => {
-    setTextAnswers((prevTextAnswers) => {
-      const existingTextIndex = prevTextAnswers.findIndex(
-        (item) => item.questionId === questionId
-      );
-
-      if (existingTextIndex !== -1) {
-        const updatedTextAnswers = prevTextAnswers.map((item, index) =>
-          index === existingTextIndex
-            ? { ...item, answer } // Return a new object with the updated answer
-            : item
-        );
-        return updatedTextAnswers;
-      } else {
-        // Add a new text answer for the new questionId
-        return [...prevTextAnswers, { questionId, answer }];
-      }
-    });
-    console.log(answer);
-  };
-
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    setError(null);
-
-    const reviewData = {
-      title,
-      ratings,
-      textAnswers,
-    };
-
-    try {
-    } catch (err) {
-      setError(
-        "An error occurred while submitting your review. Please try again."
-      );
-      console.error("Error submitting review:", err);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleRatingChange = (rating: number) => {
+    setOverallRating(rating);
   };
 
   const calculateProgress = () => {
-    const totalQuestions = questions.length;
-    const answeredQuestions =
-      Object.keys(ratings).length + Object.keys(textAnswers).length;
-    return (answeredQuestions / totalQuestions) * 100;
+    let progress = 0;
+    if (overallReview.trim().length > 0) progress += 50;
+    if (overallRating > 0) progress += 50;
+    return progress;
   };
 
-  if (submitted) {
+  const handleSubmit = () => {
+    setError("");
+    if (overallReview.trim().length === 0) {
+      setError("Please provide a review.");
+      return;
+    }
+    if (overallRating === 0) {
+      setError("Please provide a rating.");
+      return;
+    }
+    setIsSubmitting(true);
+    // Simulating API call
+    setTimeout(() => {
+      console.log("Submitted:", { overallReview, overallRating });
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }, 1500);
+  };
+
+  if (isSubmitted) {
     return (
       <Card className="w-full mx-auto">
         <CardContent className="pt-6">
@@ -130,52 +93,56 @@ export function ClientReviewCardComponent() {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {questions.map((question) => (
-            <div key={question.id} className="space-y-2">
-              <Label className="flex items-center space-x-2">
-                <span className="flex items-center justify-between">
-                  <Lightbulb className="h-5 w-5 mr-2" />
-                  {question.text}
-                </span>
-              </Label>
-              {question.type === "rating" ? (
-                <div className="flex space-x-2">
-                  {[1, 2, 3, 4, 5].map((star) => {
-                    const ratingForQuestion =
-                      ratings.find((item) => item.questionId === question.id)
-                        ?.rating || 0;
-                    return (
-                      <Star
-                        key={star}
-                        className={`h-6 w-6 cursor-pointer ${
-                          star <= ratingForQuestion
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                        onClick={() => handleRatingChange(question.id, star)}
-                      />
-                    );
-                  })}
-                </div>
-              ) : (
-                <Textarea
-                  value={
-                    textAnswers.find((item) => item.questionId === question.id)
-                      ?.answer || ""
-                  }
-                  onChange={(e) =>
-                    handleTextChange(question.id, e.target.value)
-                  }
-                  placeholder="Your answer"
+          <div className="space-y-2">
+            <Label className="flex items-center space-x-2">
+              <Lightbulb className="h-5 w-5 mr-2" />
+              <span className="font-semibold">
+                Please consider the following questions:
+              </span>
+            </Label>
+            <ul className="list-disc list-inside pl-5 space-y-1">
+              {questions.map((question) => (
+                <li key={question.id}>{question.text}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="overall-review" className="font-semibold text-sm">
+              Your Overall Review
+            </Label>
+            <Textarea
+              id="overall-review"
+              value={overallReview}
+              onChange={(e) => setOverallReview(e.target.value)}
+              placeholder="Share your thoughts about the product..."
+              rows={4}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="font-semibold">Overall Rating</Label>
+            <div className="flex space-x-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`h-6 w-6 cursor-pointer ${
+                    star <= overallRating
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                  onClick={() => handleRatingChange(star)}
                 />
-              )}
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </CardContent>
       <CardFooter className="flex-col space-y-4">
         <Progress value={calculateProgress()} className="w-full" />
-        {error && <div className="text-red-500">{error}</div>}
+        {error && (
+          <div className="text-red-500" role="alert">
+            {error}
+          </div>
+        )}
         <Button
           className="w-full"
           onClick={handleSubmit}
@@ -186,4 +153,6 @@ export function ClientReviewCardComponent() {
       </CardFooter>
     </Card>
   );
-}
+};
+
+export default ReviewCard;

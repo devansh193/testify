@@ -6,7 +6,7 @@ import { useSetRecoilState } from "recoil";
 import { titleAtom, descriptionAtom, questionsAtom } from "@/recoil/atom";
 import { getProductByTitle, ProductWithQuestions } from "@/action/product";
 import LoadingPage from "@/app/loading";
-import { ClientReviewCardComponent } from "@/components/client-review-card";
+import ReviewCard from "@/components/client-review-card";
 import { Card } from "@/components/ui/card";
 import NotFound from "../not-found";
 
@@ -59,7 +59,8 @@ export default function ProductPage() {
     return <NotFound />;
   }
 
-  return (
+  //v0.dev/chat/1zczWj9C41O?b=b_7ZReEm8fdcU&f=0
+  https: return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="px-4 py-5 sm:p-6">
@@ -73,7 +74,7 @@ export default function ProductPage() {
             We value your opinion. Please take a moment to share your experience
             with us.
           </p>
-          <ClientReviewCardComponent />
+          <ReviewCard />
         </div>
         <div className="px-4 py-4 bg-gray-50 sm:px-6">
           <p className="text-xs text-center text-gray-500">

@@ -73,7 +73,7 @@ export default function Dashboard() {
   );
 
   const handleRowClick = (productId: string) => {
-    router.push(`/product/${productId}`);
+    router.push(`/products/${productId}`);
   };
 
   return (
@@ -101,7 +101,7 @@ export default function Dashboard() {
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-screen overflow-auto p-8">
-            <TestimonialCardCustomizer onSave={() => {}} />
+            <TestimonialCardCustomizer />
           </DialogContent>
         </Dialog>
       </div>

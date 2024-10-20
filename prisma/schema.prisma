@@ -19,7 +19,6 @@ model Product {
   id           String        @id @default(uuid())
   title        String        @unique
   description  String
-  showLogo     Boolean
   logoUrl      String?
   questions    Question[]
   testimonials Testimonial[]
@@ -35,25 +34,16 @@ model Testimonial {
 }
 
 model Question {
-  id        String       @id @default(uuid())
+  id        String  @id @default(uuid())
   text      String
-  type      QuestionType
-  product   Product      @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
   productId String
-  answers   Answer[]
 }
 
 model Answer {
   id            String      @id @default(uuid())
   textResponse  String?
   rating        Int?
-  questionId    String
-  question      Question    @relation(fields: [questionId], references: [id])
   testimonialId String
   testimonial   Testimonial @relation(fields: [testimonialId], references: [id])
-}
-
-enum QuestionType {
-  rating
-  text
 }

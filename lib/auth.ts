@@ -3,9 +3,10 @@ import bcrypt from "bcrypt";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 
-import { emailSchema, passwordSchema } from "@/schema/schema";
+import { SigninSchema } from "@/schema/schema";
 import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 import prisma from "@/lib/db";
+import { ErrorHandler } from "./error";
 
 declare module "next-auth" {
   interface Session {
@@ -27,69 +28,50 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials || !credentials.email || !credentials.password) {
-          throw new Error("Missing credentials");
+          throw new ErrorHandler("Missing credentials", "VALIDATION_ERROR");
         }
 
-        const validatedEmail = emailSchema.safeParse(credentials.email);
-        if (!validatedEmail.success) {
-          throw new Error("Invalid email format");
-        }
-
-        const validatedPassword = passwordSchema.safeParse(
-          credentials.password
-        );
-        if (!validatedPassword.success) {
-          throw new Error(validatedPassword.error.issues[0].message);
+        // Validate email format
+        const validatedCredentials = SigninSchema.safeParse(credentials);
+        if (!validatedCredentials.success) {
+          throw new ErrorHandler("Input validation failed", "VALIDATION_ERROR");
         }
 
         try {
           const user = await prisma.user.findUnique({
-            where: { email: validatedEmail.data },
+            where: { email: validatedCredentials.data.email },
           });
 
           if (!user) {
-            const hashedPassword = await bcrypt.hash(
-              validatedPassword.data,
-              10
+            throw new ErrorHandler(
+              "User with email does not exist",
+              "CONFLICT"
             );
-
-            const newUser = await prisma.user.create({
-              data: {
-                email: validatedEmail.data,
-                password: hashedPassword,
-              },
-            });
-            return newUser;
-          }
-
-          if (!user.password) {
-            const hashedPassword = await bcrypt.hash(
-              validatedPassword.data,
-              10
-            );
-
-            const updatedUser = await prisma.user.update({
-              where: { email: validatedEmail.data },
-              data: { password: hashedPassword },
-            });
-            return updatedUser;
           }
 
           const passwordMatch = await bcrypt.compare(
-            validatedPassword.data,
+            validatedCredentials.data.password,
             user.password
           );
           if (!passwordMatch) {
-            throw new Error("Invalid password");
+            throw new ErrorHandler(
+              "Password is incorrect",
+              "AUTHENTICATION_FAILED"
+            );
           }
 
           return user;
         } catch (error) {
           if (error instanceof PrismaClientInitializationError) {
-            throw new Error("Database connection error");
+            throw new ErrorHandler(
+              "Database connection error",
+              "DATABASE_ERROR"
+            );
           }
-          console.error("Authorization error:", error);
-          throw new Error("Authorization failed");
+          if (error instanceof ErrorHandler) {
+            throw error;
+          }
+          throw new ErrorHandler("Internal server error", "DATABASE_ERROR");
         }
       },
     }),

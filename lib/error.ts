@@ -1,17 +1,22 @@
 import { ERROR_CODE, ERROR_NAME } from "@/config/error.config";
 import { ZodError } from "zod";
 import { generateErrorMessage } from "zod-error";
+
 export type ErrorResponseType = {
   name: string;
   message: string;
   code: number;
   status: false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
 };
+
 class ErrorHandler extends Error {
   status: false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
   code: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(message: string, code: keyof typeof ERROR_CODE, error?: any) {
     super(message);
     this.status = false;

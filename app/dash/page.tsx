@@ -25,7 +25,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import {
-  Star,
   ArrowRight,
   Plus,
   Edit,
@@ -34,19 +33,19 @@ import {
   FileText,
   ThumbsUp,
 } from "lucide-react";
-import Image from "next/image";
-//import EmptyDashboard from "@/components/dashboard-components/empty-dash";
 import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
 import { getProduct } from "@/action/product";
 import { useRouter } from "next/navigation";
-import { ProductDetails } from "@/schema/schema";
-//import LoadingPage from "../loading";
 import LoadingDashboard from "./loading";
+import { useRecoilState } from "recoil";
+import { productsAtom } from "@/recoil/atom";
 
 export default function ProductDashboard() {
-  const [products, setProducts] = useState<ProductDetails[]>([]);
-  //const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useRecoilState(productsAtom);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const router = useRouter();
 
   const testimonialsFetched = useRef(false);
@@ -84,30 +83,6 @@ export default function ProductDashboard() {
     }
   }, [status, session]);
 
-  const [newProduct, setNewProduct] = useState({ name: "", description: "" });
-
-  const handleAddProduct = () => {
-    if (newProduct.name && newProduct.description) {
-      setProducts([
-        ...products,
-        {
-          id: products.length + 1,
-          ...newProduct,
-          testimonials: 0,
-          rating: 0,
-          views: 0,
-          conversions: 0,
-          image: "/placeholder.svg?height=100&width=100",
-        },
-      ]);
-      setNewProduct({ name: "", description: "" });
-    }
-  };
-
-  const handleDeleteProduct = (id: number) => {
-    setProducts(products.filter((product) => product.id !== id));
-  };
-
   const chartData = products.map((product) => ({
     name: product.title,
     //views: product.,
@@ -124,11 +99,11 @@ export default function ProductDashboard() {
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-black text-white hover:bg-gray-800">
-                  <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
+                  <Plus className="mr-2 h-4 w-4" /> Create New Product
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl max-h-screen overflow-auto p-8">
-                <TestimonialCardCustomizer onSave={() => {}} />
+                <TestimonialCardCustomizer />
               </DialogContent>
             </Dialog>
           </div>
@@ -176,12 +151,12 @@ export default function ProductDashboard() {
                     <BarChart2 className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
+                    {/* <div className="text-2xl font-bold">
                       {products.reduce(
                         (sum, product) => sum + product.views,
                         0
                       )}
-                    </div>
+                    </div> */}
                   </CardContent>
                 </Card>
                 <Card>
@@ -272,11 +247,7 @@ export default function ProductDashboard() {
                         <Button variant="ghost" size="icon">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDeleteProduct(product.id)}
-                        >
+                        <Button variant="ghost" size="icon" onClick={() => {}}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>

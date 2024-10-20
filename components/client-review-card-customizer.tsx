@@ -14,14 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Plus, Minus, Move, Loader } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ClientReviewCardComponent } from "./client-review-card";
+import ReviewCard from "@/components/client-review-card";
 import {
   titleAtom,
   descriptionAtom,
@@ -33,9 +26,8 @@ import { Badge } from "./ui/badge";
 import { getSession } from "next-auth/react";
 import { toast } from "sonner";
 import { CreateProductSchema } from "@/schema/schema";
-import { useCreateProduct } from "@/features/product/api/use-create-product";
-
-type QuestionType = "rating" | "text";
+//import { useCreateProduct } from "@/features/product/api/use-create-product";
+import { createProduct } from "@/action/product";
 
 export function TestimonialCardCustomizer() {
   const [title, setTitle] = useRecoilState(titleAtom);
@@ -43,22 +35,20 @@ export function TestimonialCardCustomizer() {
   const [questions, setQuestions] = useRecoilState(questionsAtom);
   const [showLogo, setShowLogo] = useRecoilState(showLogoAtom);
   const [logoUrl, setLogoUrl] = useRecoilState(logoUrlAtom);
-  const product = useCreateProduct();
+  //const product = useCreateProduct();
 
   const addQuestion = () => {
     const newId =
       questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-    setQuestions([...questions, { id: newId, text: "", type: "text" }]);
+    setQuestions([...questions, { id: newId, text: "" }]);
   };
 
   const removeQuestion = (id: number) => {
     setQuestions(questions.filter((q) => q.id !== id));
   };
 
-  const updateQuestion = (id: number, text: string, type: QuestionType) => {
-    setQuestions(
-      questions.map((q) => (q.id === id ? { ...q, text, type } : q))
-    );
+  const updateQuestion = (id: number, text: string) => {
+    setQuestions(questions.map((q) => (q.id === id ? { ...q, text } : q)));
   };
 
   const moveQuestion = (id: number, direction: "up" | "down") => {
@@ -76,11 +66,6 @@ export function TestimonialCardCustomizer() {
   };
 
   const handleSave = async () => {
-    toast("Preparing to create product...", {
-      duration: 2000,
-      icon: <Loader className="animate-spin" />,
-    });
-
     try {
       const session = await getSession();
       if (!session?.user?.id) {
@@ -105,8 +90,12 @@ export function TestimonialCardCustomizer() {
           .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
           .join("; ");
         throw new Error(`Validation failed: ${errorMessages}`);
+        toast.error(errorMessages);
       }
-      await product.mutate(validationResult.data);
+      toast("Preparing to create product...", {
+        icon: <Loader className="animate-spin" />,
+      });
+      await createProduct(validationResult?.data);
     } catch (error) {
       console.log(error);
     }
@@ -118,7 +107,7 @@ export function TestimonialCardCustomizer() {
         <Badge variant={"default"} className="my-2">
           Live preview
         </Badge>
-        <ClientReviewCardComponent />
+        <ReviewCard />
       </div>
       <div className="col-span-1">
         <Card className="w-full mx-auto">
@@ -182,28 +171,10 @@ export function TestimonialCardCustomizer() {
                       <Input
                         value={question.text}
                         onChange={(e) =>
-                          updateQuestion(
-                            question.id,
-                            e.target.value,
-                            question.type
-                          )
+                          updateQuestion(question.id, e.target.value)
                         }
                         placeholder="Enter your question"
                       />
-                      <Select
-                        value={question.type}
-                        onValueChange={(value: QuestionType) =>
-                          updateQuestion(question.id, question.text, value)
-                        }
-                      >
-                        <SelectTrigger className="w-[120px]">
-                          <SelectValue placeholder="Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="rating">Rating</SelectItem>
-                          <SelectItem value="text">Text</SelectItem>
-                        </SelectContent>
-                      </Select>
                     </div>
                     <div className="flex justify-end space-x-2">
                       <Button
