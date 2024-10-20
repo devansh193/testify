@@ -27,10 +27,14 @@ model Product {
 }
 
 model Testimonial {
-  id        String   @id @default(uuid())
-  productId String
-  product   Product  @relation(fields: [productId], references: [id])
-  answers   Answer[]
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  textReview String
+  rating     Int
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  createdAt  DateTime @default(now())
 }
 
 model Question {
@@ -38,12 +42,4 @@ model Question {
   text      String
   product   Product @relation(fields: [productId], references: [id])
   productId String
-}
-
-model Answer {
-  id            String      @id @default(uuid())
-  textResponse  String?
-  rating        Int?
-  testimonialId String
-  testimonial   Testimonial @relation(fields: [testimonialId], references: [id])
 }

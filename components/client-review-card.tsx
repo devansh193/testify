@@ -139,7 +139,7 @@ const ReviewCard = () => {
       <CardFooter className="flex-col space-y-4">
         <Progress value={calculateProgress()} className="w-full" />
         {error && (
-          <div className="text-red-500" role="alert">
+          <div className="text-red-500 font-semibold" role="alert">
             {error}
           </div>
         )}
