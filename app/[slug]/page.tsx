@@ -28,9 +28,11 @@ export default function ProductPage() {
       }
 
       try {
-        console.log(`Slig------${slug}`);
-        const fetchedProduct = await getProductByTitle(slug);
-        if (fetchedProduct) {
+        const { success, product: fetchedProduct } = await getProductByTitle(
+          slug
+        );
+
+        if (success && fetchedProduct) {
           setProduct(fetchedProduct);
           setTitle(fetchedProduct.title);
           setDescription(fetchedProduct.description);
@@ -40,9 +42,12 @@ export default function ProductPage() {
               id: parseInt(question.id, 10),
             }))
           );
+        } else {
+          setProduct(null);
         }
       } catch (error) {
         console.error("Error fetching product:", error);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
@@ -59,8 +64,7 @@ export default function ProductPage() {
     return <NotFound />;
   }
 
-  //v0.dev/chat/1zczWj9C41O?b=b_7ZReEm8fdcU&f=0
-  https: return (
+  return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="px-4 py-5 sm:p-6">

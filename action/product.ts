@@ -6,7 +6,6 @@ import { Product, Question } from "@prisma/client";
 import { z } from "zod";
 import { CreateProductSchema } from "@/schema/schema";
 import { ErrorHandler } from "@/lib/error";
-import { SuccessResponse } from "@/lib/success";
 
 export type ProductWithQuestions = Product & { questions: Question[] };
 
@@ -57,6 +56,7 @@ export const createProduct = async (
       success: true,
       message: "Product created successfully.",
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
     return {
       success: false,
@@ -124,6 +124,7 @@ export const getTestimonials = async ({ productId }: { productId: string }) => {
       testimonials,
       totalTestimonials: testimonials.length,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
     return {
       success: false,
@@ -139,13 +140,16 @@ export const getProductByTitle = async (title: string) => {
       where: {
         title: validatedTitle,
       },
+      include: {
+        questions: true,
+      },
     });
 
     if (!product) {
-      throw new ErrorHandler(
-        `Product with title "${validatedTitle}" does not exist.`,
-        "CONFLICT"
-      );
+      return {
+        success: false,
+        message: "Product does not exist.",
+      };
     }
 
     return {
@@ -153,11 +157,12 @@ export const getProductByTitle = async (title: string) => {
       message: "Product fetched successfully.",
       product,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
-    if (_error instanceof ErrorHandler) {
-      throw _error;
-    }
-    throw new ErrorHandler("Internal server error.", "INTERNAL_SERVER_ERROR");
+    return {
+      success: false,
+      message: "Internal server error.",
+    };
   }
 };
 
