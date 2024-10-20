@@ -19,9 +19,7 @@ export const createProduct = async (
 ) => {
   try {
     const validatedData = CreateProductSchema.parse(data);
-    if (!validatedData) {
-      throw new ErrorHandler("Validation failed", "VALIDATION_ERROR");
-    }
+
     const existingProduct = await db.product.findFirst({
       where: {
         title: {
@@ -32,7 +30,10 @@ export const createProduct = async (
     });
 
     if (existingProduct) {
-      throw new ErrorHandler("Product already exists", "CONFLICT");
+      return {
+        success: false,
+        message: "Product already exists.",
+      };
     }
 
     await db.product.create({
@@ -52,19 +53,15 @@ export const createProduct = async (
     });
 
     revalidatePath("/dashboard");
-    const message = "Product created successfully.";
-    return new SuccessResponse(message, 201).serialize();
+    return {
+      success: true,
+      message: "Product created successfully.",
+    };
   } catch (_error) {
-    if (_error instanceof z.ZodError) {
-      throw new ErrorHandler("Input validation failed", "VALIDATION_ERROR");
-    }
-    if (_error instanceof ErrorHandler) {
-      throw _error;
-    }
-    throw new ErrorHandler(
-      "Failed to create product.",
-      "INTERNAL_SERVER_ERROR"
-    );
+    return {
+      success: false,
+      message: "Internal server error.",
+    };
   }
 };
 
@@ -84,15 +81,16 @@ export const getProduct = async ({ userId }: { userId: string }) => {
         questions: true,
       },
     });
-    if (!products) {
-      throw new ErrorHandler("Products does not exist.", "CONFLICT");
+
+    if (!products.length) {
+      throw new ErrorHandler("Products do not exist.", "CONFLICT");
     }
-    const totalProducts = products.length;
-    throw new SuccessResponse("Products fetched successfully", 201, {
+
+    return {
+      success: true,
       products,
-      totalProducts,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      totalProducts: products.length,
+    };
   } catch (_error) {
     if (_error instanceof ErrorHandler) {
       throw _error;
@@ -103,7 +101,7 @@ export const getProduct = async ({ userId }: { userId: string }) => {
 
 export const getTestimonials = async ({ productId }: { productId: string }) => {
   try {
-    const testimonials = db.testimonial.findMany({
+    const testimonials = await db.testimonial.findMany({
       where: {
         productId: productId,
       },
@@ -112,75 +110,82 @@ export const getTestimonials = async ({ productId }: { productId: string }) => {
         answers: true,
       },
     });
-    if (!testimonials) {
-      throw new ErrorHandler("Testimonials does not exist.", "CONFLICT");
+
+    if (!testimonials.length) {
+      return {
+        success: false,
+        message: "No testimonials found.",
+      };
     }
-    const totalTestimonials = (await testimonials).length;
-    throw new SuccessResponse("Testimonials fetched successfully.", 201, {
+
+    return {
+      success: true,
+      message: "Testimonials fetched successfully.",
       testimonials,
-      totalTestimonials,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      totalTestimonials: testimonials.length,
+    };
   } catch (_error) {
-    if (_error instanceof ErrorHandler) {
-      throw _error;
-    }
-    throw new ErrorHandler(
-      "Failed to fetch testimonials",
-      "INTERNAL_SERVER_ERROR"
-    );
+    return {
+      success: false,
+      message: "Internal server error.",
+    };
   }
 };
 
 export const getProductByTitle = async (title: string) => {
   try {
     const validatedTitle = TitleSchema.parse(title);
-    const product = db.product.findUnique({
+    const product = await db.product.findUnique({
       where: {
         title: validatedTitle,
       },
     });
+
     if (!product) {
       throw new ErrorHandler(
-        `Product with title ${validatedTitle} does not exist.`,
+        `Product with title "${validatedTitle}" does not exist.`,
         "CONFLICT"
       );
     }
-    throw new SuccessResponse(
-      `Product with title ${validatedTitle} successfully.`,
-      201,
-      {
-        product,
-      }
-    );
+
+    return {
+      success: true,
+      message: "Product fetched successfully.",
+      product,
+    };
   } catch (_error) {
     if (_error instanceof ErrorHandler) {
       throw _error;
     }
-    throw new ErrorHandler("Internal server error", "INTERNAL_SERVER_ERROR");
+    throw new ErrorHandler("Internal server error.", "INTERNAL_SERVER_ERROR");
   }
 };
 
 export const getProductById = async (productId: string) => {
   try {
     const validatedId = ProductIdSchema.parse(productId);
-
-    const product = await db.product.findFirst({
+    const product = await db.product.findUnique({
       where: {
         id: validatedId,
       },
     });
 
     if (!product) {
-      throw new ErrorHandler("Product with id does not exist.", "CONFLICT");
+      throw new ErrorHandler(
+        "Product with this ID does not exist.",
+        "CONFLICT"
+      );
     }
-    throw new SuccessResponse("Product with id fetched successfully", 201, {
+
+    return {
+      success: true,
+      message: "Product fetched successfully.",
       product,
-    });
+    };
   } catch (_error) {
     if (_error instanceof ErrorHandler) {
       throw _error;
     }
-    throw new ErrorHandler("Internal server error", "INTERNAL_SERVER_ERROR");
+    throw new ErrorHandler("Internal server error.", "INTERNAL_SERVER_ERROR");
   }
 };

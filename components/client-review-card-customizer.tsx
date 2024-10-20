@@ -66,6 +66,9 @@ export function TestimonialCardCustomizer() {
   };
 
   const handleSave = async () => {
+    const toastId = toast("Preparing to create product...", {
+      icon: <Loader className="animate-spin" />,
+    });
     try {
       const session = await getSession();
       if (!session?.user?.id) {
@@ -82,20 +85,36 @@ export function TestimonialCardCustomizer() {
         questions: questions.map(({ id, ...rest }) => rest),
         userId,
       };
-
       const validationResult = CreateProductSchema.safeParse(productData);
 
       if (!validationResult.success) {
         const errorMessages = validationResult.error.issues
           .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
           .join("; ");
+        toast.error(errorMessages, {
+          id: toastId,
+          icon: "",
+        });
         throw new Error(`Validation failed: ${errorMessages}`);
-        toast.error(errorMessages);
       }
-      toast("Preparing to create product...", {
+      toast.message("Creating product...", {
+        id: toastId,
         icon: <Loader className="animate-spin" />,
       });
-      await createProduct(validationResult?.data);
+
+      const response = await createProduct(validationResult?.data);
+
+      if (response.success) {
+        toast.success(response.message, {
+          id: toastId,
+          icon: "",
+        });
+      } else {
+        toast.error(response.message, {
+          id: toastId,
+          icon: "",
+        });
+      }
     } catch (error) {
       console.log(error);
     }
