@@ -1,3 +1,4 @@
+import { ProductWithQuestions } from "@/action/product";
 import { atom } from "recoil";
 
 interface Question {
@@ -50,6 +51,11 @@ export const showLogoAtom = atom<boolean>({
 export const logoUrlAtom = atom<string>({
   key: "logoUrlAtom",
   default: "/placeholder.svg?height=80&width=80",
+});
+
+export const productAtom = atom<ProductWithQuestions | null>({
+  key: "productAtom",
+  default: null,
 });
 
 export const dialogAtom = atom<boolean>({

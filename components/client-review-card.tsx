@@ -20,6 +20,7 @@ import {
   emailAtom,
   imageAtom,
   nameAtom,
+  productAtom,
   questionsAtom,
   ratingsAtom,
   textReviewAtom,
@@ -27,6 +28,7 @@ import {
 } from "@/recoil/atom";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { createTestimonial } from "@/action/testimonial";
 
 const ReviewCard = () => {
   const [name, setName] = useRecoilState(nameAtom);
@@ -38,6 +40,7 @@ const ReviewCard = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const title = useRecoilValue(titleAtom);
+  const product = useRecoilValue(productAtom);
   const description = useRecoilValue(descriptionAtom);
   const questions = useRecoilValue(questionsAtom);
   const [isFilled, setIsFilled] = useState(false);
@@ -52,7 +55,7 @@ const ReviewCard = () => {
     return progress;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setError("");
     if (overallReview.trim().length === 0) {
       setError("Please provide a review.");
@@ -62,13 +65,14 @@ const ReviewCard = () => {
       setError("Please provide a rating.");
       return;
     }
+    const data = {name, email, overallReview, overallRating,}
     setIsSubmitting(true);
     // Simulating API call
-    setTimeout(() => {
-      console.log("Submitted:", { overallReview, overallRating });
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 1500);
+    try{
+      await createTestimonial({name, }); 
+    }
+
+    
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {

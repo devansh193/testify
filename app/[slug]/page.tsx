@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useSetRecoilState } from "recoil";
-import { titleAtom, descriptionAtom, questionsAtom } from "@/recoil/atom";
-import { getProductByTitle, ProductWithQuestions } from "@/action/product";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  titleAtom,
+  descriptionAtom,
+  questionsAtom,
+  productAtom,
+} from "@/recoil/atom";
+import { getProductByTitle } from "@/action/product";
 import LoadingPage from "@/app/loading";
 import ReviewCard from "@/components/client-review-card";
 import { Card } from "@/components/ui/card";
@@ -14,7 +19,7 @@ export default function ProductPage() {
   const params = useParams();
   const slug = params?.slug as string;
 
-  const [product, setProduct] = useState<ProductWithQuestions | null>(null);
+  const [product, setProduct] = useRecoilState(productAtom);
   const [loading, setLoading] = useState(true);
   const setTitle = useSetRecoilState(titleAtom);
   const setDescription = useSetRecoilState(descriptionAtom);

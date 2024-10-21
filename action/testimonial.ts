@@ -1,34 +1,52 @@
 import db from "@/lib/db";
 
-export async function submitReview(input: {
-  productId: string;
+interface createTestimonialProp {
+  name: string;
+  email: string;
   textReview: string;
   rating: number;
-}) {
-  const { productId, textReview, rating } = input;
+  productId: string;
+}
 
+export const createTestimonial = async (data: createTestimonialProp) => {
+  const { name, email, textReview, rating, productId } = data;
+  const existingEmail = await db.testimonial.findFirst({
+    where: {
+      email: {
+        equals: email,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  if (existingEmail) {
+    return {
+      success: false,
+      message: "Review already submitted.",
+    };
+  }
   try {
-    const testimonial = await db.testimonial.create({
+    await db.testimonial.create({
       data: {
+        name,
+        email,
+        textReview,
+        rating,
         productId,
-        answers: {
-          create: [
-            {
-              textResponse: textReview,
-              rating: rating,
-            },
-          ],
-        },
       },
     });
-
     return {
       success: true,
+      stats: 201,
       message: "Review submitted successfully.",
-      testimonial,
     };
-  } catch (error) {
-    console.error("Error saving review:", error);
-    return { success: false, message: "Failed to submit review.", error };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_error) {
+    return {
+      success: false,
+      status: 500,
+      message: "Internal server error.",
+    };
   }
-}
+};

@@ -29,7 +29,7 @@ model Product {
 model Testimonial {
   id         String   @id @default(uuid())
   name       String
-  email      String
+  email      String   @unique
   textReview String
   rating     Int
   productId  String
