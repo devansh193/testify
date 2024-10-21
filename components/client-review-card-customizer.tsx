@@ -74,7 +74,6 @@ export function TestimonialCardCustomizer() {
       if (!session?.user?.id) {
         throw new Error("User session not available");
       }
-
       const userId = session.user.id;
       const productData = {
         title,

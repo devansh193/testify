@@ -1,7 +1,5 @@
 "use server";
 import db from "@/lib/db";
-import { ErrorHandler } from "@/lib/error";
-import { SuccessResponse } from "@/lib/success";
 import bcrypt from "bcrypt";
 
 export async function createUser(
@@ -15,7 +13,10 @@ export async function createUser(
     });
 
     if (existingUser) {
-      throw new ErrorHandler("User with email already exist.", "CONFLICT");
+      return {
+        success: false,
+        message: "User with email already exist. Go to Sign-in",
+      };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     await db.user.create({
@@ -25,11 +26,16 @@ export async function createUser(
         password: hashedPassword,
       },
     });
-    throw new SuccessResponse("User created successfully.", 201);
+    return {
+      success: true,
+      status: 201,
+      message: "User created successfully.",
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
-    if (_error instanceof ErrorHandler) {
-      throw _error;
-    }
-    throw new ErrorHandler("Internal server error.", "INTERNAL_SERVER_ERROR");
+    return {
+      success: false,
+      message: "Internal server error.",
+    };
   }
 }

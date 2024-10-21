@@ -28,6 +28,7 @@ export default function ProductPage() {
       }
 
       try {
+        console.log(slug);
         const { success, product: fetchedProduct } = await getProductByTitle(
           slug
         );

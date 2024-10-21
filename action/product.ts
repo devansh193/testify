@@ -107,7 +107,6 @@ export const getTestimonials = async ({ productId }: { productId: string }) => {
       },
       select: {
         id: true,
-        answers: true,
       },
     });
 
@@ -136,9 +135,13 @@ export const getTestimonials = async ({ productId }: { productId: string }) => {
 export const getProductByTitle = async (title: string) => {
   try {
     const validatedTitle = TitleSchema.parse(title);
-    const product = await db.product.findUnique({
+
+    const product = await db.product.findFirst({
       where: {
-        title: validatedTitle,
+        title: {
+          equals: validatedTitle,
+          mode: "insensitive",
+        },
       },
       include: {
         questions: true,
@@ -151,17 +154,17 @@ export const getProductByTitle = async (title: string) => {
         message: "Product does not exist.",
       };
     }
-
     return {
       success: true,
       message: "Product fetched successfully.",
       product,
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (_error) {
+  } catch (error) {
+    console.error("Error fetching product:", error);
     return {
       success: false,
-      message: "Internal server error.",
+      message: "An error occurred while fetching the product.",
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 };
