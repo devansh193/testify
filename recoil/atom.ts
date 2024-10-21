@@ -12,6 +12,21 @@ interface Product {
   logoUrl: string | null;
   userId: string;
 }
+export const nameAtom = atom<string>({
+  key: "nameAtom",
+  default: "",
+});
+
+export const emailAtom = atom<string>({
+  key: "emailAtom",
+  default: "",
+});
+
+export const imageAtom = atom<File | null>({
+  key: "imageAtom",
+  default: null,
+});
+
 export const titleAtom = atom<string>({
   key: "titleAtom",
   default: "Your Product Name",

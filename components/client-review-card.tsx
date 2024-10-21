@@ -17,13 +17,21 @@ import { Progress } from "@/components/ui/progress";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   descriptionAtom,
+  emailAtom,
+  imageAtom,
+  nameAtom,
   questionsAtom,
   ratingsAtom,
   textReviewAtom,
   titleAtom,
 } from "@/recoil/atom";
+import { Input } from "./ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const ReviewCard = () => {
+  const [name, setName] = useRecoilState(nameAtom);
+  const [email, setEmail] = useRecoilState(emailAtom);
+  const [image, setImage] = useRecoilState(imageAtom);
   const [overallReview, setOverallReview] = useRecoilState(textReviewAtom);
   const [overallRating, setOverallRating] = useRecoilState(ratingsAtom);
   const [error, setError] = useState("");
@@ -32,7 +40,7 @@ const ReviewCard = () => {
   const title = useRecoilValue(titleAtom);
   const description = useRecoilValue(descriptionAtom);
   const questions = useRecoilValue(questionsAtom);
-
+  const [isFilled, setIsFilled] = useState(false);
   const handleRatingChange = (rating: number) => {
     setOverallRating(rating);
   };
@@ -63,6 +71,17 @@ const ReviewCard = () => {
     }, 1500);
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!name || !email) {
+      setError("Please fill name and email.");
+    } else {
+      setIsFilled((isFilled) => !isFilled);
+    }
+  };
+
   if (isSubmitted) {
     return (
       <Card className="w-full mx-auto">
@@ -76,6 +95,59 @@ const ReviewCard = () => {
               Your feedback helps us improve {title}.
             </CardDescription>
           </div>
+        </CardContent>
+      </Card>
+    );
+  }
+  if (!isFilled) {
+    return (
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Your information</CardTitle>
+          <CardDescription>Please provide your details.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleFormSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={name}
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                value={email}
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="johndoe@example.com"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="image">Image (optional)</Label>
+              <Input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files?.[0] || null)}
+              />
+            </div>
+            {error && (
+              <div className="text-red-500 font-semibold" role="alert">
+                {error}
+              </div>
+            )}
+            <Button type="submit" className="w-full">
+              Continue
+            </Button>
+          </form>
         </CardContent>
       </Card>
     );
@@ -132,6 +204,16 @@ const ReviewCard = () => {
                   onClick={() => handleRatingChange(star)}
                 />
               ))}
+            </div>
+          </div>
+          <div className="flex items-start justify-start gap-x-2">
+            <Avatar>
+              <AvatarImage src={image ? URL.createObjectURL(image) : ""} />
+              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-medium">{name}</p>
+              <p className="text-sm text-gray-500">{email}</p>
             </div>
           </div>
         </div>
