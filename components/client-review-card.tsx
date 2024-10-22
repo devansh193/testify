@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Lightbulb, Star, ThumbsUp } from "lucide-react";
+import { Lightbulb, Loader, Star, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,6 +29,7 @@ import {
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { createTestimonial } from "@/action/testimonial";
+import { toast } from "sonner";
 
 const ReviewCard = () => {
   const [name, setName] = useRecoilState(nameAtom);
@@ -44,6 +45,7 @@ const ReviewCard = () => {
   const description = useRecoilValue(descriptionAtom);
   const questions = useRecoilValue(questionsAtom);
   const [isFilled, setIsFilled] = useState(false);
+
   const handleRatingChange = (rating: number) => {
     setOverallRating(rating);
   };
@@ -65,14 +67,44 @@ const ReviewCard = () => {
       setError("Please provide a rating.");
       return;
     }
-    const data = {name, email, overallReview, overallRating,}
-    setIsSubmitting(true);
-    // Simulating API call
-    try{
-      await createTestimonial({name, }); 
-    }
 
-    
+    const productId = product?.id;
+    const data = {
+      name,
+      email,
+      textReview: overallReview,
+      rating: overallRating,
+      productId: productId || "",
+    };
+
+    setIsSubmitting(true);
+    const toastId = toast("Submitting review...", {
+      icon: <Loader className="animate-spin" />,
+    });
+
+    try {
+      const response = await createTestimonial(data);
+      if (response.success) {
+        toast.success(response.message, {
+          id: toastId,
+          icon: "",
+        });
+        setIsSubmitted(true); // Set as submitted on success
+      } else {
+        toast.error(response.message, {
+          id: toastId,
+          icon: "",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal server error.", {
+        id: toastId,
+        icon: "",
+      });
+    } finally {
+      setIsSubmitting(false); // Ensure submitting is reset
+    }
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -82,7 +114,7 @@ const ReviewCard = () => {
     if (!name || !email) {
       setError("Please fill name and email.");
     } else {
-      setIsFilled((isFilled) => !isFilled);
+      setIsFilled(true);
     }
   };
 
@@ -103,6 +135,7 @@ const ReviewCard = () => {
       </Card>
     );
   }
+
   if (!isFilled) {
     return (
       <Card className="w-full max-w-2xl mx-auto">
@@ -231,10 +264,19 @@ const ReviewCard = () => {
         )}
         <Button
           className="w-full"
-          onClick={handleSubmit}
           disabled={isSubmitting}
+          onClick={handleSubmit}
         >
-          {isSubmitting ? "Submitting..." : "Submit Review"}
+          {isSubmitting ? (
+            <>
+              <Loader className="animate-spin mr-2" /> Submitting...
+            </>
+          ) : (
+            "Submit Review"
+          )}
+        </Button>
+        <Button variant={"link"} onClick={(isFilled) => setIsFilled(!isFilled)}>
+          Edit information
         </Button>
       </CardFooter>
     </Card>

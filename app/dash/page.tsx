@@ -38,10 +38,10 @@ import { getProduct } from "@/action/product";
 import { useRouter } from "next/navigation";
 import LoadingDashboard from "./loading";
 import { useRecoilState } from "recoil";
-import { productsAtom } from "@/recoil/atom";
+import { productAtom } from "@/recoil/atom";
 
 export default function ProductDashboard() {
-  const [products, setProducts] = useRecoilState(productsAtom);
+  const [products, setProducts] = useRecoilState(productAtom);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
@@ -68,7 +68,7 @@ export default function ProductDashboard() {
         userId,
       });
 
-      setProducts(products || []);
+      setProducts(products);
       testimonialsFetched.current = true;
     } catch (error) {
       console.error("Failed to fetch testimonials:", error);

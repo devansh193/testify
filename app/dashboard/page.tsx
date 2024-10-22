@@ -40,17 +40,14 @@ export default function Dashboard() {
 
     try {
       let userId: string | undefined;
-
       if (session?.user?.id) {
         userId = session.user.id;
       } else {
         throw new Error("User is not authenticated");
       }
-
       const { products } = await getProduct({
         userId,
       });
-
       setTestimonialCards(products || []);
       testimonialsFetched.current = true;
     } catch (error) {

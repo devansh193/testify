@@ -37,7 +37,6 @@ export default function ProductPage() {
         const { success, product: fetchedProduct } = await getProductByTitle(
           slug
         );
-
         if (success && fetchedProduct) {
           setProduct(fetchedProduct);
           setTitle(fetchedProduct.title);
@@ -60,7 +59,8 @@ export default function ProductPage() {
     };
 
     fetchProduct();
-  }, [slug, setTitle, setDescription, setQuestions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
   if (loading) {
     return <LoadingPage />;

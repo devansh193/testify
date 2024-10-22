@@ -5,14 +5,6 @@ interface Question {
   id: number;
   text: string;
 }
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  showLogo: boolean;
-  logoUrl: string | null;
-  userId: string;
-}
 export const nameAtom = atom<string>({
   key: "nameAtom",
   default: "",
@@ -68,12 +60,12 @@ export const ratingsAtom = atom({
   default: 0,
 });
 
-export const textReviewAtom = atom({
+export const textReviewAtom = atom<string>({
   key: "textReviewAtom",
   default: "",
 });
 
-export const productsAtom = atom<Product[]>({
-  key: "productsAtom",
-  default: [],
+export const productId = atom<string>({
+  key: "idAtom",
+  default: "",
 });

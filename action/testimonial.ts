@@ -1,3 +1,4 @@
+"use server";
 import db from "@/lib/db";
 
 interface createTestimonialProp {
@@ -32,7 +33,11 @@ export const createTestimonial = async (data: createTestimonialProp) => {
         email,
         textReview,
         rating,
-        productId,
+        product: {
+          connect: {
+            id: productId,
+          },
+        },
       },
     });
     return {
