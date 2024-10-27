@@ -11,21 +11,6 @@ interface createTestimonialProp {
 
 export const createTestimonial = async (data: createTestimonialProp) => {
   const { name, email, textReview, rating, productId } = data;
-  const existingEmail = await db.testimonial.findFirst({
-    where: {
-      email: {
-        equals: email,
-        mode: "insensitive",
-      },
-    },
-  });
-
-  if (existingEmail) {
-    return {
-      success: false,
-      message: "Review already submitted.",
-    };
-  }
   try {
     await db.testimonial.create({
       data: {

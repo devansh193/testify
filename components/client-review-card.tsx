@@ -1,19 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { Lightbulb, Loader, Star, ThumbsUp } from "lucide-react";
+import {
+  Lightbulb,
+  Loader,
+  Star,
+  ThumbsUp,
+  User,
+  Mail,
+  Image as ImageIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   descriptionAtom,
@@ -26,12 +35,10 @@ import {
   textReviewAtom,
   titleAtom,
 } from "@/recoil/atom";
-import { Input } from "./ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { createTestimonial } from "@/action/testimonial";
 import { toast } from "sonner";
 
-const ReviewCard = () => {
+export default function ReviewCard() {
   const [name, setName] = useRecoilState(nameAtom);
   const [email, setEmail] = useRecoilState(emailAtom);
   const [image, setImage] = useRecoilState(imageAtom);
@@ -44,7 +51,6 @@ const ReviewCard = () => {
   const product = useRecoilValue(productAtom);
   const description = useRecoilValue(descriptionAtom);
   const questions = useRecoilValue(questionsAtom);
-  const [isFilled, setIsFilled] = useState(false);
 
   const handleRatingChange = (rating: number) => {
     setOverallRating(rating);
@@ -52,13 +58,20 @@ const ReviewCard = () => {
 
   const calculateProgress = () => {
     let progress = 0;
-    if (overallReview.trim().length > 0) progress += 50;
-    if (overallRating > 0) progress += 50;
+    if (name.trim().length > 0) progress += 20;
+    if (email.trim().length > 0) progress += 20;
+    if (overallReview.trim().length > 0) progress += 30;
+    if (overallRating > 0) progress += 30;
     return progress;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError("");
+    if (!name.trim() || !email.trim()) {
+      setError("Please provide your name and email.");
+      return;
+    }
     if (overallReview.trim().length === 0) {
       setError("Please provide a review.");
       return;
@@ -89,7 +102,7 @@ const ReviewCard = () => {
           id: toastId,
           icon: "",
         });
-        setIsSubmitted(true); // Set as submitted on success
+        setIsSubmitted(true);
       } else {
         toast.error(response.message, {
           id: toastId,
@@ -103,184 +116,164 @@ const ReviewCard = () => {
         icon: "",
       });
     } finally {
-      setIsSubmitting(false); // Ensure submitting is reset
-    }
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    if (!name || !email) {
-      setError("Please fill name and email.");
-    } else {
-      setIsFilled(true);
+      setIsSubmitting(false);
     }
   };
 
   if (isSubmitted) {
     return (
-      <Card className="w-full mx-auto">
-        <CardContent className="pt-6">
-          <div className="text-center space-y-4">
-            <ThumbsUp className="h-16 w-16 mx-auto text-green-500" />
-            <CardTitle className="text-2xl font-bold">
-              Thank You for Your Review!
-            </CardTitle>
-            <CardDescription>
-              Your feedback helps us improve {title}.
-            </CardDescription>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!isFilled) {
-    return (
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>Your information</CardTitle>
-          <CardDescription>Please provide your details.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleFormSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                value={name}
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                required
-              />
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <Card className="w-full max-w-2xl">
+          <CardContent className="pt-6">
+            <div className="text-center space-y-4">
+              <ThumbsUp className="h-16 w-16 mx-auto text-green-500" />
+              <CardTitle className="text-2xl font-bold">
+                Thank You for Your Review!
+              </CardTitle>
+              <CardDescription>
+                Your feedback helps us improve {title}.
+              </CardDescription>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                value={email}
-                type="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="johndoe@example.com"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="image">Image (optional)</Label>
-              <Input
-                id="image"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImage(e.target.files?.[0] || null)}
-              />
-            </div>
-            {error && (
-              <div className="text-red-500 font-semibold" role="alert">
-                {error}
-              </div>
-            )}
-            <Button type="submit" className="w-full">
-              Continue
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <div className="flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center mb-1">
-            <CardTitle className="text-2xl font-bold mb-1">{title}</CardTitle>
+    <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row p-4 gap-4">
+      <div className="w-full md:w-1/3">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label className="flex items-center space-x-2">
-              <Lightbulb className="h-5 w-5 mr-2" />
-              <span className="font-semibold">
-                Please consider the following questions:
-              </span>
-            </Label>
-            <ul className="list-disc list-inside pl-5 space-y-1">
-              {questions.map((question) => (
-                <li key={question.id}>{question.text}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="overall-review" className="font-semibold text-sm">
-              Your Overall Review
-            </Label>
-            <Textarea
-              id="overall-review"
-              value={overallReview}
-              onChange={(e) => setOverallReview(e.target.value)}
-              placeholder="Share your thoughts about the product..."
-              rows={4}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label className="font-semibold">Overall Rating</Label>
-            <div className="flex space-x-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  className={`h-6 w-6 cursor-pointer ${
-                    star <= overallRating
-                      ? "text-yellow-400 fill-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                  onClick={() => handleRatingChange(star)}
+          </CardHeader>
+        </Card>
+      </div>
+      <div className="w-full md:w-2/3">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>Your Review</CardTitle>
+            <CardDescription>We value your opinion on {title}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="flex items-center">
+                    <User className="w-4 h-4 mr-2" /> Name
+                  </Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="flex items-center">
+                    <Mail className="w-4 h-4 mr-2" /> Email
+                  </Label>
+                  <Input
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="johndoe@example.com"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="image" className="flex items-center">
+                  <ImageIcon className="w-4 h-4 mr-2" /> Profile Image
+                  (optional)
+                </Label>
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImage(e.target.files?.[0] || null)}
                 />
-              ))}
-            </div>
-          </div>
-          <div className="flex items-start justify-start gap-x-2">
-            <Avatar>
-              <AvatarImage src={image ? URL.createObjectURL(image) : ""} />
-              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-medium">{name}</p>
-              <p className="text-sm text-gray-500">{email}</p>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex-col space-y-4">
-        <Progress value={calculateProgress()} className="w-full" />
-        {error && (
-          <div className="text-red-500 font-semibold" role="alert">
-            {error}
-          </div>
-        )}
-        <Button
-          className="w-full"
-          disabled={isSubmitting}
-          onClick={handleSubmit}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader className="animate-spin mr-2" /> Submitting...
-            </>
-          ) : (
-            "Submit Review"
-          )}
-        </Button>
-        <Button variant={"link"} onClick={(isFilled) => setIsFilled(!isFilled)}>
-          Edit information
-        </Button>
-      </CardFooter>
-    </Card>
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center space-x-2">
+                  <Lightbulb className="h-5 w-5 mr-2" />
+                  <span className="font-semibold">
+                    Please consider the following questions:
+                  </span>
+                </Label>
+                <ul className="list-disc list-inside pl-5 space-y-1">
+                  {questions.map((question) => (
+                    <li key={question.id}>{question.text}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="overall-review"
+                  className="font-semibold text-sm"
+                >
+                  Your Overall Review
+                </Label>
+                <Textarea
+                  id="overall-review"
+                  value={overallReview}
+                  onChange={(e) => setOverallReview(e.target.value)}
+                  placeholder="Share your thoughts about the product..."
+                  rows={4}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-semibold">Overall Rating</Label>
+                <div className="flex space-x-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`h-6 w-6 cursor-pointer ${
+                        star <= overallRating
+                          ? "text-yellow-400 fill-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                      onClick={() => handleRatingChange(star)}
+                    />
+                  ))}
+                </div>
+              </div>
+              {image && (
+                <div className="flex items-center space-x-2">
+                  <Avatar>
+                    <AvatarImage
+                      src={URL.createObjectURL(image)}
+                      alt="Profile"
+                    />
+                    <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-gray-500">
+                    Profile image preview
+                  </span>
+                </div>
+              )}
+              <Progress value={calculateProgress()} className="w-full" />
+              {error && (
+                <div className="text-red-500 font-semibold" role="alert">
+                  {error}
+                </div>
+              )}
+              <Button className="w-full" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader className="animate-spin mr-2" /> Submitting...
+                  </>
+                ) : (
+                  "Submit Review"
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
-};
-
-export default ReviewCard;
+}
