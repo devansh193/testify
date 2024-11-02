@@ -11,10 +11,6 @@ export const Faq = () => {
           <div className="space-y-4">
             {[
               {
-                q: "How long is the free trial?",
-                a: "Our free trial lasts for 14 days, giving you ample time to explore all features.",
-              },
-              {
                 q: "Can I customize the design of my testimonial page?",
                 a: "Yes, Testify offers extensive customization options to match your brand identity.",
               },
@@ -31,7 +27,6 @@ export const Faq = () => {
                 <h3 className="font-bold mb-2">{faq.q}</h3>
                 <p className="text-gray-700">{faq.a}</p>
               </div>
-              
             ))}
           </div>
         </div>

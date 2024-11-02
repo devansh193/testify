@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { useSession, signOut } from "next-auth/react";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { MaxWidthWrapper } from "./max-width-wrapper";
 
 const navContent = [
   {
@@ -61,25 +62,27 @@ export const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Logo />
-        <nav className="hidden md:flex md:items-center md:space-x-4">
-          <NavItems />
-        </nav>
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <nav className="flex flex-col space-y-4">
-              <NavItems />
-            </nav>
-          </SheetContent>
-        </Sheet>
-      </div>
+      <MaxWidthWrapper>
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          <Logo />
+          <nav className="hidden md:flex md:items-center md:space-x-4">
+            <NavItems />
+          </nav>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <nav className="flex flex-col space-y-4">
+                <NavItems />
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </MaxWidthWrapper>
     </header>
   );
 };

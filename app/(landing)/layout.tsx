@@ -6,7 +6,7 @@ const LandingLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="">
       <Navbar />
       <main className="">{children}</main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { Work } from "@/components/Landing/work";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="">
       <Main />
       <Work />
       <Customer />
