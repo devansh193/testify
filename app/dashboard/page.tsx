@@ -69,7 +69,6 @@ export default function Dashboard() {
       card.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
   const handleRowClick = (productId: string) => {
     router.push(`/products/${productId}`);
   };

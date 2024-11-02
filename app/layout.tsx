@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable}  min-h-[calc(100vh-1px)] flex flex-col font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable}  min-h-[calc(100vh-1px)] flex flex-col font-inter antialiased`}
       >
         <QueryProviders>
           <RecoilContextProvider>

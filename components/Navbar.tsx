@@ -5,7 +5,7 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useSession, signOut } from "next-auth/react";
-import { Menu } from "lucide-react";
+import { ArrowRight, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MaxWidthWrapper } from "./max-width-wrapper";
 
@@ -53,7 +53,9 @@ export const Navbar = () => {
             <Link href="/sign-in">Sign in</Link>
           </Button>
           <Button variant="default" asChild>
-            <Link href="/sign-up">Sign up</Link>
+            <Link href="/sign-up">
+              Get Started <ArrowRight className="ml-1.5 size-4" />{" "}
+            </Link>
           </Button>
         </>
       )}

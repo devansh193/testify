@@ -3,28 +3,27 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const protectedRoutes = ["/dashboard"];
-const authRoutes = ["/sign-in"]; 
+const authRoutes = ["/sign-in"];
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXT_AUTH_SECRET });
   const url = req.nextUrl.clone();
 
-
   if (protectedRoutes.some((route) => url.pathname.startsWith(route))) {
     if (!token) {
-      url.pathname = "/sign-in"; 
+      url.pathname = "/sign-in";
       return NextResponse.redirect(url);
     }
   }
 
   if (authRoutes.some((route) => url.pathname.startsWith(route))) {
     if (token) {
-      url.pathname = "/dashboard"; 
+      url.pathname = "/dashboard";
       return NextResponse.redirect(url);
     }
   }
 
-  return NextResponse.next(); 
+  return NextResponse.next();
 }
 
 export const config = {

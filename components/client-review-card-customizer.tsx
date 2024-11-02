@@ -120,14 +120,14 @@ export function TestimonialCardCustomizer() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-x-4">
-      <div className="col-span-1">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-x-4">
+      <div className="col-span-2">
         <Badge variant={"default"} className="my-2">
           Live preview
         </Badge>
         <ReviewCard />
       </div>
-      <div className="col-span-1">
+      <div className="col-span-2">
         <Card className="w-full mx-auto">
           <CardHeader>
             <CardTitle className="text-xl font-bold">

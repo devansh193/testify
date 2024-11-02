@@ -155,7 +155,7 @@ export default function FeaturesPage() {
             {[
               {
                 q: "How long is the free trial?",
-                a: "Our free trial lasts for 14 days, giving you ample time to explore all of Testify's features and see how it can benefit your business.",
+                a: "Our free trial offers 10 free testimonials, giving you ample opportunity to explore all of Testify's features and see how it can benefit your business.",
               },
               {
                 q: "Can I customize the design of my testimonial widgets?",

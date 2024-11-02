@@ -17,7 +17,7 @@ export const Advert = () => {
                 </p>
               </div>
               <Button className="bg-black text-white hover:bg-gray-800 transition-colors">
-                Start Your Free Trial
+                Start For Free Today
               </Button>
             </div>
           </div>

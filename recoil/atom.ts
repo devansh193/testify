@@ -69,3 +69,7 @@ export const productId = atom<string>({
   key: "idAtom",
   default: "",
 });
+export const sidebarAtom = atom<boolean>({
+  key: "sidebarAtom",
+  default: false,
+});

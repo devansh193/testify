@@ -105,16 +105,6 @@ export default function AboutPage() {
                   role: "Head of Design",
                   image: "",
                 },
-                {
-                  name: "Akshit Rawat",
-                  role: "Head of Finance",
-                  image: "",
-                },
-                {
-                  name: "Uzair",
-                  role: "Head of Operations",
-                  image: "",
-                },
               ].map((member, index) => (
                 <div key={index} className="text-center">
                   <Image

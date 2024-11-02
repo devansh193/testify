@@ -142,14 +142,14 @@ export default function ReviewCard() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row p-4 gap-4">
-      <div className="w-full md:w-1/3">
+      {/* <div className="w-full md:w-1/3">
         <Card className="h-full">
           <CardHeader>
             <CardTitle>{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </CardHeader>
         </Card>
-      </div>
+      </div> */}
       <div className="w-full md:w-2/3">
         <Card className="h-full">
           <CardHeader>
