@@ -42,7 +42,7 @@ export default function TestimonialPage() {
   const [greetingImage, setGreetingImage] = useState<string | null>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -186,22 +186,19 @@ export default function TestimonialPage() {
               <CardDescription className="max-w-[450px] mx-auto mt-2">
                 {greeting}
               </CardDescription>
-              {showGreetingImage && (
+              {showGreetingImage && greetingImage && (
                 <div className="mt-4 relative w-full aspect-video">
-                  {greetingImage ? (
-                    <>
-                      <Image
-                        src={greetingImage}
-                        alt="Greeting image"
-                        fill
-                        className="rounded-md object-cover mt-8"
-                      />
-                    </>
-                  ) : (
-                    <div className="w-full h-full bg-gray-200 rounded-md flex items-center justify-center">
-                      <ImageIcon className="h-12 w-12 text-gray-400" />
-                    </div>
-                  )}
+                  <Image
+                    src={greetingImage}
+                    alt="Greeting image"
+                    fill
+                    className="rounded-md object-cover mt-8"
+                  />
+                </div>
+              )}
+              {showGreetingImage && !greetingImage && (
+                <div className="w-full h-full bg-gray-200 rounded-md flex items-center justify-center">
+                  <ImageIcon className="h-12 w-12 text-gray-400" />
                 </div>
               )}
             </CardHeader>

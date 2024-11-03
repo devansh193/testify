@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -27,6 +27,7 @@ const navContent = [
 export const Navbar = () => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const data = useRef();
 
   const NavItems = () => (
     <>
