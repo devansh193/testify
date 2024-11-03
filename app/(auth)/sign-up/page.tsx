@@ -33,7 +33,7 @@ export default function SignUpPage() {
       await createAccount({ name, email, password });
     } catch (error) {
       console.error(error);
-      toast.error("Failed to create user. Please try again.");
+      toast.error("Failed to create use. Please try again.");
     }
   };
 

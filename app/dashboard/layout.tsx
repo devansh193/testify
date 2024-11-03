@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/navbar";
+// import { Navbar } from "@/components/navbar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="">
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="">{children}</main>
     </div>
   );
