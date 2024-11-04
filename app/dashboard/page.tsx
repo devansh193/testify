@@ -1,177 +1,228 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { useEffect, useState, useRef } from "react";
-import { Plus, Edit, Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { TestimonialCardCustomizer } from "@/components/client-review-card-customizer";
-import { useRecoilState } from "recoil";
-import { dialogAtom } from "@/recoil/atom";
-import { getProduct } from "@/action/product";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter } from "next/navigation";
-import { ProductDetails } from "@/schema/schema";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import {
+  ArrowRight,
+  Plus,
+  Edit,
+  Trash2,
+  BarChart2,
+  FileText,
+  ThumbsUp,
+} from "lucide-react";
+import Link from "next/link";
 
-export default function Dashboard() {
-  const [loading, setLoading] = useState(false);
-  const [testimonialCards, setTestimonialCards] = useState<ProductDetails[]>(
-    []
-  );
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useRecoilState(dialogAtom);
-  const { data: session, status } = useSession();
-  const router = useRouter();
+const products = [
+  {
+    id: 1,
+    title: "Product 1",
+    testimonials: 10,
+    views: 1000,
+    conversions: 100,
+  },
+  {
+    id: 2,
+    title: "Product 2",
+    testimonials: 15,
+    views: 1500,
+    conversions: 150,
+  },
+  {
+    id: 3,
+    title: "Product 3",
+    testimonials: 20,
+    views: 2000,
+    conversions: 200,
+  },
+];
 
-  const testimonialsFetched = useRef(false);
+const chartData = products.map((product) => ({
+  name: product.title,
+  views: product.views,
+  conversions: product.conversions,
+}));
 
-  const fetchTestimonials = async () => {
-    if (testimonialsFetched.current || status !== "authenticated") return;
-
-    setLoading(true);
-
-    try {
-      let userId: string | undefined;
-      if (session?.user?.id) {
-        userId = session.user.id;
-      } else {
-        throw new Error("User is not authenticated");
-      }
-      const { products } = await getProduct({
-        userId,
-      });
-      setTestimonialCards(products || []);
-      testimonialsFetched.current = true;
-    } catch (error) {
-      console.error("Failed to fetch testimonials:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (status === "authenticated" && !testimonialsFetched.current) {
-      fetchTestimonials();
-    }
-  }, [status, session]);
-
-  const filteredCards = testimonialCards.filter(
-    (card) =>
-      card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      card.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleRowClick = (productId: string) => {
-    router.push(`/products/${productId}`);
-  };
-
+const Dashboard = () => {
   return (
-    <div className="bg-white p-8">
-      <h1 className="text-3xl font-bold text-black mb-8">
-        Testimonial Dashboard
-      </h1>
-
-      <div className="flex justify-between items-center mb-6">
-        <div className="relative w-64">
-          <Input
-            type="text"
-            placeholder="Search testimonials..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+    <div className="min-h-screen bg-gray-50">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">
+            Product Dashboard
+          </h1>
+          <Link href={"/products/create"}>
+            <Button className="bg-black text-white hover:bg-gray-800">
+              <Plus className="mr-2 h-4 w-4" /> Create New Product
+            </Button>
+          </Link>
         </div>
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-black text-white hover:bg-gray-800">
-              <Plus className="mr-2 h-4 w-4" /> Create New Testimonial
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-screen overflow-auto p-8">
-            <TestimonialCardCustomizer />
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Questions</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        {loading ? (
-          <TableBody>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  <Skeleton className="h-4 w-[200px]" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-[300px]" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-[50px]" />
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <Skeleton className="h-8 w-8 rounded-md" />
-                    <Skeleton className="h-8 w-8 rounded-md" />
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Total Products
+                  </CardTitle>
+                  <FileText className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{products.length}</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Total Testimonials
+                  </CardTitle>
+                  <ThumbsUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {products.reduce(
+                      (sum, product) => sum + product.testimonials,
+                      0
+                    )}
                   </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        ) : (
-          <TableBody>
-            {filteredCards.map((card) => (
-              <TableRow
-                key={card.id}
-                onClick={() => handleRowClick(card.id)}
-                className="hover:cursor-pointer"
-              >
-                <TableCell>{card.title}</TableCell>
-                <TableCell>{card.description}</TableCell>
-                <TableCell>{card.questions.length}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="mr-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        )}
-      </Table>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Total Views
+                  </CardTitle>
+                  <BarChart2 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {products.reduce((sum, product) => sum + product.views, 0)}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Avg. Conversion Rate
+                  </CardTitle>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {(
+                      (products.reduce(
+                        (sum, product) =>
+                          sum + product.conversions / product.views,
+                        0
+                      ) /
+                        products.length) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <Card className="col-span-4">
+              <CardHeader>
+                <CardTitle>Product Performance</CardTitle>
+              </CardHeader>
+              <CardContent className="pl-2">
+                <ResponsiveContainer width="100%" height={350}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="views" fill="#8884d8" />
+                    <Bar dataKey="conversions" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="products" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <Card key={product.id}>
+                  <CardHeader>
+                    <div className="flex items-center space-x-4">
+                      <div>
+                        <CardTitle>{product.title}</CardTitle>
+                        <CardDescription className="mt-1">
+                          {product.testimonials} testimonials
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardFooter className="flex justify-between">
+                    <Button variant="outline">View Details</Button>
+                    <div className="space-x-2">
+                      <Button variant="ghost" size="icon">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="analytics" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Product Analytics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {products.map((product) => (
+                    <div key={product.id} className="flex items-center">
+                      <div className="w-1/4 font-medium">{product.title}</div>
+                      <div className="w-1/4">Views: {product.views}</div>
+                      <div className="w-1/4">
+                        Conversions: {product.conversions}
+                      </div>
+                      <div className="w-1/4">
+                        Rate:{" "}
+                        {((product.conversions / product.views) * 100).toFixed(
+                          2
+                        )}
+                        %
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
     </div>
   );
-}
+};
+
+export default Dashboard;

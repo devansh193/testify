@@ -27,7 +27,7 @@ const navContent = [
 export const Navbar = () => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const data = useRef();
+  // const data = useRef();
 
   const NavItems = () => (
     <>
