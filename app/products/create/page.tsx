@@ -20,7 +20,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { FileImage, Trash2, Plus, Star, User } from "lucide-react";
 import Image from "next/image";
 
-export default function Component() {
+const Create = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     title: "",
@@ -226,7 +226,7 @@ export default function Component() {
 
   return (
     <main className="flex flex-col md:flex-row min-h-screen bg-gray-50">
-      <div className="md:w-[500px] bg-gray-50 md:h-screen border-r-2 border-gray-200 flex flex-col">
+      <div className="md:w-[400px] bg-gray-50 md:h-screen border-r-2 border-gray-200 flex flex-col">
         <div className="h-14 bg-gray-50 border-r border-b-2 border-gray-200 p-4">
           <TestifyLogo />
         </div>
@@ -399,4 +399,5 @@ export default function Component() {
       </div>
     </main>
   );
-}
+};
+export default Create;
