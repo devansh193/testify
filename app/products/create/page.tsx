@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { FileImage, Trash2, Plus, Star, User } from "lucide-react";
 import Image from "next/image";
+import { useCreateProduct } from "@/features/product/api/use-create-product";
 
 const Create = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -28,12 +29,10 @@ const Create = () => {
     image: null,
     questions: [""],
     emojiRatings: true,
-    name: "",
-    jobTitle: "",
-    category: "",
   });
   const emojis = ["😠", "🙁", "😐", "😊", "😄"];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateFormData = (field: string, value: any, index?: number) => {
     setFormData((prev) => {
       if (field === "image" && value === null) {
@@ -182,13 +181,7 @@ const Create = () => {
             <Label htmlFor="name">
               Your name <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="name"
-              placeholder="Type your name"
-              className="mt-1"
-              value={formData.name}
-              onChange={(e) => updateFormData("name", e.target.value)}
-            />
+            <Input id="name" placeholder="Type your name" className="mt-1" />
           </div>
 
           <div>
@@ -197,8 +190,6 @@ const Create = () => {
               id="job-title"
               placeholder="Software Engineer"
               className="mt-1"
-              value={formData.jobTitle}
-              onChange={(e) => updateFormData("jobTitle", e.target.value)}
             />
           </div>
         </div>
@@ -220,6 +211,7 @@ const Create = () => {
 
   const handleSubmit = () => {
     console.log("Submitting product:", formData);
+    // useCreateProduct()
     // Here you would typically send the data to your backend
     // Reset form or redirect user after submission
   };
@@ -344,7 +336,6 @@ const Create = () => {
                     <Input
                       id="preview-name"
                       placeholder="Tyler Durden"
-                      value={formData.name}
                       readOnly
                       className="mt-1"
                     />
@@ -360,7 +351,6 @@ const Create = () => {
                     <Input
                       id="preview-job-title"
                       placeholder="Soap factory owner"
-                      value={formData.jobTitle}
                       readOnly
                       className="mt-1"
                     />

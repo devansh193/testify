@@ -2,7 +2,7 @@
 
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { Product, Question } from "@prisma/client";
+import { Product } from "@prisma/client";
 import { z } from "zod";
 import { CreateProductSchema } from "@/schema/schema";
 import { ErrorHandler } from "@/lib/error";
@@ -18,7 +18,6 @@ export const createProduct = async (
 ) => {
   try {
     const validatedData = CreateProductSchema.parse(data);
-
     const existingProduct = await db.product.findFirst({
       where: {
         title: {
@@ -27,30 +26,23 @@ export const createProduct = async (
         },
       },
     });
-
     if (existingProduct) {
       return {
         success: false,
         message: "Product already exists.",
       };
     }
-
     await db.product.create({
       data: {
         title: validatedData.title,
         description: validatedData.description,
-        logoUrl: validatedData.logoUrl,
         user: {
           connect: {
             id: validatedData.userId,
           },
         },
-        questions: {
-          create: validatedData.questions,
-        },
       },
     });
-
     revalidatePath("/dashboard");
     return {
       success: true,
@@ -76,16 +68,13 @@ export const getProduct = async ({ userId }: { userId: string }) => {
         id: true,
         title: true,
         description: true,
-        logoUrl: true,
         userId: true,
         questions: true,
       },
     });
-
     if (!products.length) {
       throw new ErrorHandler("Products do not exist.", "CONFLICT");
     }
-
     return {
       success: true,
       products,

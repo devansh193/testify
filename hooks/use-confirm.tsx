@@ -19,6 +19,7 @@ export const useConfirm = (
   } | null>(null);
 
   const confirm = () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     new Promise((resolve, reject) => {
       setPromise({ resolve });
     });

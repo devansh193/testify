@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Button } from "./ui/button";

@@ -19,8 +19,7 @@ model Product {
   id           String        @id @default(uuid())
   title        String        @unique
   description  String
-  logoUrl      String?
-  questions    Question[]
+  questions    String[]
   testimonials Testimonial[]
   userId       String
   user         User          @relation(fields: [userId], references: [id])
@@ -35,11 +34,4 @@ model Testimonial {
   productId  String
   product    Product  @relation(fields: [productId], references: [id])
   createdAt  DateTime @default(now())
-}
-
-model Question {
-  id        String  @id @default(uuid())
-  text      String
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
 }
