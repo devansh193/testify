@@ -5,11 +5,6 @@ export const QuestionSchema = z.object({
 });
 
 export const ProductSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
-});
-
-export const CreateProductSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   showLogo: z.boolean(),

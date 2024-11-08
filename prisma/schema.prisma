@@ -20,6 +20,7 @@ model Product {
   title        String        @unique
   description  String
   questions    String[]
+  rating       Boolean
   testimonials Testimonial[]
   userId       String
   user         User          @relation(fields: [userId], references: [id])
@@ -30,7 +31,7 @@ model Testimonial {
   name       String
   email      String   @unique
   textReview String
-  rating     Int
+  rating     Int?
   productId  String
   product    Product  @relation(fields: [productId], references: [id])
   createdAt  DateTime @default(now())

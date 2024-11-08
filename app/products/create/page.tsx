@@ -17,11 +17,14 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
-import { FileImage, Trash2, Plus, Star, User } from "lucide-react";
+import { FileImage, Trash2, Plus, Star, User, Loader } from "lucide-react";
 import Image from "next/image";
-import { useCreateProduct } from "@/features/product/api/use-create-product";
+import { createProduct } from "@/action/product";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 const Create = () => {
+  const { data: session } = useSession();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     title: "",
@@ -29,7 +32,9 @@ const Create = () => {
     image: null,
     questions: [""],
     emojiRatings: true,
+    videoReview: true,
   });
+  const userId = session?.user.id;
   const emojis = ["😠", "🙁", "😐", "😊", "😄"];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,6 +123,16 @@ const Create = () => {
                 Remove Image
               </Button>
             )}
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <Label htmlFor="video-toggle">Video review</Label>
+            <Switch
+              id="video-toggle"
+              checked={formData.videoReview}
+              onCheckedChange={(checked) =>
+                updateFormData("videoReview", checked)
+              }
+            />
           </div>
         </div>
       ),
@@ -209,11 +224,33 @@ const Create = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Submitting product:", formData);
-    // useCreateProduct()
-    // Here you would typically send the data to your backend
-    // Reset form or redirect user after submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const toastId = toast.message("Creating product", {
+      icon: <Loader className="animate-spin" />,
+    });
+    try {
+      const result = await createProduct({
+        title: formData.title,
+        description: formData.description,
+        questions: formData.questions,
+        rating: formData.emojiRatings,
+        userId: userId || "",
+      });
+      if (result.success) {
+        toast.success("Product added successfully.", {
+          id: toastId,
+          icon: "",
+        });
+      } else {
+        toast.error(result.message, {
+          id: toastId,
+          icon: <Loader className="animate-spin" />,
+        });
+      }
+    } catch (_error) {
+      console.log(_error);
+    }
   };
 
   return (
@@ -247,7 +284,7 @@ const Create = () => {
       </div>
 
       <div className="flex-grow bg-gray-100 md:h-screen overflow-auto">
-        <div className="h-14 bg-white border-b-2 border-gray-200 p-4">
+        <div className="hidden sm:block h-14 bg-white border-b-2 border-gray-200 p-4">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -260,8 +297,14 @@ const Create = () => {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
+
         <div className="p-4 md:p-6 flex items-center justify-center min-h-[calc(100vh-3.5rem)]">
           <Card className="w-full max-w-lg">
+            <div className="p-4">
+              <Label className="bg-green-100 rounded-full p-1 text-xs text-green-700 border border-green-500">
+                Live preview
+              </Label>
+            </div>
             <CardHeader className="flex items-center justify-center">
               <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
                 {currentStep === 0 ? (
@@ -374,14 +417,21 @@ const Create = () => {
                     />
                   ))}
                 </div>
-                <Button
-                  className="w-full"
-                  onClick={
-                    currentStep === steps.length - 1 ? handleSubmit : handleNext
-                  }
-                >
-                  {currentStep === steps.length - 1 ? "Submit" : "Next"}
-                </Button>
+                {currentStep === 0 && formData.videoReview ? (
+                  <div className="flex items-center justify-center gap-x-4">
+                    <Button>Video review</Button>
+                    <Button>Text review</Button>
+                  </div>
+                ) : currentStep === 0 && !formData.videoReview ? (
+                  <div className="flex items-center justify-center">
+                    <Button>Text review</Button>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {currentStep === steps.length - 1 && (
+                  <Button className="w-full">Submit</Button>
+                )}
               </div>
             </CardContent>
           </Card>

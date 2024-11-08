@@ -1,228 +1,218 @@
 "use client";
+import { useEffect, useState } from "react";
+import { Plus, MoreVertical, Search, Menu } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import {
-  ArrowRight,
-  Plus,
-  Edit,
-  Trash2,
-  BarChart2,
-  FileText,
-  ThumbsUp,
-} from "lucide-react";
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { useSetRecoilState } from "recoil";
+import { sidebarAtom } from "@/recoil/atom";
+import { Sidebar } from "@/components/sidebar";
+import { useSession } from "next-auth/react";
+import { getProduct } from "@/action/product";
 
-const products = [
-  {
-    id: 1,
-    title: "Product 1",
-    testimonials: 10,
-    views: 1000,
-    conversions: 100,
-  },
-  {
-    id: 2,
-    title: "Product 2",
-    testimonials: 15,
-    views: 1500,
-    conversions: 150,
-  },
-  {
-    id: 3,
-    title: "Product 3",
-    testimonials: 20,
-    views: 2000,
-    conversions: 200,
-  },
-];
+interface Question {
+  id: string;
+  text: string;
+  productId: string;
+}
 
-const chartData = products.map((product) => ({
-  name: product.title,
-  views: product.views,
-  conversions: product.conversions,
-}));
+interface Product {
+  userId: string;
+  id: string;
+  title: string;
+  description: string;
+  logoUrl: string | null;
+  questions: Question[];
+}
 
-const Dashboard = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Product Dashboard
-          </h1>
-          <Link href={"/products/create"}>
-            <Button className="bg-black text-white hover:bg-gray-800">
-              <Plus className="mr-2 h-4 w-4" /> Create New Product
-            </Button>
-          </Link>
+interface ProductResponse {
+  success: boolean;
+  products: Product[];
+  totalProducts: number;
+}
+
+export default function Component() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const setSidebarOpen = useSetRecoilState(sidebarAtom);
+  const [products, setProducts] = useState<Product[]>([]);
+  const { data: session, status } = useSession();
+
+  const fetchProducts = async () => {
+    try {
+      let userId: string | undefined;
+      if (session?.user?.id) {
+        userId = session.user.id;
+      } else {
+        throw new Error("User not authenticated.");
+      }
+      const response = await getProduct({ userId });
+      // Update this line to use the correct property name
+      setProducts(response.products || []);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [status, session]);
+
+  const handleAddProduct = () => {
+    // Implement your add product logic here
+    console.log("Add product clicked");
+  };
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const renderProductCard = (product: Product) => (
+    <Card key={product.id}>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle>{product.title}</CardTitle>
+          {/* Add logo if available */}
+          {product.logoUrl && (
+            <div className="w-10 h-10 relative">
+              <Image
+                src={product.logoUrl}
+                alt={`${product.title} logo`}
+                fill
+                className="object-contain"
+              />
+            </div>
+          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-4 w-4" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleEditProduct(product.id)}>
+                Edit product
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleViewReviews(product.id)}>
+                View reviews
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleDeleteProduct(product.id)}
+              >
+                Delete product
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+        <CardDescription>{product.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center">
+            <Badge variant="secondary">
+              {product.questions.length} Questions
+            </Badge>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          </TabsList>
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Total Products
-                  </CardTitle>
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{products.length}</div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Total Testimonials
-                  </CardTitle>
-                  <ThumbsUp className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {products.reduce(
-                      (sum, product) => sum + product.testimonials,
-                      0
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Total Views
-                  </CardTitle>
-                  <BarChart2 className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {products.reduce((sum, product) => sum + product.views, 0)}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Avg. Conversion Rate
-                  </CardTitle>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {(
-                      (products.reduce(
-                        (sum, product) =>
-                          sum + product.conversions / product.views,
-                        0
-                      ) /
-                        products.length) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div>
-                </CardContent>
-              </Card>
+  const handleEditProduct = (productId) => {
+    console.log("Edit product:", productId);
+  };
+
+  const handleViewReviews = (productId) => {
+    console.log("View reviews:", productId);
+  };
+
+  const handleDeleteProduct = (productId) => {
+    console.log("Delete product:", productId);
+  };
+
+  return (
+    <div className="flex min-h-screen bg-white">
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
+        <header className="flex h-16 items-center justify-between border-b px-6">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden"
+            >
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Open sidebar</span>
+            </Button>
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                className="text-sm font-medium hover:text-black/70"
+                href="#"
+              >
+                Products
+              </Link>
+              <Link
+                className="text-sm font-medium hover:text-black/70"
+                href="#"
+              >
+                Reviews
+              </Link>
+              <Link
+                className="text-sm font-medium hover:text-black/70"
+                href="#"
+              >
+                Analytics
+              </Link>
+            </nav>
+          </div>
+        </header>
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Products</h1>
+              <p className="text-gray-500">
+                Manage your products and their reviews
+              </p>
             </div>
-            <Card className="col-span-4">
-              <CardHeader>
-                <CardTitle>Product Performance</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-2">
-                <ResponsiveContainer width="100%" height={350}>
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="views" fill="#8884d8" />
-                    <Bar dataKey="conversions" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="products" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {products.map((product) => (
-                <Card key={product.id}>
-                  <CardHeader>
-                    <div className="flex items-center space-x-4">
-                      <div>
-                        <CardTitle>{product.title}</CardTitle>
-                        <CardDescription className="mt-1">
-                          {product.testimonials} testimonials
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline">View Details</Button>
-                    <div className="space-x-2">
-                      <Button variant="ghost" size="icon">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardFooter>
-                </Card>
-              ))}
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Input
+                  className="pl-8"
+                  placeholder="Search products..."
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <Button className="hidden sm:flex" onClick={handleAddProduct}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Product
+              </Button>
             </div>
-          </TabsContent>
-          <TabsContent value="analytics" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Product Analytics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {products.map((product) => (
-                    <div key={product.id} className="flex items-center">
-                      <div className="w-1/4 font-medium">{product.title}</div>
-                      <div className="w-1/4">Views: {product.views}</div>
-                      <div className="w-1/4">
-                        Conversions: {product.conversions}
-                      </div>
-                      <div className="w-1/4">
-                        Rate:{" "}
-                        {((product.conversions / product.views) * 100).toFixed(
-                          2
-                        )}
-                        %
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </main>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredProducts.map(renderProductCard)}
+          </div>
+        </main>
+      </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

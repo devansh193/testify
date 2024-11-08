@@ -1,12 +1,5 @@
-// import { Navbar } from "@/components/navbar";
-
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="">
-      {/* <Navbar /> */}
-      <main className="">{children}</main>
-    </div>
-  );
+const DashLayout = ({ children }: { children: React.ReactNode }) => {
+  return <div>{children}</div>;
 };
 
-export default DashboardLayout;
+export default DashLayout;
