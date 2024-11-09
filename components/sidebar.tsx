@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { sidebarAtom } from "@/recoil/atom";
 import {
   BarChart2,
-  LayoutGrid,
+  Hourglass,
+  LayoutDashboard,
+  ListChecks,
   LogOut,
-  MessageSquare,
   Quote,
   Settings,
+  Star,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,8 +24,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut, useSession } from "next-auth/react";
 
 export const Sidebar = () => {
+  const { data: session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useRecoilState(sidebarAtom);
 
   return (
@@ -58,8 +61,8 @@ export const Sidebar = () => {
             </h2>
             <div className="space-y-1">
               <Button variant="ghost" className="w-full justify-start">
-                <LayoutGrid className="mr-2 h-4 w-4" />
-                All Products
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
               </Button>
             </div>
           </div>
@@ -69,15 +72,15 @@ export const Sidebar = () => {
             </h2>
             <div className="space-y-1">
               <Button variant="ghost" className="w-full justify-start">
-                <MessageSquare className="mr-2 h-4 w-4" />
-                All Reviews
+                <Star className="mr-2 h-4 w-4" />
+                Reviews
               </Button>
               <Button variant="ghost" className="w-full justify-start">
-                <MessageSquare className="mr-2 h-4 w-4" />
+                <Hourglass className="mr-2 h-4 w-4" />
                 Pending
               </Button>
               <Button variant="ghost" className="w-full justify-start">
-                <MessageSquare className="mr-2 h-4 w-4" />
+                <ListChecks className="mr-2 h-4 w-4" />
                 Approved
               </Button>
             </div>
@@ -104,18 +107,10 @@ export const Sidebar = () => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-full justify-start">
               <div className="flex items-center">
-                <Image
-                  alt="Avatar"
-                  className="rounded-full mr-2"
-                  height="32"
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: "32/32",
-                    objectFit: "cover",
-                  }}
-                  width="32"
-                />
-                <span>My Account</span>
+                <div className="mr-2 bg-blue-200 rounded-full flex items-center justify-center">
+                  <h1 className="px-2 py-1">{session?.user.name?.charAt(0)}</h1>
+                </div>
+                <span>{session?.user.name}</span>
               </div>
             </Button>
           </DropdownMenuTrigger>
@@ -126,7 +121,7 @@ export const Sidebar = () => {
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
               <LogOut className="mr-2 h-4 w-4" />
               Log out
             </DropdownMenuItem>

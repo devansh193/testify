@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Plus, MoreVertical, Search, Menu } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -26,34 +25,24 @@ import { Sidebar } from "@/components/sidebar";
 import { useSession } from "next-auth/react";
 import { getProduct } from "@/action/product";
 
-interface Question {
-  id: string;
-  text: string;
-  productId: string;
-}
-
 interface Product {
   userId: string;
   id: string;
   title: string;
   description: string;
-  logoUrl: string | null;
-  questions: Question[];
+  questions: string[];
+  rating: boolean;
 }
 
-interface ProductResponse {
-  success: boolean;
-  products: Product[];
-  totalProducts: number;
-}
-
-export default function Component() {
+export const Dashboard = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const setSidebarOpen = useSetRecoilState(sidebarAtom);
-  const [products, setProducts] = useState<Product[]>([]);
-  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
 
   const fetchProducts = async () => {
+    setLoading(true); // Start loading
     try {
       let userId: string | undefined;
       if (session?.user?.id) {
@@ -62,21 +51,23 @@ export default function Component() {
         throw new Error("User not authenticated.");
       }
       const response = await getProduct({ userId });
-      // Update this line to use the correct property name
-      setProducts(response.products || []);
+      setProducts(response?.products || []); // Update products
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [status, session]);
+  }, [session]);
 
   const handleAddProduct = () => {
     // Implement your add product logic here
     console.log("Add product clicked");
   };
+
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -86,17 +77,6 @@ export default function Component() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>{product.title}</CardTitle>
-          {/* Add logo if available */}
-          {product.logoUrl && (
-            <div className="w-10 h-10 relative">
-              <Image
-                src={product.logoUrl}
-                alt={`${product.title} logo`}
-                fill
-                className="object-contain"
-              />
-            </div>
-          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -105,16 +85,13 @@ export default function Component() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleEditProduct(product.id)}>
+              <DropdownMenuItem onClick={() => {}}>
                 Edit product
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleViewReviews(product.id)}>
+              <DropdownMenuItem onClick={() => {}}>
                 View reviews
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="text-red-600"
-                onClick={() => handleDeleteProduct(product.id)}
-              >
+              <DropdownMenuItem className="text-red-600" onClick={() => {}}>
                 Delete product
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -124,27 +101,13 @@ export default function Component() {
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
-          <div className="flex items-center">
-            <Badge variant="secondary">
-              {product.questions.length} Questions
-            </Badge>
-          </div>
+          <Badge variant="secondary">
+            {product.questions.length} Questions
+          </Badge>
         </div>
       </CardContent>
     </Card>
   );
-
-  const handleEditProduct = (productId) => {
-    console.log("Edit product:", productId);
-  };
-
-  const handleViewReviews = (productId) => {
-    console.log("View reviews:", productId);
-  };
-
-  const handleDeleteProduct = (productId) => {
-    console.log("Delete product:", productId);
-  };
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -202,17 +165,25 @@ export default function Component() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button className="hidden sm:flex" onClick={handleAddProduct}>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Product
-              </Button>
+              <Link href={"/dashboard/create"}>
+                <Button className="hidden sm:flex" onClick={handleAddProduct}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Product
+                </Button>
+              </Link>
             </div>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredProducts.map(renderProductCard)}
-          </div>
+          {loading ? (
+            <p>Loading products...</p>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredProducts.map(renderProductCard)}
+            </div>
+          )}
         </main>
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;
