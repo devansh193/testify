@@ -50,12 +50,46 @@ export const getProduct = async ({ userId }: { userId: string }) => {
       where: {
         userId: userId,
       },
+      include: {
+        testimonials: true,
+      },
     });
     return {
       products,
       success: true,
       message: "Products fetched successfully.",
     };
+  } catch (_error) {
+    return { success: false, message: `${_error}` };
+  }
+};
+
+export const getProductById = async (productId: string) => {
+  if (productId === "") {
+    return { success: false, message: "Product Id missing." };
+  }
+  try {
+    const product = await db.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+    return { product, success: true, message: "Product fetched successfully." };
+  } catch (_error) {
+    return { success: false, message: `${_error}` };
+  }
+};
+
+export const deleteProduct = async ({ productId }: { productId: string }) => {
+  if (productId === "") {
+    return { success: false, message: "Product Id missing." };
+  }
+  try {
+    await db.product.delete({
+      where: {
+        id: productId,
+      },
+    });
   } catch (_error) {
     return { success: false, message: `${_error}` };
   }

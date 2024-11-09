@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
+import { Avatar } from "./ui/avatar";
 
 export const Sidebar = () => {
   const { data: session } = useSession();
@@ -34,7 +35,7 @@ export const Sidebar = () => {
     <aside
       className={`${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } fixed inset-y-0 left-0 z-50 w-64 bg-background transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
+      } fixed inset-y-0 left-0 z-50 w-64 border-r border-gray-200 bg-background transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
     >
       <div className="flex h-16 items-center justify-between px-4 border-b">
         <Link className="text-xl font-bold" href="#">
@@ -107,9 +108,12 @@ export const Sidebar = () => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-full justify-start">
               <div className="flex items-center">
-                <div className="mr-2 bg-blue-200 rounded-full flex items-center justify-center">
-                  <h1 className="px-2 py-1">{session?.user.name?.charAt(0)}</h1>
-                </div>
+                <Avatar className="bg-blue-200 flex items-center justify-center mr-2">
+                  {session?.user?.name
+                    ?.split(" ")
+                    .map((word) => word.charAt(0))
+                    .join("")}
+                </Avatar>
                 <span>{session?.user.name}</span>
               </div>
             </Button>

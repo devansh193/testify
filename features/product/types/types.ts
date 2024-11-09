@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { CreateProductSchema } from "@/schema/schema";
+import { ProductSchema } from "@/schema/schema";
 
-export type RequestType = z.infer<typeof CreateProductSchema>;
+export type RequestType = z.infer<typeof ProductSchema>;
 
 export type ResponseType = {
   success: boolean;
   message: string;
-  product?: z.infer<typeof CreateProductSchema>;
+  product?: z.infer<typeof ProductSchema>;
 };
 
 export type Context = {

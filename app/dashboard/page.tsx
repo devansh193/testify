@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Plus, MoreVertical, Search, Menu } from "lucide-react";
 import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -23,7 +22,11 @@ import { useSetRecoilState } from "recoil";
 import { sidebarAtom } from "@/recoil/atom";
 import { Sidebar } from "@/components/sidebar";
 import { useSession } from "next-auth/react";
-import { getProduct } from "@/action/product";
+import { deleteProduct } from "@/action/product";
+import { toast } from "sonner";
+import { useGetProducts } from "@/features/product/api/use-get-products";
+import { Testimonial } from "@prisma/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Product {
   userId: string;
@@ -32,40 +35,27 @@ interface Product {
   description: string;
   questions: string[];
   rating: boolean;
+  testimonials: Testimonial[];
 }
 
 export const Dashboard = () => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const setSidebarOpen = useSetRecoilState(sidebarAtom);
-  const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
-
-  const fetchProducts = async () => {
-    setLoading(true); // Start loading
-    try {
-      let userId: string | undefined;
-      if (session?.user?.id) {
-        userId = session.user.id;
-      } else {
-        throw new Error("User not authenticated.");
-      }
-      const response = await getProduct({ userId });
-      setProducts(response?.products || []); // Update products
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setLoading(false); // End loading
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [session]);
+  const userId = session?.user?.id || "";
+  const { data: products = [], isLoading, error } = useGetProducts(userId);
 
   const handleAddProduct = () => {
-    // Implement your add product logic here
     console.log("Add product clicked");
+  };
+
+  const handleDelete = async (productId: string) => {
+    try {
+      await deleteProduct({ productId });
+      toast.message("Product deleted successfully");
+    } catch (_error) {
+      toast.message(`Error deleting product: ${_error}`);
+    }
   };
 
   const filteredProducts = products.filter((product) =>
@@ -73,7 +63,7 @@ export const Dashboard = () => {
   );
 
   const renderProductCard = (product: Product) => (
-    <Card key={product.id}>
+    <Card key={product.id} className="hover:shadow-md">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>{product.title}</CardTitle>
@@ -91,7 +81,10 @@ export const Dashboard = () => {
               <DropdownMenuItem onClick={() => {}}>
                 View reviews
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600" onClick={() => {}}>
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleDelete(product.id)}
+              >
                 Delete product
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -102,12 +95,17 @@ export const Dashboard = () => {
       <CardContent>
         <div className="flex items-center gap-4">
           <Badge variant="secondary">
-            {product.questions.length} Questions
+            {product.questions.length} Question(s)
+          </Badge>
+          <Badge variant="secondary">
+            {product.testimonials.length} Testimonial(s)
           </Badge>
         </div>
       </CardContent>
     </Card>
   );
+
+  if (error) return <p>Error loading products.</p>;
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -173,8 +171,34 @@ export const Dashboard = () => {
               </Link>
             </div>
           </div>
-          {loading ? (
-            <p>Loading products...</p>
+          {isLoading ? (
+            <div>
+              <main className="flex-1 overflow-y-auto p-6">
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <Card key={index} className="hover:shadow-md">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <Skeleton className="h-6 w-3/4" />
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                        </div>
+                        <Skeleton className="h-4 w-full mt-2" />
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center gap-4">
+                          <Badge variant="secondary">
+                            <Skeleton className="h-4 w-20" />
+                          </Badge>
+                          <Badge variant="secondary">
+                            <Skeleton className="h-4 w-24" />
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </main>
+            </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredProducts.map(renderProductCard)}
