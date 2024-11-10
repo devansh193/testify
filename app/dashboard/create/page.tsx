@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TestifyLogo from "@/components/Logo";
 import {
   Breadcrumb,
@@ -17,35 +17,130 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
-import { FileImage, Trash2, Plus, Star, User, Loader } from "lucide-react";
+import {
+  FileImage,
+  Trash2,
+  Plus,
+  Star,
+  User,
+  Loader,
+  Pencil,
+  Video,
+} from "lucide-react";
 import Image from "next/image";
 import { createProduct } from "@/action/product";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
+interface FormData {
+  title: string;
+  description: string;
+  image: {
+    file: File | null;
+    preview: string;
+    uploading: boolean;
+    error: string;
+  };
+  questions: string[];
+  emojiRatings: boolean;
+  videoReview: boolean;
+  thankYouMessage: string;
+}
+
 const Create = () => {
   const { data: session } = useSession();
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
-    image: null,
+    image: {
+      file: null,
+      preview: "",
+      uploading: false,
+      error: "",
+    },
     questions: [""],
     emojiRatings: true,
     videoReview: true,
+    thankYouMessage: "",
   });
   const userId = session?.user.id;
   const emojis = ["😠", "🙁", "😐", "😊", "😄"];
 
+  const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+  const MAX_SIZE_MB = 5;
+  const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    setFormData((prev) => ({
+      ...prev,
+      image: {
+        ...prev.image,
+        error: "",
+        uploading: true,
+      },
+    }));
+
+    try {
+      if (!file) {
+        throw new Error("No file selected");
+      }
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        throw new Error("Invalid file type. Please upload PNG, JPEG, or WebP");
+      }
+      if (file.size > MAX_SIZE_BYTES) {
+        throw new Error(`File size must be less than ${MAX_SIZE_MB}MB`);
+      }
+      const previewUrl = URL.createObjectURL(file);
+
+      setFormData((prev) => ({
+        ...prev,
+        image: {
+          file: file,
+          preview: previewUrl,
+          uploading: false,
+          error: "",
+        },
+      }));
+    } catch (error) {
+      setFormData((prev) => ({
+        ...prev,
+        image: {
+          ...prev.image,
+          error: error instanceof Error ? error.message : "Upload failed",
+          uploading: false,
+        },
+      }));
+    }
+  };
+
+  const removeImage = () => {
+    if (formData.image.preview) {
+      URL.revokeObjectURL(formData.image.preview);
+    }
+    setFormData((prev) => ({
+      ...prev,
+      image: {
+        file: null,
+        preview: "",
+        uploading: false,
+        error: "",
+      },
+    }));
+  };
+  useEffect(() => {
+    return () => {
+      if (formData.image.preview) {
+        URL.revokeObjectURL(formData.image.preview);
+      }
+    };
+  }, [formData.image.preview]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateFormData = (field: string, value: any, index?: number) => {
     setFormData((prev) => {
-      if (field === "image" && value === null) {
-        // If the image is being removed, revoke the object URL to free up memory
-        if (prev.image) {
-          URL.revokeObjectURL(URL.createObjectURL(prev.image));
-        }
-      }
       if (field === "questions" && typeof index === "number") {
         const newQuestions = [...prev.questions];
         newQuestions[index] = value;
@@ -64,7 +159,7 @@ const Create = () => {
 
   const steps = [
     {
-      title: "Product Details",
+      title: "Product details",
       content: (
         <div className="space-y-6">
           <div>
@@ -94,30 +189,50 @@ const Create = () => {
                 type="file"
                 id="image"
                 className="hidden"
-                accept="image/*"
-                onChange={(e) =>
-                  updateFormData(
-                    "image",
-                    e.target.files ? e.target.files[0] : null
-                  )
-                }
+                accept={ALLOWED_TYPES.join(",")}
+                onChange={handleImageUpload}
               />
               <label htmlFor="image" className="cursor-pointer">
-                <div className="flex items-center justify-center mb-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                    <FileImage className="w-6 h-6 text-gray-400" />
+                {formData.image.uploading ? (
+                  <div className="flex items-center justify-center">
+                    <Loader className="w-6 h-6 animate-spin" />
                   </div>
-                </div>
-                <div className="text-sm font-medium">Click to upload</div>
-                <div className="text-xs text-gray-500">
-                  Supported: .png, .jpeg & .webp
-                </div>
+                ) : formData.image.preview ? (
+                  <div className="relative">
+                    <Image
+                      height={100}
+                      width={300}
+                      src={formData.image.preview}
+                      alt="Preview"
+                      className="max-h-48 mx-auto rounded"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-center mb-2">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                        <FileImage className="w-6 h-6 text-gray-400" />
+                      </div>
+                    </div>
+                    <div className="text-sm font-medium">Click to upload</div>
+                    <div className="text-xs text-gray-500">
+                      Max size: {MAX_SIZE_MB}MB - PNG, JPEG & WebP
+                    </div>
+                  </>
+                )}
               </label>
             </div>
-            {formData.image && (
+
+            {formData.image.error && (
+              <p className="mt-2 text-sm text-red-500">
+                {formData.image.error}
+              </p>
+            )}
+
+            {formData.image.preview && (
               <Button
                 className="w-full mt-2"
-                onClick={() => updateFormData("image", null)}
+                onClick={removeImage}
                 variant="default"
               >
                 Remove Image
@@ -147,7 +262,7 @@ const Create = () => {
               {formData.questions.map((question, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <Input
-                    placeholder={`Question ${index + 1}`}
+                    placeholder={`Points to remember ${index + 1}`}
                     value={question}
                     onChange={(e) =>
                       updateFormData("questions", e.target.value, index)
@@ -210,6 +325,21 @@ const Create = () => {
         </div>
       ),
     },
+    {
+      title: "Thank giving",
+      content: (
+        <div>
+          <Label htmlFor="thankYouMessage">Thank You Message</Label>
+          <Input
+            id="thankYouMessage"
+            placeholder="Enter your thank you message"
+            className="mt-1"
+            value={formData.thankYouMessage}
+            onChange={(e) => updateFormData("thankYouMessage", e.target.value)}
+          />
+        </div>
+      ),
+    },
   ];
 
   const handleNext = () => {
@@ -254,12 +384,12 @@ const Create = () => {
   };
 
   return (
-    <main className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+    <main className="flex flex-col md:flex-row min-h-screen bg-gray-100">
       <div className="md:w-[400px] bg-gray-50 md:h-screen border-r-2 border-gray-200 flex flex-col">
-        <div className="h-14 bg-gray-50 border-r border-b-2 border-gray-200 p-4">
+        <div className="h-14 bg-white border-r border-b-2 border-gray-200 px-2 pt-3">
           <TestifyLogo />
         </div>
-        <div className="flex-grow overflow-auto p-4">
+        <div className="flex-grow overflow-fixed p-4 bg-white">
           <h2 className="text-2xl font-bold mb-4">
             {steps[currentStep].title}
           </h2>
@@ -283,7 +413,7 @@ const Create = () => {
         </div>
       </div>
 
-      <div className="flex-grow bg-gray-100 md:h-screen overflow-auto">
+      <div className="flex-grow bg-neutral-50 md:h-screen overflow-auto">
         <div className="hidden sm:block h-14 bg-white border-b-2 border-gray-200 p-4">
           <Breadcrumb>
             <BreadcrumbList>
@@ -299,24 +429,34 @@ const Create = () => {
         </div>
 
         <div className="p-4 md:p-6 flex items-center justify-center min-h-[calc(100vh-3.5rem)]">
-          <Card className="w-full max-w-lg">
+          <Card className="w-full max-w-lg shadow-lg">
             <div className="p-4">
               <Label className="bg-green-100 rounded-full p-1 text-xs text-green-700 border border-green-500">
                 Live preview
               </Label>
             </div>
             <CardHeader className="flex items-center justify-center">
-              <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4">
                 {currentStep === 0 ? (
-                  <FileImage className="w-6 h-6 text-emerald-500" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4 bg-green-100 p-2">
+                    <FileImage className="w-6 h-6 text-emerald-500" />
+                  </div>
                 ) : currentStep === 1 ? (
-                  <Star className="w-6 h-6 text-emerald-500" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4 bg-green-100 p-2">
+                    <Star className="w-6 h-6 text-emerald-500" />
+                  </div>
+                ) : currentStep === steps.length - 1 ? (
+                  <Label className="text-6xl">🫡</Label>
                 ) : (
-                  <User className="w-6 h-6 text-emerald-500" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4 bg-green-100 p-2">
+                    <User className="w-6 h-6 text-emerald-500" />
+                  </div>
                 )}
               </div>
               <CardTitle className="text-xl md:text-4xl font-bold">
-                {formData.title || steps[currentStep].title}
+                {currentStep === 2
+                  ? "Get personal 😏"
+                  : formData.title || "Your product title"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -326,25 +466,30 @@ const Create = () => {
                     {formData.description ||
                       "Add a description for your product"}
                   </p>
-                  {formData.image && (
-                    <div className="mt-4">
-                      <Image
-                        src={URL.createObjectURL(formData.image)}
-                        alt="Product"
-                        width={500}
-                        height={300}
-                        className="max-w-full h-auto rounded-lg"
-                      />
+                  {formData.image.preview && (
+                    <div className="p-4">
+                      <div className="relative mx-auto">
+                        <div className="absolute -inset-4 bg-white/40 backdrop-blur-sm rounded-lg shadow-[0_0_1rem_rgba(0,0,0,0.05)]" />
+                        <div className="relative rounded-sm overflow-hidden">
+                          <Image
+                            src={formData.image.preview}
+                            alt="Preview"
+                            width={500}
+                            height={300}
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
               ) : currentStep === 1 ? (
                 <div className="">
-                  <h1 className="text-2xl font-semibold">
+                  <h1 className="text-xl font-semibold">
                     Rate your experience
                   </h1>
                   {formData.questions.map((point, index) => (
-                    <p key={index} className="text-gray-700 text-lg">
+                    <p key={index} className="text-gray-700 text-md mt-2">
                       {point || `Points to remember ${index + 1}`}
                     </p>
                   ))}
@@ -364,10 +509,10 @@ const Create = () => {
 
                   <Textarea
                     placeholder="Write something nice ✨"
-                    className="min-h-[150px]"
+                    className="min-h-[200px] mt-4"
                   />
                 </div>
-              ) : (
+              ) : currentStep === 2 ? (
                 <div className="space-y-6">
                   <div>
                     <Label
@@ -404,10 +549,39 @@ const Create = () => {
                     marketing.
                   </p>
                 </div>
+              ) : (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-semibold text-center">
+                    {formData.thankYouMessage || "Thank you for your review!"}
+                  </h2>
+                  <p className="text-center text-gray-600">
+                    We appreciate your feedback and time.
+                  </p>
+                </div>
               )}
 
               <div className="mt-8">
-                <div className="flex justify-center gap-2 mb-4">
+                {currentStep === 0 && formData.videoReview ? (
+                  <div className="flex items-center justify-center gap-x-4">
+                    <Button className="w-full">
+                      <Video className="mr-2" />
+                      Record a video
+                    </Button>
+                    <Button className="w-full">
+                      <Pencil className="mr-2" /> Write a review
+                    </Button>
+                  </div>
+                ) : currentStep === 0 && !formData.videoReview ? (
+                  <div className="flex items-center justify-center">
+                    <Button>Text review</Button>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {currentStep === steps.length - 2 && (
+                  <Button className="w-full mt-4">Submit</Button>
+                )}
+                <div className="flex justify-center items-center gap-2 mt-4">
                   {steps.map((_, index) => (
                     <div
                       key={index}
@@ -417,21 +591,6 @@ const Create = () => {
                     />
                   ))}
                 </div>
-                {currentStep === 0 && formData.videoReview ? (
-                  <div className="flex items-center justify-center gap-x-4">
-                    <Button>Video review</Button>
-                    <Button>Text review</Button>
-                  </div>
-                ) : currentStep === 0 && !formData.videoReview ? (
-                  <div className="flex items-center justify-center">
-                    <Button>Text review</Button>
-                  </div>
-                ) : (
-                  ""
-                )}
-                {currentStep === steps.length - 1 && (
-                  <Button className="w-full">Submit</Button>
-                )}
               </div>
             </CardContent>
           </Card>

@@ -41,6 +41,9 @@ export const Navbar = () => {
           >
             Logout
           </Button>
+          <Link href={"/dashboard"}>
+            <Button className="font-sans">Dashboard</Button>
+          </Link>
         </div>
       ) : (
         <>

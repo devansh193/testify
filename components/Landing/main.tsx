@@ -3,16 +3,21 @@ import { Heading } from "../heading";
 import { MaxWidthWrapper } from "../max-width-wrapper";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export function Main() {
+  const { data: session } = useSession();
+  const href = session ? "/dashboard" : "/sign-in";
   return (
     <section className="min-h-screen py-24 sm:py-32 bg-brand-25 bg-gray-50">
       <MaxWidthWrapper className="text-center">
         <div className="relative mx-auto text-center flex flex-col items-center gap-10">
           <div>
-            <h1 className="text-xl sm:text-2xl">Reviews in seconds.</h1>
+            <h1 className="text-sm sm:text-md">Reviews in seconds.</h1>
             <Heading className="sm:text-5xl font-sans">
-              <span>Collect, Manage and Showcase</span>
+              <span className="tracking-tight">
+                Collect, Manage and Showcase
+              </span>
               <br />
               <span className="">
                 High-Quality Customer{" "}
@@ -31,18 +36,19 @@ export function Main() {
           </p>
 
           <div className="w-full max-w-80">
-            <Link href="/sign-up">
+            <Link href={href}>
               <Button className="relative z-10 h-14 w-full text-base shadow-lg transition-shadow duration-300 hover:shadow-xl">
                 Start For Free Today
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <div className="flex items-center justify-center mt-6 gap-x-1">
-              <Star className="text-yellow-400 fill-current" />
-              <Star className="text-yellow-400 fill-current" />
-              <Star className="text-yellow-400 fill-current" />
-              <Star className="text-yellow-400 fill-current" />
-              <Star className="text-yellow-400 fill-current" />
+            <div className="flex items-center justify-center mt-4 gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className="w-6 h-6 text-yellow-400 fill-current"
+                />
+              ))}
             </div>
           </div>
         </div>
