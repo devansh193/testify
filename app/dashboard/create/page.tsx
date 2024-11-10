@@ -26,6 +26,7 @@ import {
   Loader,
   Pencil,
   Video,
+  Hash,
 } from "lucide-react";
 import Image from "next/image";
 import { createProduct } from "@/action/product";
@@ -179,7 +180,7 @@ const Create = () => {
               value={formData.description}
               onChange={(e) => updateFormData("description", e.target.value)}
               placeholder="Product description"
-              className="mt-1"
+              className="mt-1 min-h-[150px]"
             />
           </div>
           <div>
@@ -386,7 +387,7 @@ const Create = () => {
   return (
     <main className="flex flex-col md:flex-row min-h-screen bg-gray-100">
       <div className="md:w-[400px] bg-gray-50 md:h-screen border-r-2 border-gray-200 flex flex-col">
-        <div className="h-14 bg-white border-r border-b-2 border-gray-200 px-2 pt-3">
+        <div className="h-16 bg-white border-r border-b-2 border-gray-200 px-2 pt-3">
           <TestifyLogo />
         </div>
         <div className="flex-grow overflow-fixed p-4 bg-white">
@@ -412,9 +413,8 @@ const Create = () => {
           )}
         </div>
       </div>
-
       <div className="flex-grow bg-neutral-50 md:h-screen overflow-auto">
-        <div className="hidden sm:block h-14 bg-white border-b-2 border-gray-200 p-4">
+        <div className="hidden sm:block h-16 bg-white border-b-2 border-gray-200 p-4">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -489,7 +489,11 @@ const Create = () => {
                     Rate your experience
                   </h1>
                   {formData.questions.map((point, index) => (
-                    <p key={index} className="text-gray-700 text-md mt-2">
+                    <p
+                      key={index}
+                      className="text-gray-700 flex items-center text-md mt-2"
+                    >
+                      <Hash className="mr-1 size-4 text-gray-700" />
                       {point || `Points to remember ${index + 1}`}
                     </p>
                   ))}
@@ -564,16 +568,19 @@ const Create = () => {
                 {currentStep === 0 && formData.videoReview ? (
                   <div className="flex items-center justify-center gap-x-4">
                     <Button className="w-full">
-                      <Video className="mr-2" />
+                      <Video className="mr-2 size-5" />
                       Record a video
                     </Button>
                     <Button className="w-full">
-                      <Pencil className="mr-2" /> Write a review
+                      <Pencil className="mr-2 size-5" /> Write a review
                     </Button>
                   </div>
                 ) : currentStep === 0 && !formData.videoReview ? (
                   <div className="flex items-center justify-center">
-                    <Button>Text review</Button>
+                    <Button className="w-full">
+                      <Pencil className="size-4 mr-2" />
+                      Write a review
+                    </Button>
                   </div>
                 ) : (
                   ""

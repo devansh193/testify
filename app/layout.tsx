@@ -4,8 +4,8 @@ import "./globals.css";
 import RecoilContextProvider from "../providers/recoil-context-provider";
 import { Providers } from "../providers/session-provider";
 import { Toaster } from "sonner";
-import { Roboto } from "next/font/google";
 import QueryProviders from "@/providers/query-client-provider";
+import { Roboto } from "next/font/google";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

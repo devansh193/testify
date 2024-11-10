@@ -35,7 +35,7 @@ export const Sidebar = () => {
     <aside
       className={`${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } fixed inset-y-0 left-0 z-50 w-64 border-r border-gray-200 bg-background transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
+      } fixed inset-y-0 left-0 z-50 w-[300px] border-r border-gray-200 bg-background transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
     >
       <div className="flex h-16 items-center justify-between px-4 border-b">
         <Link className="text-xl font-bold" href="#">
@@ -57,7 +57,7 @@ export const Sidebar = () => {
       <ScrollArea className="flex-grow px-4 py-6">
         <nav className="flex flex-col gap-4">
           <div>
-            <h2 className="mb-2 text-lg font-semibold tracking-tight">
+            <h2 className="mb-2 text-xl font-semibold tracking-tight">
               Products
             </h2>
             <div className="space-y-1">
@@ -68,7 +68,7 @@ export const Sidebar = () => {
             </div>
           </div>
           <div>
-            <h2 className="mb-2 text-lg font-semibold tracking-tight">
+            <h2 className="mb-2 text-xl font-semibold tracking-tight">
               Reviews
             </h2>
             <div className="space-y-1">
@@ -87,7 +87,7 @@ export const Sidebar = () => {
             </div>
           </div>
           <div>
-            <h2 className="mb-2 text-lg font-semibold tracking-tight">
+            <h2 className="mb-2 text-xl font-semibold tracking-tight">
               Analytics
             </h2>
             <div className="space-y-1">

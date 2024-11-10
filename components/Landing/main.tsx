@@ -11,25 +11,25 @@ export function Main() {
   return (
     <section className="min-h-screen py-24 sm:py-32 bg-brand-25 bg-gray-50">
       <MaxWidthWrapper className="text-center">
-        <div className="relative mx-auto text-center flex flex-col items-center gap-10">
+        <div className="relative mx-auto text-center flex flex-col items-center gap-6">
           <div>
-            <h1 className="text-sm sm:text-md">Reviews in seconds.</h1>
-            <Heading className="sm:text-5xl font-sans">
-              <span className="tracking-tight">
-                Collect, Manage and Showcase
-              </span>
+            <h1 className="text-sm sm:text-md mb-2">Reviews in seconds.</h1>
+            <Heading
+              className="sm:text-5xl font-sans"
+              style={{ fontFamily: "Helvetica" }}
+            >
+              <span className="">Gather, Organize and Display</span>
               <br />
               <span className="">
-                High-Quality Customer{" "}
+                Quality Customer{" "}
                 <span className="text-blue-600">Testimonials</span>
               </span>
             </Heading>
           </div>
-
           <p className="text-base/7 text-gray-600 max-w-prose text-center text-pretty">
             Build credibility and convert more customers.{" "}
           </p>
-          <p className="mx-auto max-w-[600px]">
+          <p className="mx-auto max-w-[600px]" style={{ fontFamily: "" }}>
             Take full control of your brand&apos;s reputation with ready-made,
             optimized review components. Just copy and paste to easily display
             impactful reviews on your website.
