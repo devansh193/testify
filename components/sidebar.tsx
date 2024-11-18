@@ -107,15 +107,19 @@ export const Sidebar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-full justify-start">
-              <div className="flex items-center">
-                <Avatar className="bg-blue-200 flex items-center justify-center mr-2">
-                  {session?.user?.name
-                    ?.split(" ")
-                    .map((word) => word.charAt(0))
-                    .join("")}
-                </Avatar>
-                <span>{session?.user.name}</span>
-              </div>
+              {session?.user ? (
+                <div className="flex items-center">
+                  <Avatar className="bg-blue-200 flex items-center justify-center mr-2">
+                    {session?.user?.name
+                      ?.split(" ")
+                      .map((word) => word.charAt(0))
+                      .join("") || "G"}
+                  </Avatar>
+                  <span>{session?.user.name || "Guest"}</span>
+                </div>
+              ) : (
+                ""
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

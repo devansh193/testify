@@ -7,7 +7,7 @@ import { Work } from "@/components/Landing/work";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="bg-white">
       <Main />
       <Work />
       <Customer />

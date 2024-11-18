@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-export function Main() {
+export function   Main() {
   const { data: session } = useSession();
   const href = session ? "/dashboard" : "/sign-in";
   return (

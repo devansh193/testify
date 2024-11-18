@@ -27,11 +27,13 @@ import {
   Pencil,
   Video,
   Hash,
+  Menu,
 } from "lucide-react";
 import Image from "next/image";
 import { createProduct } from "@/action/product";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface FormData {
   title: string;
@@ -65,6 +67,7 @@ const Create = () => {
     videoReview: true,
     thankYouMessage: "",
   });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const userId = session?.user.id;
   const emojis = ["😠", "🙁", "😐", "😊", "😄"];
 
@@ -131,6 +134,7 @@ const Create = () => {
       },
     }));
   };
+
   useEffect(() => {
     return () => {
       if (formData.image.preview) {
@@ -360,6 +364,7 @@ const Create = () => {
     const toastId = toast.message("Creating product", {
       icon: <Loader className="animate-spin" />,
     });
+
     try {
       const result = await createProduct({
         title: formData.title,
@@ -384,37 +389,58 @@ const Create = () => {
     }
   };
 
-  return (
-    <main className="flex flex-col md:flex-row min-h-screen bg-gray-100">
-      <div className="md:w-[400px] bg-gray-50 md:h-screen border-r-2 border-gray-200 flex flex-col">
-        <div className="h-16 bg-white border-r border-b-2 border-gray-200 px-2 pt-3">
-          <TestifyLogo />
-        </div>
-        <div className="flex-grow overflow-fixed p-4 bg-white">
-          <h2 className="text-2xl font-bold mb-4">
-            {steps[currentStep].title}
-          </h2>
-          {steps[currentStep].content}
-        </div>
-        <div className="p-4 flex justify-between">
-          <Button
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-            variant="outline"
-          >
-            <ArrowLeftIcon className="mr-1" /> Previous
-          </Button>
-          {currentStep === steps.length - 1 ? (
-            <Button onClick={handleSubmit}>Submit</Button>
-          ) : (
-            <Button onClick={handleNext}>
-              Next <ArrowRightIcon className="ml-1" />
-            </Button>
-          )}
-        </div>
+  const SidebarContent = () => (
+    <>
+      <div className="h-14 bg-white border-r border-b-2 border-gray-200 px-2 pt-3">
+        <TestifyLogo />
       </div>
-      <div className="flex-grow bg-neutral-50 md:h-screen overflow-auto">
-        <div className="hidden sm:block h-16 bg-white border-b-2 border-gray-200 p-4">
+      <div className="flex-grow overflow-auto p-4 bg-white">
+        <h2 className="text-lg md:text-2xl font-bold mb-4">
+          {steps[currentStep].title}
+        </h2>
+        {steps[currentStep].content}
+      </div>
+      <div className="p-4 flex justify-between">
+        <Button
+          onClick={handlePrevious}
+          disabled={currentStep === 0}
+          variant="outline"
+          className="w-full sm:w-auto"
+        >
+          <ArrowLeftIcon className="mr-1" /> Previous
+        </Button>
+        {currentStep === steps.length - 1 ? (
+          <Button onClick={handleSubmit} className="w-full sm:w-auto">
+            Submit
+          </Button>
+        ) : (
+          <Button onClick={handleNext} className="w-full sm:w-auto">
+            Next <ArrowRightIcon className="ml-1" />
+          </Button>
+        )}
+      </div>
+    </>
+  );
+
+  return (
+    <main className="flex flex-col md:flex-row bg-gray-100 w-full max-w-[100vw]">
+      <div className="md:hidden">
+        <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="m-2">
+              <Menu />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="w-full">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
+      </div>
+      <div className="hidden md:flex md:w-1/4 bg-gray-50 md:h-screen border-r-2 border-gray-200 flex-col w-full">
+        <SidebarContent />
+      </div>
+      <div className="flex-grow bg-neutral-50 md:h-screen overflow-auto w-full md:w-3/4">
+        <div className="hidden sm:block h-14 bg-white border-b-2 border-gray-200 p-4">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -428,8 +454,8 @@ const Create = () => {
           </Breadcrumb>
         </div>
 
-        <div className="p-4 md:p-6 flex items-center justify-center min-h-[calc(100vh-3.5rem)]">
-          <Card className="w-full max-w-lg shadow-lg">
+        <div className="p-4 md:p-6 lg:p-8 flex items-center justify-center">
+          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl shadow-lg">
             <div className="p-4">
               <Label className="bg-green-100 rounded-full p-1 text-xs text-green-700 border border-green-500">
                 Live preview
@@ -527,6 +553,8 @@ const Create = () => {
                     </Label>
                     <Input
                       id="preview-name"
+                      type="text"
+                      onChange={() => {}}
                       placeholder="Tyler Durden"
                       readOnly
                       className="mt-1"
@@ -538,11 +566,12 @@ const Create = () => {
                       htmlFor="preview-job-title"
                       className="text-gray-700 font-semibold"
                     >
-                      Job title
+                      Email
                     </Label>
                     <Input
                       id="preview-job-title"
-                      placeholder="Soap factory owner"
+                      type="email"
+                      placeholder="tylerdurden@fightclub.com"
                       readOnly
                       className="mt-1"
                     />
