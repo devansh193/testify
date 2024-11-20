@@ -190,7 +190,7 @@ const Create = () => {
           <div>
             <Label htmlFor="image">Product Image (Optional)</Label>
             <div className="mt-1 border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50 transition-colors">
-              <input
+              <Input
                 type="file"
                 id="image"
                 className="hidden"
