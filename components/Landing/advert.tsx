@@ -1,28 +1,27 @@
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const Advert = () => {
   return (
-    <div className="flex items-center justify-center">
-      <div className="w-full max-w-3xl">
-        <section className="py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
-                  Ready to boost your social proof?
-                </h2>
-                <p className="mx-auto max-w-[600px] text-gray-500 md:text-xl">
-                  Join thousands of businesses already using Testify to showcase
-                  their customer success stories.
-                </p>
-              </div>
-              <Button className="bg-black text-white hover:bg-gray-800 transition-colors">
-                Start For Free Today
-              </Button>
-            </div>
+    <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="flex flex-col items-center justify-center space-y-6 sm:space-y-8 text-center">
+          <div className="space-y-3 sm:space-y-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+              Ready to boost your social proof?
+            </h2>
+            <p className="mx-auto max-w-[600px] text-gray-600 text-sm sm:text-base md:text-lg">
+              Join thousands of businesses already using Testify to showcase
+              their customer success stories.
+            </p>
           </div>
-        </section>
+          <Link href="/sign-up" passHref>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm sm:text-base py-2 px-4 sm:py-3 sm:px-6">
+              Start For Free Today
+            </Button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };

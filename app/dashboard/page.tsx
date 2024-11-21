@@ -1,6 +1,7 @@
 "use client";
+
 import { useState } from "react";
-import { Plus, MoreVertical, Search, Menu } from "lucide-react";
+import { Plus, MoreVertical, Search } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,15 +19,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useSetRecoilState } from "recoil";
-import { sidebarAtom } from "@/recoil/atom";
-import { Sidebar } from "@/components/sidebar";
 import { useSession } from "next-auth/react";
 import { deleteProduct } from "@/action/product";
 import { toast } from "sonner";
 import { useGetProducts } from "@/features/product/api/use-get-products";
 import { Testimonial } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import Sidebar from "@/components/sidebar";
 
 interface Product {
   userId: string;
@@ -38,9 +37,8 @@ interface Product {
   testimonials: Testimonial[];
 }
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const setSidebarOpen = useSetRecoilState(sidebarAtom);
   const { data: session } = useSession();
   const userId = session?.user?.id || "";
   const { data: products = [], isLoading, error } = useGetProducts(userId);
@@ -63,10 +61,15 @@ export const Dashboard = () => {
   );
 
   const renderProductCard = (product: Product) => (
-    <Card key={product.id} className="hover:shadow-md">
+    <Card
+      key={product.id}
+      className="hover:shadow-lg transition-shadow duration-300"
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>{product.title}</CardTitle>
+          <CardTitle className="text-lg font-semibold line-clamp-1">
+            {product.title}
+          </CardTitle>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -90,10 +93,12 @@ export const Dashboard = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <CardDescription>{product.description}</CardDescription>
+        <CardDescription className="line-clamp-2">
+          {product.description}
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 flex-wrap">
           <Badge variant="secondary">
             {product.questions.length} Question(s)
           </Badge>
@@ -105,99 +110,60 @@ export const Dashboard = () => {
     </Card>
   );
 
-  if (error) return <p>Error loading products.</p>;
+  if (error)
+    return (
+      <p className="text-center py-8 text-red-600">Error loading products.</p>
+    );
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <header className="flex h-16 items-center justify-between border-b px-6">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden"
-            >
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Open sidebar</span>
-            </Button>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link
-                className="text-sm font-medium hover:text-black/70"
-                href="#"
-              >
-                Products
-              </Link>
-              <Link
-                className="text-sm font-medium hover:text-black/70"
-                href="#"
-              >
-                Reviews
-              </Link>
-              <Link
-                className="text-sm font-medium hover:text-black/70"
-                href="#"
-              >
-                Analytics
-              </Link>
-            </nav>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="sticky h-16 top-0 z-10 bg-white border-b">
+          <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <h1 className="text-2xl font-bold">Products</h1>
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                <div className="relative flex-grow sm:flex-grow-0 w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <Input
+                    className="pl-10 w-full"
+                    placeholder="Search products..."
+                    type="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Link href="/dashboard/create" className="shrink-0">
+                  <Button onClick={handleAddProduct}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Product
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Products</h1>
-              <p className="text-gray-500">
-                Manage your products and their reviews
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-                <Input
-                  className="pl-8"
-                  placeholder="Search products..."
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <Link href={"/dashboard/create"}>
-                <Button className="hidden sm:flex" onClick={handleAddProduct}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Product
-                </Button>
-              </Link>
-            </div>
-          </div>
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {isLoading ? (
-            <div>
-              <main className="flex-1 overflow-y-auto p-6">
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <Card key={index} className="hover:shadow-md">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <Skeleton className="h-6 w-3/4" />
-                          <Skeleton className="h-8 w-8 rounded-full" />
-                        </div>
-                        <Skeleton className="h-4 w-full mt-2" />
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center gap-4">
-                          <Badge variant="secondary">
-                            <Skeleton className="h-4 w-20" />
-                          </Badge>
-                          <Badge variant="secondary">
-                            <Skeleton className="h-4 w-24" />
-                          </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </main>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <Card key={index} className="animate-pulse">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-6 w-3/4" />
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                    </div>
+                    <Skeleton className="h-4 w-full mt-2" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-6 w-20" />
+                      <Skeleton className="h-6 w-24" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
