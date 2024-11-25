@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -9,25 +7,14 @@ import {
   Hourglass,
   LayoutDashboard,
   ListChecks,
-  LogOut,
-  Quote,
-  Settings,
   Star,
   X,
   Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { signOut, useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ProfileDropDown from "./profile-menu/profile-dropdown";
+import TestifyLogo from "./Logo";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -38,7 +25,6 @@ const navItems = [
 ];
 
 const Sidebar = () => {
-  const { data: session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useRecoilState(sidebarAtom);
   const pathname = usePathname();
 
@@ -58,10 +44,7 @@ const Sidebar = () => {
         } fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
       >
         <div className="flex h-16 items-center justify-between px-4 border-b">
-          <Link className="flex items-center space-x-2" href="/dashboard">
-            <Quote className="w-8 h-8" />
-            <span className="text-xl font-bold">testify</span>
-          </Link>
+          <TestifyLogo />
         </div>
         <ScrollArea className="flex-grow px-4 py-6">
           <nav className="space-y-6">
@@ -79,40 +62,7 @@ const Sidebar = () => {
           </nav>
         </ScrollArea>
         <div className="mt-auto p-4 border-t">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-full justify-start">
-                {session?.user ? (
-                  <div className="flex items-center">
-                    <Avatar className="mr-2">
-                      <AvatarImage src={session.user.image || undefined} />
-                      <AvatarFallback>
-                        {session.user.name
-                          ?.split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="truncate">{session.user.name}</span>
-                  </div>
-                ) : (
-                  "Menu"
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
-                <LogOut className="mr-2 h-4 w-4" />
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ProfileDropDown />
         </div>
       </aside>
     </>

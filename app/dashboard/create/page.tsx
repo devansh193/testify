@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useCallback } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  formDataState,
+  currentStepState,
+  isSidebarOpenState,
+} from "@/recoil/atom";
 import TestifyLogo from "@/components/Logo";
 import {
   Breadcrumb,
@@ -12,15 +18,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import {
   FileImage,
-  Trash2,
-  Plus,
   Star,
   User,
   Loader,
@@ -34,362 +36,72 @@ import { createProduct } from "@/action/product";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import ProductDetails from "./_components/productDetails";
+import RateExperience from "./_components/rateExperience";
+import PersonalInfo from "./_components/personalnfo";
+import ThankYou from "./_components/thankyou";
 
-interface FormData {
-  title: string;
-  description: string;
-  image: {
-    file: File | null;
-    preview: string;
-    uploading: boolean;
-    error: string;
-  };
-  questions: string[];
-  emojiRatings: boolean;
-  videoReview: boolean;
-  thankYouMessage: string;
-}
-
-const Create = () => {
+const Create: React.FC = () => {
   const { data: session } = useSession();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<FormData>({
-    title: "",
-    description: "",
-    image: {
-      file: null,
-      preview: "",
-      uploading: false,
-      error: "",
-    },
-    questions: [""],
-    emojiRatings: true,
-    videoReview: true,
-    thankYouMessage: "",
-  });
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
+  const formData = useRecoilValue(formDataState);
+  const [isSidebarOpen, setIsSidebarOpen] = useRecoilState(isSidebarOpenState);
   const userId = session?.user.id;
   const emojis = ["😠", "🙁", "😐", "😊", "😄"];
 
-  const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-  const MAX_SIZE_MB = 5;
-  const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    setFormData((prev) => ({
-      ...prev,
-      image: {
-        ...prev.image,
-        error: "",
-        uploading: true,
-      },
-    }));
-
-    try {
-      if (!file) {
-        throw new Error("No file selected");
-      }
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        throw new Error("Invalid file type. Please upload PNG, JPEG, or WebP");
-      }
-      if (file.size > MAX_SIZE_BYTES) {
-        throw new Error(`File size must be less than ${MAX_SIZE_MB}MB`);
-      }
-      const previewUrl = URL.createObjectURL(file);
-
-      setFormData((prev) => ({
-        ...prev,
-        image: {
-          file: file,
-          preview: previewUrl,
-          uploading: false,
-          error: "",
-        },
-      }));
-    } catch (error) {
-      setFormData((prev) => ({
-        ...prev,
-        image: {
-          ...prev.image,
-          error: error instanceof Error ? error.message : "Upload failed",
-          uploading: false,
-        },
-      }));
-    }
-  };
-
-  const removeImage = () => {
-    if (formData.image.preview) {
-      URL.revokeObjectURL(formData.image.preview);
-    }
-    setFormData((prev) => ({
-      ...prev,
-      image: {
-        file: null,
-        preview: "",
-        uploading: false,
-        error: "",
-      },
-    }));
-  };
-
-  useEffect(() => {
-    return () => {
-      if (formData.image.preview) {
-        URL.revokeObjectURL(formData.image.preview);
-      }
-    };
-  }, [formData.image.preview]);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updateFormData = (field: string, value: any, index?: number) => {
-    setFormData((prev) => {
-      if (field === "questions" && typeof index === "number") {
-        const newQuestions = [...prev.questions];
-        newQuestions[index] = value;
-        return { ...prev, questions: newQuestions };
-      }
-      if (field === "deleteQuestion" && typeof index === "number") {
-        const newQuestions = prev.questions.filter((_, i) => i !== index);
-        return { ...prev, questions: newQuestions };
-      }
-      if (field === "addQuestion") {
-        return { ...prev, questions: [...prev.questions, ""] };
-      }
-      return { ...prev, [field]: value };
-    });
-  };
-
   const steps = [
-    {
-      title: "Product details",
-      content: (
-        <div className="space-y-6">
-          <div>
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => updateFormData("title", e.target.value)}
-              placeholder="Your product title"
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => updateFormData("description", e.target.value)}
-              placeholder="Product description"
-              className="mt-1 min-h-[150px]"
-            />
-          </div>
-          <div>
-            <Label htmlFor="image">Product Image (Optional)</Label>
-            <div className="mt-1 border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50 transition-colors">
-              <Input
-                type="file"
-                id="image"
-                className="hidden"
-                accept={ALLOWED_TYPES.join(",")}
-                onChange={handleImageUpload}
-              />
-              <label htmlFor="image" className="cursor-pointer">
-                {formData.image.uploading ? (
-                  <div className="flex items-center justify-center">
-                    <Loader className="w-6 h-6 animate-spin" />
-                  </div>
-                ) : formData.image.preview ? (
-                  <div className="relative">
-                    <Image
-                      height={100}
-                      width={300}
-                      src={formData.image.preview}
-                      alt="Preview"
-                      className="max-h-48 mx-auto rounded"
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                        <FileImage className="w-6 h-6 text-gray-400" />
-                      </div>
-                    </div>
-                    <div className="text-sm font-medium">Click to upload</div>
-                    <div className="text-xs text-gray-500">
-                      Max size: {MAX_SIZE_MB}MB - PNG, JPEG & WebP
-                    </div>
-                  </>
-                )}
-              </label>
-            </div>
-
-            {formData.image.error && (
-              <p className="mt-2 text-sm text-red-500">
-                {formData.image.error}
-              </p>
-            )}
-
-            {formData.image.preview && (
-              <Button
-                className="w-full mt-2"
-                onClick={removeImage}
-                variant="default"
-              >
-                Remove Image
-              </Button>
-            )}
-          </div>
-          <div className="flex items-center justify-between mt-4">
-            <Label htmlFor="video-toggle">Video review</Label>
-            <Switch
-              id="video-toggle"
-              checked={formData.videoReview}
-              onCheckedChange={(checked) =>
-                updateFormData("videoReview", checked)
-              }
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Rate your experience",
-      content: (
-        <>
-          <div>
-            <Label>Keep in mind</Label>
-            <div className="space-y-2 mt-1">
-              {formData.questions.map((question, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <Input
-                    placeholder={`Points to remember ${index + 1}`}
-                    value={question}
-                    onChange={(e) =>
-                      updateFormData("questions", e.target.value, index)
-                    }
-                  />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      updateFormData("deleteQuestion", null, index)
-                    }
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-2"
-              onClick={() => updateFormData("addQuestion", null)}
-            >
-              <Plus className="mr-2" /> Add
-            </Button>
-          </div>
-
-          <div className="flex items-center justify-between mt-4">
-            <Label htmlFor="emoji-toggle">Emoji ratings</Label>
-            <Switch
-              id="emoji-toggle"
-              checked={formData.emojiRatings}
-              onCheckedChange={(checked) =>
-                updateFormData("emojiRatings", checked)
-              }
-            />
-          </div>
-        </>
-      ),
-    },
-    {
-      title: "Get personal 😏",
-      content: (
-        <div className="space-y-6">
-          <div>
-            <Label htmlFor="name">
-              Your name <span className="text-red-500">*</span>
-            </Label>
-            <Input id="name" placeholder="Type your name" className="mt-1" />
-          </div>
-
-          <div>
-            <Label htmlFor="job-title">Job title</Label>
-            <Input
-              id="job-title"
-              placeholder="Software Engineer"
-              className="mt-1"
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Thank giving",
-      content: (
-        <div>
-          <Label htmlFor="thankYouMessage">Thank You Message</Label>
-          <Input
-            id="thankYouMessage"
-            placeholder="Enter your thank you message"
-            className="mt-1"
-            value={formData.thankYouMessage}
-            onChange={(e) => updateFormData("thankYouMessage", e.target.value)}
-          />
-        </div>
-      ),
-    },
+    { title: "Product details", content: <ProductDetails /> },
+    { title: "Rate your experience", content: <RateExperience /> },
+    { title: "Get personal 😏", content: <PersonalInfo /> },
+    { title: "Thank giving", content: <ThankYou /> },
   ];
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
-  };
+  }, [currentStep, steps.length, setCurrentStep]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  };
+  }, [currentStep, setCurrentStep]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const toastId = toast.message("Creating product", {
-      icon: <Loader className="animate-spin" />,
-    });
-
-    try {
-      const result = await createProduct({
-        title: formData.title,
-        description: formData.description,
-        questions: formData.questions,
-        rating: formData.emojiRatings,
-        userId: userId || "",
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const toastId = toast.message("Creating product", {
+        icon: <Loader className="animate-spin" />,
       });
-      if (result.success) {
-        toast.success("Product added successfully.", {
-          id: toastId,
-          icon: "",
-        });
-      } else {
-        toast.error(result.message, {
-          id: toastId,
-          icon: <Loader className="animate-spin" />,
-        });
-      }
-    } catch (_error) {
-      console.log(_error);
-    }
-  };
 
-  const SidebarContent = () => (
+      try {
+        const result = await createProduct({
+          title: formData.title,
+          description: formData.description,
+          questions: formData.questions,
+          rating: formData.emojiRatings,
+          userId: userId || "",
+        });
+        if (result.success) {
+          toast.success("Product added successfully.", {
+            id: toastId,
+            icon: "",
+          });
+        } else {
+          toast.error(result.message, {
+            id: toastId,
+            icon: <Loader className="animate-spin" />,
+          });
+        }
+      } catch (_error) {
+        console.log(_error);
+      }
+    },
+    [formData, userId]
+  );
+
+  const SidebarContent = React.memo(() => (
     <>
       <div className="h-14 bg-white border-r border-b-2 border-gray-200 px-2 pt-3">
         <TestifyLogo />
@@ -420,7 +132,9 @@ const Create = () => {
         )}
       </div>
     </>
-  );
+  ));
+
+  SidebarContent.displayName = "SidebarContent";
 
   return (
     <main className="flex flex-col md:flex-row bg-gray-100 w-full max-w-[100vw]">
@@ -543,45 +257,7 @@ const Create = () => {
                   />
                 </div>
               ) : currentStep === 2 ? (
-                <div className="space-y-6">
-                  <div>
-                    <Label
-                      htmlFor="preview-name"
-                      className="text-gray-700 font-semibold"
-                    >
-                      Your name*
-                    </Label>
-                    <Input
-                      id="preview-name"
-                      type="text"
-                      onChange={() => {}}
-                      placeholder="Tyler Durden"
-                      readOnly
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label
-                      htmlFor="preview-job-title"
-                      className="text-gray-700 font-semibold"
-                    >
-                      Email
-                    </Label>
-                    <Input
-                      id="preview-job-title"
-                      type="email"
-                      placeholder="tylerdurden@fightclub.com"
-                      readOnly
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <p className="text-sm text-gray-500">
-                    By submitting, you agree we may share your review in our
-                    marketing.
-                  </p>
-                </div>
+                <PersonalInfo />
               ) : (
                 <div className="space-y-6">
                   <h2 className="text-2xl font-semibold text-center">
@@ -635,4 +311,5 @@ const Create = () => {
     </main>
   );
 };
-export default Create;
+
+export default React.memo(Create);

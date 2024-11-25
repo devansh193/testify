@@ -4,10 +4,12 @@ import { useState } from "react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useSession, signOut } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { ArrowRight, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MaxWidthWrapper } from "./max-width-wrapper";
+import { Greeting } from "./greeting";
+import ProfileDropDown from "./profile-menu/profile-dropdown";
 
 const navContent = [
   {
@@ -32,18 +34,10 @@ export const Navbar = () => {
     <>
       {session ? (
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-semibold text-gray-700">
-            Welcome back, {session.user?.name}
+          <span className="text-sm flex gap-x-2 font-semibold text-gray-700">
+            <Greeting />, <p>{session.user?.name}</p>
           </span>
-          <Button
-            variant="outline"
-            onClick={() => signOut({ callbackUrl: "/" })}
-          >
-            Logout
-          </Button>
-          <Link href={"/dashboard"}>
-            <Button className="font-sans">Dashboard</Button>
-          </Link>
+          <ProfileDropDown />
         </div>
       ) : (
         <>
@@ -53,7 +47,7 @@ export const Navbar = () => {
             </Button>
           ))}
           <Button variant="link" asChild>
-            <Link href="/sign-in">Sign in</Link>
+            <button onClick={() => signIn()}>Sign in</button>
           </Button>
           <Button variant="default" asChild>
             <Link href="/sign-up">
