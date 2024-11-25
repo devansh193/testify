@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, ArrowLeft, Share2, Eye, MessageSquare } from "lucide-react";
-import { getProductById } from "@/action/product";
+import { getProductById } from "@/action/products/product";
 import { useParams } from "next/navigation";
 import LoadingPage from "@/app/loading";
 import NotFound from "@/app/not-found";

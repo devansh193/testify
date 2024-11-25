@@ -1,7 +1,7 @@
 import { ResponseType, RequestType, Context } from "../types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createProduct } from "@/action/product";
+import { createProduct } from "@/action/products/product";
 
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();

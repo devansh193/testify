@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, LogOut, Settings } from "lucide-react";
+import { User, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
+import { Logout } from "../logout";
+
 const ProfileDropdown = () => {
   const menuItemLinks = [
     {
@@ -40,12 +41,7 @@ const ProfileDropdown = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <span
-            className={`flex items-center gap-2 text-base transition-all duration-300 hover:text-red-500`}
-          >
-            <LogOut className="size-4" />
-            Logout
-          </span>
+          <Logout />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

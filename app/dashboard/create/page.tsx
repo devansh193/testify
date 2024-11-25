@@ -32,7 +32,7 @@ import {
   Menu,
 } from "lucide-react";
 import Image from "next/image";
-import { createProduct } from "@/action/product";
+import { createProduct } from "@/action/products/product";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
