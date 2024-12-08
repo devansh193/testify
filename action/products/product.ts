@@ -9,6 +9,11 @@ interface createProductProps {
   rating: boolean;
   userId: string;
 }
+interface Response {
+  success: boolean;
+  message: string;
+  error?: unknown;
+}
 
 export const createProduct = async ({
   title,
@@ -16,13 +21,13 @@ export const createProduct = async ({
   questions,
   rating,
   userId,
-}: createProductProps) => {
+}: createProductProps): Promise<Response> => {
   if (userId === "") {
     return { success: false, message: "UserId is missing." };
   }
 
   try {
-    const product = await db.product.create({
+    await db.product.create({
       data: {
         title,
         description,
@@ -34,9 +39,8 @@ export const createProduct = async ({
       },
     });
 
-    return { product, success: true, message: "Product created successfully" };
+    return { success: true, message: "Product created successfully" };
   } catch (error) {
-    console.error("Error creating product:", error);
     return { success: false, message: "Failed to create product", error };
   }
 };

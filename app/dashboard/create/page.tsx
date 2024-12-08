@@ -36,12 +36,12 @@ import { createProduct } from "@/action/products/product";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import ProductDetails from "./_components/productDetails";
-import RateExperience from "./_components/rateExperience";
-import PersonalInfo from "./_components/personalnfo";
-import ThankYou from "./_components/thankyou";
+import ProductDetails from "./_component/productDetails";
+import RateExperience from "./_component/rateExperience";
+import PersonalInfo from "./_component/personalInfo";
+import ThankYou from "./_component/thankyou";
 
-const Create: React.FC = () => {
+const Create = () => {
   const { data: session } = useSession();
   const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
   const formData = useRecoilValue(formDataState);
@@ -56,17 +56,17 @@ const Create: React.FC = () => {
     { title: "Thank giving", content: <ThankYou /> },
   ];
 
-  const handleNext = useCallback(() => {
+  const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
-  }, [currentStep, steps.length, setCurrentStep]);
+  };
 
-  const handlePrevious = useCallback(() => {
+  const handlePrevious = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  }, [currentStep, setCurrentStep]);
+  };
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {

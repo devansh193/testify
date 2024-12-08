@@ -14,24 +14,39 @@ export const emailAtom = atom<string>({
   default: "",
 });
 
-export const imageAtom = atom<File | null>({
-  key: "imageAtom",
-  default: null,
+export const imageAtom = atom({
+  key: "imageAtom", // A unique key for this atom
+  default: {
+    file: null as File | null, // File type (null initially)
+    preview: "", // Preview string (e.g., URL or base64 image)
+    uploading: false, // Boolean to track upload status
+    error: "", // String for error message if any
+  },
 });
 
 export const titleAtom = atom<string>({
   key: "titleAtom",
-  default: "Your Product Name",
+  default: "",
+});
+
+export const slideAtom = atom<number>({
+  key: "slideNumber",
+  default: 1,
 });
 
 export const descriptionAtom = atom<string>({
   key: "descriptionAtom",
-  default: "Describe your product or service here",
+  default: "Describe ",
 });
 
 export const questionsAtom = atom<Question[]>({
   key: "questionsAtom",
   default: [{ id: 1, text: "How would you rate our product?" }],
+});
+
+export const videoAtom = atom<boolean>({
+  key: "videoReview",
+  default: true,
 });
 
 export const showLogoAtom = atom<boolean>({

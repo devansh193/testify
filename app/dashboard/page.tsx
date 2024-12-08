@@ -1,11 +1,12 @@
+import { DashboardLayout } from "@/components/dashboard-layout";
 import { MyProducts } from "@/components/my-product";
 
-const Dashboard = () => {
+export default function Dashboard() {
   return (
-    <div>
-      <MyProducts />
-    </div>
+    <DashboardLayout>
+      <div className="">
+        <MyProducts />
+      </div>
+    </DashboardLayout>
   );
-};
-
-export default Dashboard;
+}

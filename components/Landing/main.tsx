@@ -10,7 +10,7 @@ export function Main() {
   const href = session ? "/dashboard" : "/sign-in";
 
   return (
-    <section className="min-h-screen py-12 sm:py-16 md:py-24 lg:py-32 bg-brand-25 bg-gray-50">
+    <section className="min-h-screen py-32 sm:py-16 md:py-24 lg:py-32 bg-brand-25 bg-gray-50">
       <MaxWidthWrapper className="text-center px-4 sm:px-6 lg:px-8">
         <div className="relative mx-auto text-center flex flex-col items-center gap-4 sm:gap-6">
           <div>

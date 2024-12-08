@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { getProduct } from "@/action/products/product";
-import { Logout } from "./logout";
 import { Product } from "@prisma/client";
 import Products from "./product";
 import { authOptions } from "@/app/lib/auth";
+import { ErrorMessage } from "./error-message";
 
 interface ProductData {
   success: boolean;
@@ -21,25 +21,6 @@ const fetchProduct = async (userId: string): Promise<ProductData> => {
     throw new Error(data.message || "Failed to fetch products.");
   }
   return data;
-};
-
-const ErrorMessage = ({ message }: { message: string }) => {
-  return (
-    <div className="text-center p-4">
-      <p>{message}</p>
-      <p>
-        If you think this is a mistake, please email{" "}
-        <a
-          href="mailto:supportTestify@gmail.com"
-          className="text-blue-500 hover:underline"
-        >
-          supportTestify@gmail.com
-        </a>
-      </p>
-      <p className="mt-4">Try logging in again:</p>
-      <Logout />
-    </div>
-  );
 };
 
 export const MyProducts = async () => {
@@ -67,7 +48,7 @@ export const MyProducts = async () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="p-2">
       <Products products={products} />
     </div>
   );

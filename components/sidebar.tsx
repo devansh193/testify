@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -43,7 +44,7 @@ const Sidebar = () => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
       >
-        <div className="flex h-16 items-center justify-between px-4 border-b">
+        <div className="flex h-16 items-center justify-between px-4 border-b pt-2">
           <TestifyLogo />
         </div>
         <ScrollArea className="flex-grow px-4 py-6">
@@ -51,8 +52,10 @@ const Sidebar = () => {
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
                 <Button
-                  variant={pathname === item.href ? "default" : "ghost"}
-                  className="w-full justify-start"
+                  variant={"link"}
+                  className={`w-full justify-start my-1 ${
+                    pathname === item.href ? "bg-neutral-300" : ""
+                  }`}
                 >
                   <item.icon className="mr-2 h-4 w-4" />
                   {item.label}

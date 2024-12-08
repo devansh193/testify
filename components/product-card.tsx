@@ -26,10 +26,15 @@ export interface Product {
 
 interface ProductCardProp {
   product: Product;
+  onClick: () => void;
+  onDelete: (productId: string) => void;
 }
-const ProductCard = ({ product }: ProductCardProp) => {
+const ProductCard = ({ product, onClick, onDelete }: ProductCardProp) => {
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-300">
+    <Card
+      className="hover:shadow-lg transition-shadow duration-300 hover:cursor-pointer"
+      onClick={onClick}
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-base sm:text-lg font-semibold line-clamp-1">
@@ -49,7 +54,7 @@ const ProductCard = ({ product }: ProductCardProp) => {
               <DropdownMenuItem onClick={() => {}}>
                 View reviews
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem onClick={() => onDelete(product.id)}>
                 Delete product
               </DropdownMenuItem>
             </DropdownMenuContent>
