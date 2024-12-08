@@ -83,7 +83,7 @@ export const ImageInput = () => {
                 width={300}
                 src={image.preview}
                 alt="Preview"
-                className="max-h-48 mx-auto rounded"
+                className="max-h-48 mx-auto rounded ring-8 ring-gray-100"
               />
             </div>
           ) : (
