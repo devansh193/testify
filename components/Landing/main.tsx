@@ -14,7 +14,7 @@ export function Main() {
       <MaxWidthWrapper className="text-center px-4 sm:px-6 lg:px-8">
         <div className="relative mx-auto text-center flex flex-col items-center gap-4 sm:gap-6">
           <div>
-            <h1 className="text-xs sm:text-sm md:text-base mb-2 font-medium">
+            <h1 className="text-xs sm:text-sm font-serif md:text-base mb-2 font-medium">
               Reviews in seconds.
             </h1>
             <Heading

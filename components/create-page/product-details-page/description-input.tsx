@@ -8,7 +8,9 @@ export const DescriptionInput = () => {
   const [description, setDescription] = useRecoilState(descriptionAtom);
   return (
     <div>
-      <Label htmlFor="title">Description</Label>
+      <Label htmlFor="title" className="text-md font-semibold">
+        Description
+      </Label>
       <Textarea
         id="description"
         value={description}

@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../ui/card";
 import {
   descriptionAtom,
   imageAtom,
@@ -15,9 +15,8 @@ import {
   videoAtom,
 } from "@/recoil/atom";
 import Image from "next/image";
-import { Button } from "../ui/button";
-import { Pencil } from "@/assets/icons/pencil";
-import { Video } from "@/assets/icons/video";
+import { Button } from "../../ui/button";
+import { Pencil, Video } from "lucide-react";
 
 export default function ProductDetails() {
   const title = useRecoilValue(titleAtom);
@@ -27,8 +26,8 @@ export default function ProductDetails() {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <Card className="w-[650px]">
-        <CardHeader className="items-center">
+      <Card className="w-[750px]">
+        <CardHeader className="items-center gap-y-2">
           <CardTitle className="text-5xl">{title}</CardTitle>
           <CardDescription className="text-xl text-center">
             {description}

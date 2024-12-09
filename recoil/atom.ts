@@ -1,9 +1,5 @@
 import { atom, selector } from "recoil";
 
-interface Question {
-  id: number;
-  text: string;
-}
 export const nameAtom = atom<string>({
   key: "nameAtom",
   default: "",
@@ -26,7 +22,18 @@ export const imageAtom = atom({
 
 export const titleAtom = atom<string>({
   key: "titleAtom",
-  default: "",
+  default: "testify",
+});
+
+export const personalPageTitle = atom<string>({
+  key: "personalTitle",
+  default: "Get personal 😏",
+});
+
+export const descriptionAtom = atom<string>({
+  key: "descriptionAtom",
+  default:
+    "A one stop solution for the collection and management of user testimonials.",
 });
 
 export const slideAtom = atom<number>({
@@ -34,14 +41,9 @@ export const slideAtom = atom<number>({
   default: 1,
 });
 
-export const descriptionAtom = atom<string>({
-  key: "descriptionAtom",
-  default: "Describe ",
-});
-
-export const questionsAtom = atom<Question[]>({
+export const questionsAtom = atom<string[]>({
   key: "questionsAtom",
-  default: [{ id: 1, text: "How would you rate our product?" }],
+  default: ["How would you rate our product?"],
 });
 
 export const videoAtom = atom<boolean>({
@@ -49,8 +51,13 @@ export const videoAtom = atom<boolean>({
   default: true,
 });
 
-export const showLogoAtom = atom<boolean>({
-  key: "showLogoAtom",
+export const ratingTitleAtom = atom<string>({
+  key: "ratingTitle",
+  default: "Rate your experience",
+});
+
+export const starAtom = atom<boolean>({
+  key: "starReview",
   default: true,
 });
 

@@ -8,7 +8,9 @@ export const VideoToggle = () => {
   const [videoReview, setVideoReview] = useRecoilState(videoAtom);
   return (
     <div className="flex items-center justify-between mt-4">
-      <Label htmlFor="video-toggle">Video review</Label>
+      <Label htmlFor="video-toggle" className="text-md font-semibold">
+        Video review
+      </Label>
       <Switch
         id="video-toggle"
         checked={videoReview}

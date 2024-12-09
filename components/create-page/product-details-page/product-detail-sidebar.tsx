@@ -1,8 +1,8 @@
-import { DescriptionInput } from "./product-details/description-input";
-import { ImageInput } from "./product-details/image-input";
-import { TitleInput } from "./product-details/title-input";
-import { VideoToggle } from "./product-details/video-toggle";
-import { SlideButton } from "./slide-button";
+import { DescriptionInput } from "./description-input";
+import { ImageInput } from "./image-input";
+import { TitleInput } from "./title-input";
+import { VideoToggle } from "./video-toggle";
+import { SlideButton } from "../slide-button";
 
 export const ProductDetailSidebar = () => {
   return (

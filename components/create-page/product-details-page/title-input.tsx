@@ -8,7 +8,7 @@ export const TitleInput = () => {
   const [title, setTitle] = useRecoilState(titleAtom);
   return (
     <div>
-      <Label htmlFor="title" className="text-md">
+      <Label htmlFor="title" className="text-md font-semibold">
         Title
       </Label>
       <Input

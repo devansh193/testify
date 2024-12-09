@@ -1,5 +1,4 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { imageAtom } from "@/recoil/atom";
 import { FileImage, Loader } from "lucide-react";
@@ -7,11 +6,14 @@ import { useRecoilState } from "recoil";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+import React, { useRef } from "react";
+
 export const ImageInput = () => {
   const [image, setImage] = useRecoilState(imageAtom);
   const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
   const MAX_SIZE_MB = 5;
   const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,17 +61,26 @@ export const ImageInput = () => {
       uploading: false,
       error: "",
     });
+
+    // Reset the input value
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
+
   return (
     <div>
-      <Label htmlFor="image">Product Image (Optional)</Label>
+      <Label htmlFor="image" className="text-md font-semibold">
+        Product Image (Optional)
+      </Label>
       <div className="mt-1 border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50 transition-colors">
-        <Input
+        <input
           type="file"
           id="image"
           className="hidden"
           accept={ALLOWED_TYPES.join(",")}
           onChange={handleImageUpload}
+          ref={fileInputRef}
         />
         <label htmlFor="image" className="cursor-pointer">
           {image.uploading ? (
@@ -79,8 +90,8 @@ export const ImageInput = () => {
           ) : image.preview ? (
             <div className="relative">
               <Image
-                height={100}
-                width={300}
+                height={200}
+                width={500}
                 src={image.preview}
                 alt="Preview"
                 className="max-h-48 mx-auto rounded ring-8 ring-gray-100"
