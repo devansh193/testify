@@ -41,7 +41,7 @@ export default function TextReview() {
               {emojis.map((emoji, index) => (
                 <button
                   key={index}
-                  className="text-4xl hover:scale-110 transition-transform"
+                  className="text-4xl hover:scale-125 transition-transform"
                 >
                   {emoji}
                 </button>

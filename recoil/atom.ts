@@ -38,7 +38,18 @@ export const descriptionAtom = atom<string>({
 
 export const slideAtom = atom<number>({
   key: "slideNumber",
-  default: 1,
+  default: 0,
+});
+
+export const slideSelector = selector<number>({
+  key: "slideSelector",
+  get: ({ get }) => get(slideAtom),
+  set: ({ set }, newValue) => {
+    if (typeof newValue === "number") {
+      const clampedValue = Math.max(0, Math.min(3, newValue));
+      set(slideAtom, clampedValue);
+    }
+  },
 });
 
 export const questionsAtom = atom<string[]>({
