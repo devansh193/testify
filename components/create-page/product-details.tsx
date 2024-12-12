@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../ui/card";
+} from "../ui/card";
 import {
   descriptionAtom,
   imageAtom,
@@ -15,7 +15,7 @@ import {
   videoAtom,
 } from "@/recoil/atom";
 import Image from "next/image";
-import { Button } from "../../ui/button";
+import { Button } from "../ui/button";
 import { Pencil, Video } from "lucide-react";
 
 export default function ProductDetails() {
@@ -26,10 +26,10 @@ export default function ProductDetails() {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <Card className="w-[600px]">
+      <Card className="w-[750px]">
         <CardHeader className="items-center gap-y-2">
-          <CardTitle className="text-4xl">{title}</CardTitle>
-          <CardDescription className="text-md text-center">
+          <CardTitle className="text-5xl">{title}</CardTitle>
+          <CardDescription className="text-xl text-center">
             {description}
           </CardDescription>
         </CardHeader>
@@ -45,12 +45,12 @@ export default function ProductDetails() {
           </CardContent>
         )}
         <CardFooter className="flex items-center justify-center gap-x-4">
-          <Button size={"lg"} className="h-[45px]">
+          <Button size={"lg"}>
             <Pencil className="mr-2" />
             Write a review
           </Button>
           {video && (
-            <Button size={"lg"} className="h-[45px]">
+            <Button size={"lg"}>
               <Video className="mr-2" />
               Record a video
             </Button>

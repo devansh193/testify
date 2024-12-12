@@ -5,7 +5,7 @@ import { slideSelector } from "@/recoil/atom";
 
 export const SlideButton = () => {
   const currentSlide = useRecoilValue(slideSelector);
-  const totalSlides = 4;
+  const totalSlides = 5;
   const setSlide = useSetRecoilState(slideSelector);
 
   const handleNextClick = () => {

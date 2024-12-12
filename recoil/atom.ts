@@ -46,7 +46,7 @@ export const slideSelector = selector<number>({
   get: ({ get }) => get(slideAtom),
   set: ({ set }, newValue) => {
     if (typeof newValue === "number") {
-      const clampedValue = Math.max(0, Math.min(3, newValue));
+      const clampedValue = Math.max(0, Math.min(5, newValue));
       set(slideAtom, clampedValue);
     }
   },

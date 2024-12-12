@@ -9,6 +9,8 @@ import { TextReviewSidebar } from "@/components/create-page/text-review-page/tex
 import TextReview from "@/components/create-page/text-review-page/text-reviews";
 import { ThankyouSidebar } from "@/components/create-page/thankyou-page/thankyou-sidebar";
 import { Thankyou } from "@/components/create-page/thankyou-page/thankyou-main";
+import { VideoReviewSidebar } from "@/components/create-page/video-review-page/video-revew-sidebar";
+import VideoReview from "@/components/create-page/video-review-page/video-review";
 
 export default function Create() {
   const slide = useRecoilValue(slideAtom);
@@ -24,6 +26,10 @@ export default function Create() {
       main: <TextReview />,
     },
     {
+      sidebar: <VideoReviewSidebar />,
+      main: <VideoReview />,
+    },
+    {
       sidebar: <PersonalSidebar />,
       main: <PersonalPage />,
     },
@@ -31,7 +37,6 @@ export default function Create() {
       sidebar: <ThankyouSidebar />,
       main: <Thankyou />,
     },
-    // Add more slides as needed
   ];
 
   return (

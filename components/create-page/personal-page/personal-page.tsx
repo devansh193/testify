@@ -24,7 +24,7 @@ export default function PersonalPage() {
           <CardTitle>
             <TestifyLogo />
           </CardTitle>
-          <CardTitle className="text-3xl">{title}</CardTitle>
+          <CardTitle className="text-2xl">{title}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -66,7 +66,7 @@ export default function PersonalPage() {
             By submitting, you agree we may share your review in our marketing.
             We appreciate your support!
           </p>
-          <Button className="w-full mt-4 h-[40px] text-md">Submit</Button>
+          <Button className="w-full mt-4 h-[45px] text-md ">Submit</Button>
         </CardFooter>
       </Card>
     </div>
