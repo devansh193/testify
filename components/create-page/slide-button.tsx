@@ -2,6 +2,7 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Button } from "../ui/button";
 import { slideSelector } from "@/recoil/atom";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const SlideButton = () => {
   const currentSlide = useRecoilValue(slideSelector);
@@ -21,14 +22,24 @@ export const SlideButton = () => {
   };
 
   return (
-    <div className="flex items-center justify-between">
-      <Button onClick={handlePrevClick} disabled={currentSlide === 0}>
+    <div className="flex items-center justify-between gap-x-2">
+      <Button
+        onClick={handlePrevClick}
+        disabled={currentSlide === 0}
+        className="w-full"
+      >
+        <ArrowLeft className="size-5 mr-2" />
         Previous
       </Button>
       {currentSlide === totalSlides - 1 ? (
-        <Button onClick={handleSubmitClick}>Submit</Button>
+        <Button onClick={handleSubmitClick} className="w-full">
+          Submit
+        </Button>
       ) : (
-        <Button onClick={handleNextClick}>Next</Button>
+        <Button onClick={handleNextClick} className="w-full">
+          Next
+          <ArrowRight className="size-5 ml-2" />
+        </Button>
       )}
     </div>
   );

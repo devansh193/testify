@@ -57,6 +57,11 @@ export const questionsAtom = atom<string[]>({
   default: ["How would you rate our product?"],
 });
 
+export const videoQuestionsAtom = atom<string[]>({
+  key: "videoQuestionsAtom",
+  default: ["How would you rate our product?"],
+});
+
 export const videoAtom = atom<boolean>({
   key: "videoReview",
   default: true,

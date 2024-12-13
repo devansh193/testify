@@ -8,25 +8,25 @@ import {
   CardHeader,
   CardTitle,
 } from "../../ui/card";
-import { questionsAtom, ratingTitleAtom } from "@/recoil/atom";
+import { ratingTitleAtom, videoQuestionsAtom } from "@/recoil/atom";
 import { Dot } from "lucide-react";
-import TestifyLogo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 
 export default function VideoReview() {
-  const questions = useRecoilValue(questionsAtom);
+  const questions = useRecoilValue(videoQuestionsAtom);
   const title = useRecoilValue(ratingTitleAtom);
 
   return (
     <div className="flex items-center justify-center h-full">
       <Card className="w-[600px]">
-        <CardHeader className="gap-y-2">
-          <CardTitle>
-            <TestifyLogo />
-          </CardTitle>
-          <CardTitle className="text-5xl">{title}</CardTitle>
+        <CardContent className="flex items-center justify-center">
+          <div className="h-[250px] w-full bg-gray-100 flex items-center justify-center mt-6">
+            hi there
+          </div>
+        </CardContent>
+        <CardHeader>
+          <CardTitle className="text-2xl">{title}</CardTitle>
         </CardHeader>
-        <CardContent>hi there</CardContent>
         <CardDescription className="ml-4">
           {questions?.map((question) => (
             <p key={question} className="flex text-lg font-normal">
