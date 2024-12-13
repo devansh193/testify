@@ -41,6 +41,22 @@ export const slideAtom = atom<number>({
   default: 0,
 });
 
+export const videoSlideAtom = atom<number>({
+  key: "videoSlideNumber",
+  default: 0,
+});
+
+export const videoSlideSelector = selector<number>({
+  key: "videoSlideSelector",
+  get: ({ get }) => get(videoSlideAtom),
+  set: ({ set }, newValue) => {
+    if (typeof newValue === "number") {
+      const clampedValue = Math.max(0, Math.min(2, newValue));
+      set(videoSlideAtom, clampedValue);
+    }
+  },
+});
+
 export const slideSelector = selector<number>({
   key: "slideSelector",
   get: ({ get }) => get(slideAtom),

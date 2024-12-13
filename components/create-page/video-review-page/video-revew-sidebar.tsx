@@ -16,7 +16,7 @@ export const VideoReviewSidebar = () => {
       </div>
       <div className="p-4 bottom-0 space-y-4">
         <VideoSlideButton />
-        <Button className="w-full bg-neutral-200 text-black">
+        <Button className="w-full bg-neutral-200 text-black hover:bg-neutral-100">
           <Trash2 className="size-5 mr-2" /> Reset changes
         </Button>
         <SlideButton />
