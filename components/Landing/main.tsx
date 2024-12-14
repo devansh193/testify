@@ -24,7 +24,7 @@ export function Main() {
               <span className="block">Gather, Organize and Display</span>
               <span className="block mt-2">
                 Quality Customer{" "}
-                <span className="text-blue-600">Testimonials</span>
+                <span className="text-blue-700">Testimonials</span>
               </span>
             </Heading>
           </div>

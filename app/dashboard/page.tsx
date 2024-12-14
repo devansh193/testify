@@ -1,12 +1,7 @@
-import { DashboardLayout } from "@/components/dashboard-layout";
-import { MyProducts } from "@/components/my-product";
-
 export default function Dashboard() {
   return (
-    <DashboardLayout>
-      <div className="">
-        <MyProducts />
-      </div>
-    </DashboardLayout>
+    <div className="m-2  bg-red-200 w-full rounded-xl">
+      <div className="p-4">hi there</div>
+    </div>
   );
 }
