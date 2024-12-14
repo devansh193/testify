@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 import { Button } from "../../ui/button";
 import { Pencil, Video } from "lucide-react";
+import TestifyLogo from "@/components/Logo";
 
 export default function ProductDetails() {
   const title = useRecoilValue(titleAtom);

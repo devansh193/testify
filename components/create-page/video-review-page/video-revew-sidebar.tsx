@@ -4,11 +4,15 @@ import { SlideButton } from "../slide-button";
 import VideoQuestionsInput from "./video-questions-input";
 import { VideoSlideButton } from "./video-slide-button";
 import { Button } from "@/components/ui/button";
+import TestifyLogo from "@/components/Logo";
 
 export const VideoReviewSidebar = () => {
   return (
-    <div className="w-[400px] border-r-2 border-gray-200 flex flex-col h-full">
+    <div className="w-[350px] flex flex-col h-full">
       <div className="space-y-6 p-4 flex-grow">
+        <div>
+          <TestifyLogo />
+        </div>
         <div>
           <h1 className="text-lg font-semibold">Video review</h1>
         </div>

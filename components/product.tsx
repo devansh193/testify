@@ -1,7 +1,6 @@
 "use client";
 import { Product } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import ProductCard from "./product-card";
 import { deleteProduct } from "@/action/products/product";
 
 interface ProductsProp {

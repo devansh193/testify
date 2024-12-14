@@ -11,6 +11,7 @@ import { ThankyouSidebar } from "@/components/create-page/thankyou-page/thankyou
 import { Thankyou } from "@/components/create-page/thankyou-page/thankyou-main";
 import { VideoReviewSidebar } from "@/components/create-page/video-review-page/video-revew-sidebar";
 import VideoReview from "@/components/create-page/video-review-page/video-review";
+import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 
 export default function Create() {
   const slide = useRecoilValue(slideAtom);
@@ -40,12 +41,14 @@ export default function Create() {
   ];
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full p-2">
       {/* Sidebar */}
-      <div className="hidden lg:block">{slides[slide]?.sidebar || null}</div>
+      <div className="hidden lg:block bg-transparent">
+        {slides[slide]?.sidebar || null}
+      </div>
       {/* Main Content */}
-      <div className="flex-1 items-center justify-center h-full">
-        {slides[slide]?.main || null}
+      <div className="flex-1 items-center justify-center h-full bg-white rounded-xl">
+        <MaxWidthWrapper>{slides[slide]?.main || null}</MaxWidthWrapper>
       </div>
     </div>
   );

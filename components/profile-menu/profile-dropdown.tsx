@@ -24,8 +24,8 @@ const ProfileDropdown = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <button className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-zinc-600">
-          <User color="white" className="size-4" />
+        <button className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-neutral-800">
+          <User color="white" className="size-3" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="z-[99999] m-2 min-w-44 bg-neutral-100 dark:bg-neutral-900">
