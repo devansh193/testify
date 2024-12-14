@@ -3,14 +3,14 @@ import { ImageInput } from "./image-input";
 import { TitleInput } from "./title-input";
 import { VideoToggle } from "./video-toggle";
 import { SlideButton } from "../slide-button";
-import TestifyLogo from "@/components/Logo";
+import Testify from "@/components/logo/testify";
 
 export const ProductDetailSidebar = () => {
   return (
     <div className="w-[350px] flex flex-col h-full">
       <div className="space-y-6 p-4 flex-grow">
         <div>
-          <TestifyLogo />
+          <Testify />
         </div>
         <div>
           <h1 className="text-lg font-semibold">Product details</h1>

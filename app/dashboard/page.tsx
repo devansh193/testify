@@ -6,7 +6,7 @@ import { ListFilter } from "lucide-react";
 
 export default function Dashboard() {
   return (
-    <div className="m-2 bg-white w-full rounded-xl p-4">
+    <div className="my-2 bg-white w-full h-full rounded-xl p-4 shadow-lg">
       <MaxWidthWrapper>
         <h1 className="text-2xl font-semibold">Products</h1>
         <div className="flex items-center justify-between py-4">

@@ -1,15 +1,15 @@
 "use client";
 
-import TestifyLogo from "@/components/Logo";
 import { SlideButton } from "../slide-button";
 import { PersonalTitleInput } from "./personal-title";
+import Testify from "@/components/logo/testify";
 
 export const PersonalSidebar = () => {
   return (
     <div className="w-[350px] flex flex-col h-full">
       <div className="space-y-6 p-4 flex-grow">
         <div>
-          <TestifyLogo />
+          <Testify />
         </div>
         <div>
           <h1 className="text-lg font-semibold">Personal details</h1>

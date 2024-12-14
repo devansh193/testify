@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Button } from "../ui/button";
-import { Copy, CornerDownRight, MoreVertical } from "lucide-react";
+import { Copy, Check, CornerDownRight, MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,103 +22,31 @@ const products = [
     title: "Testify-1",
     description: "A one stop solution for testimonials.",
     totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
+    link: "https://testify.xyz/john/testify",
     createdAt: "Dec 14",
   },
   {
     title: "Testify-2",
     description: "A one stop solution for testimonials.",
     totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
-    createdAt: "Dec 14",
-  },
-  {
-    title: "Testify-3",
-    description: "A one stop solution for testimonials.",
-    totalReviews: 4,
-    link: " drive.google.com/file/d/1aOKtBX2W8QQt-KCJ3pdWYSAonl4sWo4_/view?usp=drive_link",
+    link: "https://testify.xyz/john/testify",
     createdAt: "Dec 14",
   },
 ];
-export const ProductCard = () => {
-  const [copied, setCopied] = useState(false);
 
-  const handleCopy = async (e: React.MouseEvent) => {
+export const ProductCard = () => {
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  const handleCopy = async (
+    e: React.MouseEvent,
+    link: string,
+    index: number
+  ) => {
     e.stopPropagation();
     try {
-      await navigator.clipboard.writeText(`dub.sh/`);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(link);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -126,7 +54,7 @@ export const ProductCard = () => {
 
   return (
     <>
-      {products.map((product) => (
+      {products.map((product, index) => (
         <div
           className={cn(
             "group flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-muted/50 m-2 h-[80px] hover:shadow-xl w-full"
@@ -164,35 +92,41 @@ export const ProductCard = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-muted-foreground"
-                        onClick={handleCopy}
+                        onClick={(e) => handleCopy(e, product.link, index)}
                       >
-                        <Copy className="h-4 w-4" />
+                        {copiedIndex === index ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
                         <span className="sr-only">
-                          {copied ? "Copied" : "Copy link"}
+                          {copiedIndex === index ? "Copied" : "Copy link"}
                         </span>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{copied ? "Copied!" : "Copy short link"}</p>
+                      <p>
+                        {copiedIndex === index ? "Copied!" : "Copy short link"}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <div className="truncate text-sm text-muted-foreground">
-                <h1 className="flex hover:underline hover:underline-offset-2 hover:cursor-pointer">
+              <div className="flex items-center gap-x-2 truncate text-sm text-muted-foreground">
+                <h1 className="flex line-clamp-1 hover:underline hover:underline-offset-2 hover:cursor-pointer">
                   <CornerDownRight className="size-3 mr-1 text-[#9CA3AF]" />{" "}
                   {product.link}
                 </h1>
+                <div className="flex text-sm text-[#9CA3AF] text-muted-foreground">
+                  {product.createdAt}
+                </div>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-sm tabular-nums text-muted-foreground">
+            <div className="text-xs text-black bg-[#F9FAFB] border-2 border-[#E5E7EB] p-1 rounded-md">
               {product.totalReviews} review
               {product.totalReviews !== 1 ? "s" : ""}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {product.createdAt}
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

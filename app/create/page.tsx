@@ -16,7 +16,6 @@ import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 export default function Create() {
   const slide = useRecoilValue(slideAtom);
 
-  // Slide components mapping
   const slides = [
     {
       sidebar: <ProductDetailSidebar />,
@@ -47,7 +46,7 @@ export default function Create() {
         {slides[slide]?.sidebar || null}
       </div>
       {/* Main Content */}
-      <div className="flex-1 items-center justify-center h-full bg-white rounded-xl">
+      <div className="flex-1 items-center justify-center h-full bg-white rounded-xl shadow-md">
         <MaxWidthWrapper>{slides[slide]?.main || null}</MaxWidthWrapper>
       </div>
     </div>
