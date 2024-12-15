@@ -9,7 +9,7 @@ import Testify from "@/components/logo/testify";
 export const VideoReviewSidebar = () => {
   return (
     <div className="w-[350px] flex flex-col h-full">
-      <div className="space-y-6 p-4 flex-grow">
+      <div className="space-y-6 p-2 flex-grow">
         <div>
           <Testify />
         </div>
