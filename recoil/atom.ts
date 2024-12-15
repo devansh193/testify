@@ -60,9 +60,10 @@ export const videoSlideSelector = selector<number>({
 export const slideSelector = selector<number>({
   key: "slideSelector",
   get: ({ get }) => get(slideAtom),
-  set: ({ set }, newValue) => {
+  set: ({ set, get }, newValue) => {
     if (typeof newValue === "number") {
-      const clampedValue = Math.max(0, Math.min(5, newValue));
+      const maxSlide = get(videoAtom) ? 5 : 4;
+      const clampedValue = Math.max(0, Math.min(maxSlide, newValue));
       set(slideAtom, clampedValue);
     }
   },

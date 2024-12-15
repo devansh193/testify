@@ -2,7 +2,7 @@
 import PersonalPage from "@/components/create-page/personal-page/personal-page";
 import { PersonalSidebar } from "@/components/create-page/personal-page/personal-page-sidebar";
 import { useRecoilValue } from "recoil";
-import { slideAtom } from "@/recoil/atom";
+import { slideAtom, videoAtom } from "@/recoil/atom";
 import { ProductDetailSidebar } from "@/components/create-page/product-details-page/product-detail-sidebar";
 import ProductDetails from "@/components/create-page/product-details-page/product-details";
 import { TextReviewSidebar } from "@/components/create-page/text-review-page/text-review-sidebar";
@@ -15,6 +15,7 @@ import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 
 export default function Create() {
   const slide = useRecoilValue(slideAtom);
+  const videoReview = useRecoilValue(videoAtom);
 
   const slides = [
     {
@@ -25,10 +26,14 @@ export default function Create() {
       sidebar: <TextReviewSidebar />,
       main: <TextReview />,
     },
-    {
-      sidebar: <VideoReviewSidebar />,
-      main: <VideoReview />,
-    },
+    ...(videoReview
+      ? [
+          {
+            sidebar: <VideoReviewSidebar />,
+            main: <VideoReview />,
+          },
+        ]
+      : []),
     {
       sidebar: <PersonalSidebar />,
       main: <PersonalPage />,

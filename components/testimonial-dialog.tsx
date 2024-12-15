@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import Logo  from "./Logo";
+import Logo from "./logo/Logo";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Label } from "./ui/label";

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import Logo from "@/components/Logo";
+import Logo from "@/components/logo/Logo";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 

@@ -10,7 +10,7 @@ import {
 import { personalPageTitle } from "@/recoil/atom";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
-import TestifyLogo from "@/components/Logo";
+import TestifyLogo from "@/components/logo/Logo";
 import { Button } from "@/components/ui/button";
 import { FileImage } from "lucide-react";
 

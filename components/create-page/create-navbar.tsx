@@ -1,4 +1,4 @@
-import TestifyLogo from "@/components/Logo";
+import TestifyLogo from "@/components/logo/Logo";
 import {
   Breadcrumb,
   BreadcrumbItem,

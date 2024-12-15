@@ -1,12 +1,14 @@
 "use client";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Button } from "../ui/button";
-import { slideSelector } from "@/recoil/atom";
+import { slideSelector, videoAtom } from "@/recoil/atom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const SlideButton = () => {
   const currentSlide = useRecoilValue(slideSelector);
-  const totalSlides = 5;
+  const videoReview = useRecoilValue(videoAtom);
+  const totalSlides = videoReview ? 5 : 4;
+
   const setSlide = useSetRecoilState(slideSelector);
 
   const handleNextClick = () => {

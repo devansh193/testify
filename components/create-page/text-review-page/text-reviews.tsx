@@ -11,7 +11,7 @@ import {
 import { questionsAtom, ratingTitleAtom, starAtom } from "@/recoil/atom";
 import { Dot } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import TestifyLogo from "@/components/Logo";
+import TestifyLogo from "@/components/logo/Logo";
 import { Button } from "@/components/ui/button";
 
 export default function TextReview() {

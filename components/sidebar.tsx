@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ProfileDropDown from "./profile-menu/profile-dropdown";
-import TestifyLogo from "./Logo";
+import TestifyLogo from "./logo/Logo";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },

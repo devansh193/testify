@@ -46,7 +46,6 @@ export const ProductCard = () => {
     try {
       await navigator.clipboard.writeText(link);
       setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -57,7 +56,7 @@ export const ProductCard = () => {
       {products.map((product, index) => (
         <div
           className={cn(
-            "group flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-muted/50 m-2 h-[80px] hover:shadow-xl w-full"
+            "group flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-muted/50 m-2 h-[80px] hover:shadow-sm w-full"
           )}
           key={product.title}
         >
@@ -97,7 +96,7 @@ export const ProductCard = () => {
                         {copiedIndex === index ? (
                           <Check className="h-4 w-4 text-green-500" />
                         ) : (
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-4 w-4 text-black" />
                         )}
                         <span className="sr-only">
                           {copiedIndex === index ? "Copied" : "Copy link"}
