@@ -8,7 +8,13 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Button } from "../ui/button";
-import { Copy, Check, CornerDownRight, MoreVertical } from "lucide-react";
+import {
+  Copy,
+  Check,
+  CornerDownRight,
+  MoreVertical,
+  Quote,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,7 +62,7 @@ export const ProductCard = () => {
       {products.map((product, index) => (
         <div
           className={cn(
-            "group flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-muted/50 m-2 h-[80px] hover:shadow-sm w-full"
+            "group flex items-center justify-between rounded-lg border p-4 hover:bg-muted/50 m-2 h-[100px] hover:shadow-md transition-all duration-200 w-full hover:cursor-pointer"
           )}
           key={product.title}
         >
@@ -75,7 +81,7 @@ export const ProductCard = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="font-semibold cursor-pointer">
+                      <span className="font-semibold cursor-pointer text-xl">
                         {product.title}
                       </span>
                     </TooltipTrigger>
@@ -123,9 +129,10 @@ export const ProductCard = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-xs text-black bg-[#F9FAFB] border-2 border-[#E5E7EB] p-1 rounded-md">
-              {product.totalReviews} review
-              {product.totalReviews !== 1 ? "s" : ""}
+            <div className="text-xs text-gray-500 bg-[#F9FAFB] border-2 border-[#E5E7EB] p-1 rounded-md flex">
+              <Quote className="size-4 mr-2 text-gray-500" /> Review{""}
+              {product.totalReviews !== 1 ? "s:- " : ":-"}
+              {product.totalReviews}
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

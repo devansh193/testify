@@ -20,17 +20,19 @@ export default function VideoReview() {
     <div className="flex items-center justify-center h-full">
       <Card className="w-[600px]">
         <CardContent className="flex items-center justify-center">
-          <div className="h-[250px] w-full bg-gray-100 flex items-center justify-center mt-6">
+          <div className="h-[250px] w-full bg-gray-100 flex items-center justify-center rounded-lg mt-6">
             hi there
           </div>
         </CardContent>
         <CardHeader>
-          <CardTitle className="text-2xl">{title}</CardTitle>
+          <CardTitle className="text-3xl font-sans font-light">
+            {title}
+          </CardTitle>
         </CardHeader>
         <CardDescription className="ml-4">
           {questions?.map((question) => (
-            <p key={question} className="flex text-lg font-normal">
-              <Dot className="text-black" /> {question}
+            <p key={question} className="flex text-sm font-sans font-normal">
+              <Dot className="text-gray-700" /> {question}
             </p>
           ))}
         </CardDescription>

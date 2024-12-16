@@ -28,8 +28,10 @@ export default function ProductDetails() {
     <div className="flex items-center justify-center h-full">
       <Card className="w-[600px]">
         <CardHeader className="items-center gap-y-2">
-          <CardTitle className="text-4xl">{title}</CardTitle>
-          <CardDescription className="text-md text-center">
+          <CardTitle className="text-5xl font-sans font-medium">
+            {title}
+          </CardTitle>
+          <CardDescription className="text-md text-center font-sans font-normal">
             {description}
           </CardDescription>
         </CardHeader>

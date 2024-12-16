@@ -10,7 +10,6 @@ import {
 import { personalPageTitle } from "@/recoil/atom";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
-import TestifyLogo from "@/components/logo/Logo";
 import { Button } from "@/components/ui/button";
 import { FileImage } from "lucide-react";
 
@@ -21,10 +20,9 @@ export default function PersonalPage() {
     <div className="flex items-center justify-center h-full">
       <Card className="w-[600px]">
         <CardHeader className="gap-y-2">
-          <CardTitle>
-            <TestifyLogo />
+          <CardTitle className="text-3xl font-sans font-light">
+            {title}
           </CardTitle>
-          <CardTitle className="text-2xl">{title}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>

@@ -39,7 +39,7 @@ export const Navigation = () => {
               "group"
             )}
           >
-            <item.icon className="mr-2 h-5 w-5 transition-all duration-100 ease-in-out group-hover:rotate-[20deg]" />
+            <item.icon className="mr-2 h-5 w-5 transition-all duration-200 ease-in-out group-hover:rotate-[90deg]" />
             <span className="transition-all duration-300 ease-in-out transform group-hover:translate-x-1">
               {item.title}
             </span>
