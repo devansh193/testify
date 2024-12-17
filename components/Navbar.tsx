@@ -10,7 +10,7 @@ import { NavAuth } from "./Landing/navbar-items/nav-auth";
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="top-0 z-50 w-full border-b border-gray-200 bg-[#F5F5F5] backdrop-blur-sm">
+    <header className="top-0 z-50 w-full border-gray-200 bg-[#F5F5F5] backdrop-blur-sm">
       <div className="flex h-16 items-center justify-between px-4">
         <nav className="hidden md:flex md:items-center justify-between md:space-x-12">
           <Testify />
