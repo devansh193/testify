@@ -24,10 +24,10 @@ export function Main() {
         <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
           <Link href={href} className="block">
             <button className="relative overflow-hidden group bg-black hover:bg-gray-300 text-white font-sans font-medium text-2xl px-4 py-3 rounded-xl transition-colors duration-300 ease-in-out">
-              <span className="relative z-10 group-hover:text-black transition-colors duration-300 ease-in-out">
+              <span className="relative z-10 group-hover:text-black transition-colors duration-500 ease-in-out">
                 Start for free
               </span>
-              <span className="absolute inset-0 bg-neutral-300 transform translate-x-full group-hover:translate-x-0 transition-transform duration-200 ease-in-out" />
+              <span className="absolute inset-0 bg-neutral-300 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
               <span className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
             </button>
           </Link>
