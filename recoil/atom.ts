@@ -71,7 +71,12 @@ export const slideSelector = selector<number>({
 
 export const questionsAtom = atom<string[]>({
   key: "questionsAtom",
-  default: ["How would you rate our product?"],
+  default: [
+    "What problems did we help you solve?",
+    "What have you been able to achieve since using our product/service?",
+    "What exceeded your expectations or surprised you the most?",
+    "What would you tell someone considering our product/service?",
+  ],
 });
 
 export const videoQuestionsAtom = atom<string[]>({

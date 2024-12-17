@@ -35,7 +35,7 @@ export const Navigation = () => {
             href={item.href}
             className={cn(
               "flex w-full items-center justify-start rounded-lg p-2 text-sm font-medium transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-              isActive ? "bg-blue-100 text-blue-700" : "text-black",
+              isActive ? "bg-[#DDDDDD] text-neutral-700" : "text-black",
               "group"
             )}
           >

@@ -1,16 +1,14 @@
 "use client";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { questionsAtom, starAtom } from "@/recoil/atom";
+import { questionsAtom } from "@/recoil/atom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus } from "lucide-react";
 
 const QuestionsInput = () => {
   const [questions, setQuestions] = useRecoilState(questionsAtom);
-  const [emojiRatings, setEmojiRatings] = useRecoilState(starAtom);
 
   const updateQuestion = (index: number, value: string) => {
     const newQuestions = [...questions];
@@ -57,15 +55,6 @@ const QuestionsInput = () => {
         >
           <Plus className="mr-2" /> Add
         </Button>
-      </div>
-
-      <div className="flex items-center justify-between mt-4">
-        <Label htmlFor="emoji-toggle">Emoji ratings</Label>
-        <Switch
-          id="emoji-toggle"
-          checked={emojiRatings}
-          onCheckedChange={setEmojiRatings}
-        />
       </div>
     </>
   );

@@ -62,7 +62,7 @@ export const ProductCard = () => {
       {products.map((product, index) => (
         <div
           className={cn(
-            "group flex items-center justify-between rounded-lg border p-4 hover:bg-muted/50 m-2 h-[100px] hover:shadow-md transition-all duration-200 w-full hover:cursor-pointer"
+            "group flex items-center justify-between rounded-xl border p-4 hover:bg-muted/50 m-2 h-[100px] hover:shadow-md transition-all duration-200 w-full hover:cursor-pointer bg-[#FFFFFF]"
           )}
           key={product.title}
         >
@@ -129,11 +129,13 @@ export const ProductCard = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-xs text-gray-500 bg-[#F9FAFB] border-2 border-[#E5E7EB] p-1 rounded-md flex">
-              <Quote className="size-4 mr-2 text-gray-500" /> Review{""}
-              {product.totalReviews !== 1 ? "s:- " : ":-"}
-              {product.totalReviews}
+            <div className="text-xs text-gray-500 bg-[#F9FAFB] border border-[#E5E7EB] p-1 rounded-md flex">
+              <Quote className="size-4 mr-2 text-gray-500" />
+              {product.totalReviews + " "}
+              Review
+              {product.totalReviews !== 1 ? "s " : " "}
             </div>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
