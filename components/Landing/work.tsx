@@ -1,48 +1,70 @@
-import { ArrowRight, CheckCircle, Star } from "lucide-react";
+import Link from "next/link";
 
 export const Work = () => {
-  const steps = [
-    {
-      icon: <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-green-500" />,
-      title: "1. Easy Setup",
-      description:
-        "Create your testimonial page in just a few clicks. Customize the design to match your brand.",
-    },
-    {
-      icon: <Star className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-400" />,
-      title: "2. Collect Testimonials",
-      description:
-        "Share your unique URL with customers. They can easily submit their testimonials through a user-friendly form.",
-    },
-    {
-      icon: <ArrowRight className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500" />,
-      title: "3. Showcase & Convert",
-      description:
-        "Display your testimonials on your website. Use our analytics to optimize and increase conversions.",
-    },
-  ];
-
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
-      <div className="container px-4 md:px-6 mx-auto max-w-7xl">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16">
-          How Testify Works
-        </h2>
-        <div className="grid gap-8 sm:gap-10 md:gap-12 sm:grid-cols-2 lg:grid-cols-3">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center space-y-4 text-center"
-            >
-              <div className="bg-gray-100 p-3 rounded-full">{step.icon}</div>
-              <h3 className="text-lg sm:text-xl font-bold">{step.title}</h3>
-              <p className="text-sm sm:text-base text-gray-500 max-w-xs">
-                {step.description}
-              </p>
+    <div className="bg-[#F5F5F5] flex flex-col">
+      <div className="h-screen grid grid-cols-1 sm:grid-cols-5 bg-white">
+        <div className="col-span-3 flex items-center justify-center rounded-lg px-4 py-2">
+          <div className="w-full h-[550px] bg-[#E7A458] rounded-xl p-4"></div>
+        </div>
+        <div className="col-span-2 flex items-center justify-center rounded-lg m-4 p-4">
+          <div className="w-full max-w-[550px] flex flex-col items-center justify-center">
+            <h1 className="text-base sm:text-lg font-sans font-semibold text-[#06040E]">
+              REVIEWS
+            </h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold font-sans text-[#06040E] text-center">
+              Customize without compromize
+            </h1>
+            <p className="mt-4 text-2xl text-start p-4 font-medium font-sans text-[#06040E]">
+              Showcase customer feedback effortlessly with Testify&apos;s
+              beautifully designed review cards—because average reviews just
+              won&apos;t do.
+            </p>
+            <div className="flex self-start mt-4 ml-4">
+              <Link href={"/dashboard"}>
+                <button className="relative overflow-hidden group bg-[#452523] hover:bg-[#452523] text-white font-sans font-medium text-2xl px-4 py-3 rounded-xl transition-colors duration-300 ease-in-out">
+                  <span className="relative z-10 group-hover:text-black transition-colors duration-500 ease-in-out">
+                    Start for free
+                  </span>
+                  <span className="absolute inset-0 bg-[#E7A458]  transform translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
+                  <span className="absolute inset-0 bg-[#F8E1CD]  transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
+                </button>
+              </Link>
             </div>
-          ))}
+          </div>
         </div>
       </div>
-    </section>
+      <div className="grid grid-cols-1 sm:grid-cols-5 bg-white">
+        <div className="col-span-2 flex items-center justify-center rounded-lg m-4 p-4">
+          <div className="w-full max-w-[550px] flex flex-col items-center justify-center">
+            <h1 className="text-base sm:text-lg font-sans font-semibold text-[#06040E]">
+              REVIEWS
+            </h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold font-sans text-[#06040E] text-center">
+              Customize without compromize
+            </h1>
+            <p className="mt-4 text-2xl text-start p-4 font-medium font-sans text-[#06040E]">
+              Showcase customer feedback effortlessly with Testify&apos;s
+              beautifully designed review cards—because average reviews just
+              won&apos;t do.
+            </p>
+            <div className="flex self-start mt-4 ml-4">
+              <Link href={"/dashboard"}>
+                <button className="relative overflow-hidden group bg-[#452523] hover:bg-[#452523] text-white font-sans font-medium text-2xl px-4 py-3 rounded-xl transition-colors duration-300 ease-in-out">
+                  <span className="relative z-10 group-hover:text-black transition-colors duration-500 ease-in-out">
+                    Start for free
+                  </span>
+                  <span className="absolute inset-0 bg-[#E7A458]  transform translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
+                  <span className="absolute inset-0 bg-[#F8E1CD]  transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="col-span-3 flex items-center justify-center rounded-lg px-4 py-2">
+          <div className="w-full h-[550px] bg-[#AECEDE] rounded-xl p-4"></div>
+        </div>
+      </div>
+    </div>
   );
 };

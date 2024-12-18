@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Testify from "./logo/testify";
 import { NavItems } from "./Landing/navbar-items/nav-items";
 import { NavAuth } from "./Landing/navbar-items/nav-auth";
+import TestifyLogo from "./logo/Logo";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ export const Navbar = () => {
       <div className="flex h-16 items-center justify-between px-4">
         <nav className="hidden md:flex md:items-center justify-between md:space-x-12">
           <Testify />
+          <TestifyLogo />
           <NavItems />
         </nav>
         <div className="hidden md:block">
