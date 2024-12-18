@@ -35,34 +35,16 @@ export default function FeaturesPage() {
       description:
         "Gain valuable insights into your testimonials' performance with our comprehensive analytics dashboard.",
     },
-    {
-      icon: <Layout className="h-8 w-8 text-purple-500" />,
-      title: "Flexible Integration",
-      description:
-        "Easily integrate Testify with your website, social media, and marketing tools for seamless testimonial management.",
-    },
-    {
-      icon: <Shield className="h-8 w-8 text-red-500" />,
-      title: "Verification System",
-      description:
-        "Ensure the authenticity of your testimonials with our built-in verification process.",
-    },
-    {
-      icon: <Globe className="h-8 w-8 text-indigo-500" />,
-      title: "Multi-language Support",
-      description:
-        "Collect and display testimonials in multiple languages to reach a global audience.",
-    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F5F5F5] mt-12">
       <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
+          <h2 className="text-4xl font-semibold font-sans text-gray-900 sm:text-5xl">
             Powerful Features for Impactful Testimonials
           </h2>
-          <p className="mt-4 text-xl text-gray-500 max-w-3xl mx-auto">
+          <p className="mt-4 text-xl font-sans text-gray-500 max-w-3xl mx-auto">
             Discover how Testify empowers your business to collect, manage, and
             showcase customer testimonials effectively.
           </p>
@@ -72,7 +54,7 @@ export default function FeaturesPage() {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
               <CardHeader>
                 <div className="flex items-center space-x-4">
@@ -92,7 +74,7 @@ export default function FeaturesPage() {
         </div>
 
         <section className="mb-16">
-          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          <h3 className="text-3xl font-sans font-bold text-gray-900 mb-8 text-center">
             How Testify Works
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">

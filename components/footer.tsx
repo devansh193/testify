@@ -1,122 +1,70 @@
-import { Github, Instagram, Twitter } from "lucide-react";
+import { colFour, colOne, colThree, colTwo } from "@/constants/footer-items";
 import Link from "next/link";
+import Testify from "./logo/testify";
+import TestifyLogo from "./logo/Logo";
 
 export const Footer = () => {
   return (
-    <footer className="flex items-center justify-center bg-[#A5C8D8] py-8">
-      <div className="container px-4 md:px-6">
-        <div className="flex items-start justify-around">
-          <div>
-            <h3 className="font-bold mb-4 font-sans">Product</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/features"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Testimonials
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-bold mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-bold mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-black font-sans hover:text-gray-900"
-                >
-                  Cookie Policy
-                </Link>
-              </li>
-            </ul>
+    <div className="flex flex-col">
+      <div className="flex items-center justify-evenly py-24 p-4 w-full bg-[#AECEDE]">
+        <div className="flex items-center justify-center gap-x-2">
+          <TestifyLogo />
+          <Testify />
+        </div>
+        <div className="space-y-4">
+          <h1 className="font-sans font-semibold text-sm">PLATFORM</h1>
+          <div className="flex flex-col items-start gap-y-1">
+            {colOne.map((item) => (
+              <Link key={item.label} href={item.href}>
+                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
+                  {item.label}
+                </h1>
+              </Link>
+            ))}
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t flex items-center justify-between">
-          <p className="text-sm text-black font-sans text-center">
-            © 2024 Testify. All rights reserved.
-          </p>
-          <div className="flex space-x-6">
-            <Link href="#" className="text-black font-sans hover:text-gray-500">
-              <span className="sr-only">Facebook</span>
-              <Instagram />
-            </Link>
-            <Link href="#" className="text-black font-sans hover:text-gray-500">
-              <span className="sr-only">Twitter</span>
-              <Twitter />
-            </Link>
-            <Link
-              href="https://github.com/devansh193/testify"
-              className="text-black font-sans hover:text-gray-500"
-            >
-              <span className="sr-only">GitHub</span>
-              <Github />
-            </Link>
+        <div className="space-y-4">
+          <h1 className="font-sans font-semibold text-sm">COMPANY</h1>
+          <div className="flex flex-col items-start gap-y-1">
+            {colTwo.map((item) => (
+              <Link key={item.label} href={item.href}>
+                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
+                  {item.label}
+                </h1>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="space-y-4">
+          <h1 className="font-sans font-semibold text-sm">LEGAL</h1>
+          <div className="flex flex-col items-start gap-y-1">
+            {colThree.map((item) => (
+              <Link key={item.label} href={item.href}>
+                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
+                  {item.label}
+                </h1>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="space-y-4">
+          <h1 className="font-sans font-semibold text-sm">SOCIALS</h1>
+          <div className="flex flex-col items-start gap-y-1">
+            {colFour.map((item) => (
+              <Link key={item.label} href={item.href}>
+                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
+                  {item.label}
+                </h1>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
-    </footer>
+      <div className="flex items-center justify-center p-4 bg-[#AECEDE]">
+        <p className="text-sm text-black font-sans text-center">
+          © 2024 Testify. All rights reserved.
+        </p>
+      </div>
+    </div>
   );
 };

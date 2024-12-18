@@ -5,7 +5,7 @@ const FeaturesLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Navbar />
-      {children}
+      <main>{children}</main>
       <Footer />
     </div>
   );

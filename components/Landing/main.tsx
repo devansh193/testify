@@ -7,12 +7,12 @@ export function Main() {
   const href = session ? "/dashboard" : "/sign-in";
 
   return (
-    <section className="min-h-screen py-32 sm:py-16 md:py-24 lg:py-32 bg-brand-25 bg-[#F5F5F5]">
+    <section className="min-h-screen py-32 sm:py-16 md:py-24 lg:py-48 bg-brand-25 bg-[#F5F5F5]">
       <div className="text-center flex flex-col items-center gap-4 sm:gap-6">
         <div className="flex items-center justify-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl flex flex-col md:flex-row items-center justify-center md:justify-start text-black font-sans font-medium p-4">
             <span className="mr-2">Collect and showcase customer</span>
-            <span className="text-[#8dbfd7] md:text-white md:bg-[#83b3c9] p-2 rounded-lg md:rotate-[-6deg] rotate-0 hover:rotate-0 transition-all duration-200">
+            <span className="text-[#8dbfd7] md:text-white md:bg-[#83b3c9] p-2 rounded-lg md:rotate-[-6deg] rotate-0 hover:rotate-0 transition-all duration-00">
               testimonials
             </span>
           </h1>

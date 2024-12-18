@@ -23,9 +23,11 @@ export const NavAuth = () => {
           >
             Login
           </Link>
-          <Button className="font-sans font-medium text-md">
-            Sign up free
-          </Button>
+          <Link href={"/sign-up"}>
+            <Button className="font-sans font-medium text-md">
+              Sign up free
+            </Button>
+          </Link>
         </div>
       )}
     </>

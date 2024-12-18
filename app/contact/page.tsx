@@ -17,7 +17,6 @@ import Link from "next/link";
 export default function GetInTouchPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
       <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-extrabold text-black sm:text-5xl">
@@ -161,7 +160,6 @@ export default function GetInTouchPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
