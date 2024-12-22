@@ -1,6 +1,5 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import {
   TooltipProvider,
   Tooltip,
@@ -8,13 +7,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Button } from "../ui/button";
-import {
-  Copy,
-  Check,
-  CornerDownRight,
-  MoreVertical,
-  Quote,
-} from "lucide-react";
+import { Copy, Check, CornerDownRight, MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,

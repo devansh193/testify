@@ -6,14 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  CheckCircle,
-  Star,
-  BarChart,
-  Layout,
-  Shield,
-  Globe,
-} from "lucide-react";
+import { CheckCircle, Star, BarChart } from "lucide-react";
 
 export default function FeaturesPage() {
   const features = [

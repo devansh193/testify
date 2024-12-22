@@ -2,10 +2,10 @@
 import { useRecoilState } from "recoil";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { titleAtom } from "@/recoil/atom";
+import { feedbackBoardTitleAtom } from "@/recoil/atom";
 
 export const TitleInput = () => {
-  const [title, setTitle] = useRecoilState(titleAtom);
+  const [title, setTitle] = useRecoilState(feedbackBoardTitleAtom);
   return (
     <div>
       <Label htmlFor="title" className="text-md font-semibold">

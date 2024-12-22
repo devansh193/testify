@@ -1,6 +1,6 @@
 "use client";
 import { Label } from "@/components/ui/label";
-import { imageAtom } from "@/recoil/atom";
+import { userImageAtom } from "@/recoil/atom";
 import { FileImage, Loader } from "lucide-react";
 import { useRecoilState } from "recoil";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import React, { useRef } from "react";
 
 export const ImageInput = () => {
-  const [image, setImage] = useRecoilState(imageAtom);
+  const [image, setImage] = useRecoilState(userImageAtom);
   const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
   const MAX_SIZE_MB = 5;
   const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;

@@ -1,21 +1,25 @@
 "use client";
 import { useRecoilValue } from "recoil";
-import { descriptionAtom, pageTitleAtom, videoAtom } from "@/recoil/atom";
+import {
+  feedbackDescriptionAtom,
+  feedbackPageTitleAtom,
+  isVideoReviewEnabledAtom,
+} from "@/recoil/atom";
 import { Button } from "../../ui/button";
 import { Pencil, Video } from "lucide-react";
 import { CreateNav } from "../nav";
 
 export default function ProductDetails() {
-  const title = useRecoilValue(pageTitleAtom);
-  const description = useRecoilValue(descriptionAtom);
-  const video = useRecoilValue(videoAtom);
+  const title = useRecoilValue(feedbackPageTitleAtom);
+  const description = useRecoilValue(feedbackDescriptionAtom);
+  const video = useRecoilValue(isVideoReviewEnabledAtom);
 
   return (
-    <div className="h-full flex flex-col p-4 md:p-8">
+    <div className="flex flex-col p-4 md:p-8">
       {/* Navbar */}
       <CreateNav />
       {/* Main content */}
-      <div className="flex items-center justify-center md:mt-36">
+      <div className="flex items-center justify-center mt-24 sm:mt-48">
         <div className="max-w-[600px] flex flex-col items-start justify-start gap-y-4 sm:gap-y-2">
           <h1 className="text-5xl">{title}</h1>
           <p className="text-xl mt-2 text-justify">{description}</p>

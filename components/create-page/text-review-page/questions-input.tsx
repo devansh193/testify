@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { questionsAtom } from "@/recoil/atom";
+import { feedbackQuestionsAtom } from "@/recoil/atom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus } from "lucide-react";
 
 const QuestionsInput = () => {
-  const [questions, setQuestions] = useRecoilState(questionsAtom);
+  const [questions, setQuestions] = useRecoilState(feedbackQuestionsAtom);
 
   const updateQuestion = (index: number, value: string) => {
     const newQuestions = [...questions];

@@ -1,31 +1,21 @@
 "use client";
 import { useRecoilValue } from "recoil";
-import { boardAtom, questionsAtom, videoTitle } from "@/recoil/atom";
-import { ArrowLeft, ArrowRight, Dot, Video } from "lucide-react";
+import { videoReviewQuestionsAtom, videoReviewTitleAtom } from "@/recoil/atom";
+import { Dot, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CreateNav } from "../nav";
 
 export default function VideoReview() {
-  const board = useRecoilValue(boardAtom);
-  const questions = useRecoilValue(questionsAtom);
-  const title = useRecoilValue(videoTitle);
+  const questions = useRecoilValue(videoReviewQuestionsAtom);
+  const title = useRecoilValue(videoReviewTitleAtom);
 
   return (
     <div className="h-full flex flex-col p-4 md:p-8">
       {/* Navbar */}
-      <div className="h-14 w-full flex items-center justify-between">
-        <h1 className="text-xl md:text-2xl font-sans font-medium">{board}</h1>
-        <div className="flex items-center justify-center gap-x-2">
-          <button className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg">
-            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
-          </button>
-          <button className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg">
-            <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
-          </button>
-        </div>
-      </div>
+      <CreateNav />
 
       {/* Main content */}
-      <div className="flex items-center justify-center md:mt-24">
+      <div className="flex items-center justify-center sm:mt-24 mt-4">
         <div className="w-full max-w-[600px] flex flex-col">
           {/* Title Section */}
           <div className="flex flex-col items-start">

@@ -1,17 +1,17 @@
 import { atom, selector } from "recoil";
 
-export const nameAtom = atom<string>({
-  key: "nameAtom",
+export const userNameAtom = atom<string>({
+  key: "userNameAtom", // Previously: nameAtom
   default: "",
 });
 
-export const emailAtom = atom<string>({
-  key: "emailAtom",
+export const userEmailAtom = atom<string>({
+  key: "userEmailAtom", // Previously: emailAtom
   default: "",
 });
 
-export const imageAtom = atom({
-  key: "imageAtom", // A unique key for this atom
+export const userImageAtom = atom({
+  key: "userImageAtom", // Previously: imageAtom
   default: {
     file: null as File | null, // File type (null initially)
     preview: "", // Preview string (e.g., URL or base64 image)
@@ -20,67 +20,67 @@ export const imageAtom = atom({
   },
 });
 
-export const pageTitleAtom = atom<string>({
-  key: "pageTitleAtom",
+export const feedbackPageTitleAtom = atom<string>({
+  key: "feedbackPageTitleAtom", // Previously: pageTitleAtom
   default: "Show us some love with your feedback!",
 });
 
-export const boardAtom = atom<string>({
-  key: "boardAtom",
+export const feedbackBoardTitleAtom = atom<string>({
+  key: "feedbackBoardTitleAtom", // Previously: boardAtom
   default: "TESTIFY",
 });
 
-export const personalPageTitle = atom<string>({
-  key: "personalTitle",
+export const personalFeedbackTitleAtom = atom<string>({
+  key: "personalFeedbackTitleAtom", // Previously: personalPageTitle
   default: "Get personal 😏",
 });
 
-export const descriptionAtom = atom<string>({
-  key: "descriptionAtom",
+export const feedbackDescriptionAtom = atom<string>({
+  key: "feedbackDescriptionAtom", // Previously: descriptionAtom
   default:
     "We appreciate you taking the time to share your experience with testify. Your feedback helps us improve and helps others make informed decisions.",
 });
 
-export const slideAtom = atom<number>({
-  key: "slideNumber",
+export const currentSlideIndexAtom = atom<number>({
+  key: "currentSlideIndexAtom", // Previously: slideAtom
   default: 0,
 });
 
-export const videoTitle = atom<string>({
-  key: "videoTitle",
+export const videoReviewTitleAtom = atom<string>({
+  key: "videoReviewTitleAtom", // Previously: videoTitle
   default: "Lights, Camera, Shoot",
 });
 
-export const videoSlideAtom = atom<number>({
-  key: "videoSlideNumber",
+export const videoSlideIndexAtom = atom<number>({
+  key: "videoSlideIndexAtom", // Previously: videoSlideAtom
   default: 0,
 });
 
 export const videoSlideSelector = selector<number>({
-  key: "videoSlideSelector",
-  get: ({ get }) => get(videoSlideAtom),
+  key: "videoSlideSelector", // Previously: videoSlideSelector
+  get: ({ get }) => get(videoSlideIndexAtom),
   set: ({ set }, newValue) => {
     if (typeof newValue === "number") {
       const clampedValue = Math.max(0, Math.min(2, newValue));
-      set(videoSlideAtom, clampedValue);
+      set(videoSlideIndexAtom, clampedValue);
     }
   },
 });
 
 export const slideSelector = selector<number>({
-  key: "slideSelector",
-  get: ({ get }) => get(slideAtom),
+  key: "slideSelector", // Previously: slideSelector
+  get: ({ get }) => get(currentSlideIndexAtom),
   set: ({ set, get }, newValue) => {
     if (typeof newValue === "number") {
-      const maxSlide = get(videoAtom) ? 5 : 4;
+      const maxSlide = get(isVideoReviewEnabledAtom) ? 5 : 4;
       const clampedValue = Math.max(0, Math.min(maxSlide, newValue));
-      set(slideAtom, clampedValue);
+      set(currentSlideIndexAtom, clampedValue);
     }
   },
 });
 
-export const questionsAtom = atom<string[]>({
-  key: "questionsAtom",
+export const feedbackQuestionsAtom = atom<string[]>({
+  key: "feedbackQuestionsAtom", // Previously: questionsAtom
   default: [
     "What problems did we help you solve?",
     "What have you been able to achieve since using our product/service?",
@@ -89,163 +89,57 @@ export const questionsAtom = atom<string[]>({
   ],
 });
 
-export const videoQuestionsAtom = atom<string[]>({
-  key: "videoQuestionsAtom",
-  default: ["How would you rate our product?"],
+export const videoReviewQuestionsAtom = atom<string[]>({
+  key: "videoReviewQuestionsAtom", // Previously: videoQuestionsAtom
+  default: [
+    "What problems did we help you solve?",
+    "What have you been able to achieve since using our product/service?",
+    "What exceeded your expectations or surprised you the most?",
+    "What would you tell someone considering our product/service?",
+  ],
 });
 
-export const videoAtom = atom<boolean>({
-  key: "videoReview",
+export const isVideoReviewEnabledAtom = atom<boolean>({
+  key: "isVideoReviewEnabledAtom", // Previously: videoAtom
   default: true,
 });
 
 export const ratingTitleAtom = atom<string>({
-  key: "ratingTitle",
+  key: "ratingTitleAtom", // Previously: ratingTitleAtom
   default: "Rate your experience",
 });
 
-export const starAtom = atom<boolean>({
-  key: "starReview",
+export const isStarRatingEnabledAtom = atom<boolean>({
+  key: "isStarRatingEnabledAtom", // Previously: starAtom
   default: true,
 });
 
 export const logoUrlAtom = atom<string>({
-  key: "logoUrlAtom",
+  key: "logoUrlAtom", // Previously: logoUrlAtom
   default: "/placeholder.svg?height=80&width=80",
 });
-export const dialogAtom = atom<boolean>({
-  key: "isDialogOpen",
+
+export const isDialogOpenAtom = atom<boolean>({
+  key: "isDialogOpenAtom", // Previously: dialogAtom
   default: false,
 });
 
-export const ratingsAtom = atom({
-  key: "ratingsAtom",
+export const userRatingAtom = atom<number>({
+  key: "userRatingAtom", // Previously: ratingsAtom
   default: 0,
 });
 
-export const textReviewAtom = atom<string>({
-  key: "textReviewAtom",
+export const userTextReviewAtom = atom<string>({
+  key: "userTextReviewAtom", // Previously: textReviewAtom
   default: "",
 });
 
-export const productId = atom<string>({
-  key: "idAtom",
+export const productIdAtom = atom<string>({
+  key: "productIdAtom", // Previously: productId
   default: "",
 });
-export const sidebarAtom = atom<boolean>({
-  key: "sidebarAtom",
+
+export const isSidebarOpenAtom = atom<boolean>({
+  key: "isSidebarOpenAtom", // Previously: sidebarAtom
   default: false,
-});
-
-export interface FormData {
-  title: string;
-  description: string;
-  image: {
-    file: File | null;
-    preview: string;
-    uploading: boolean;
-    error: string;
-  };
-  questions: string[];
-  emojiRatings: boolean;
-  videoReview: boolean;
-  thankYouMessage: string;
-}
-
-export const formDataState = atom<FormData>({
-  key: "formDataState",
-  default: {
-    title: "",
-    description: "",
-    image: {
-      file: null,
-      preview: "",
-      uploading: false,
-      error: "",
-    },
-    questions: [""],
-    emojiRatings: true,
-    videoReview: true,
-    thankYouMessage: "",
-  },
-});
-
-export const currentStepState = atom<number>({
-  key: "currentStepState",
-  default: 0,
-});
-
-export const isSidebarOpenState = atom<boolean>({
-  key: "isSidebarOpenState",
-  default: false,
-});
-
-export const titleSelector = selector({
-  key: "titleSelector",
-  get: ({ get }) => get(formDataState).title,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      title: newValue as string,
-    })),
-});
-
-export const descriptionSelector = selector({
-  key: "descriptionSelector",
-  get: ({ get }) => get(formDataState).description,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      description: newValue as string,
-    })),
-});
-
-export const imageSelector = selector({
-  key: "imageSelector",
-  get: ({ get }) => get(formDataState).image,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      image: newValue as FormData["image"],
-    })),
-});
-
-export const questionsSelector = selector({
-  key: "questionsSelector",
-  get: ({ get }) => get(formDataState).questions,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      questions: newValue as string[],
-    })),
-});
-
-export const emojiRatingsSelector = selector({
-  key: "emojiRatingsSelector",
-  get: ({ get }) => get(formDataState).emojiRatings,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      emojiRatings: newValue as boolean,
-    })),
-});
-
-export const videoReviewSelector = selector({
-  key: "videoReviewSelector",
-  get: ({ get }) => get(formDataState).videoReview,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      videoReview: newValue as boolean,
-    })),
-});
-
-export const thankYouMessageSelector = selector({
-  key: "thankYouMessageSelector",
-  get: ({ get }) => get(formDataState).thankYouMessage,
-  set: ({ set }, newValue) =>
-    set(formDataState, (prevState) => ({
-      ...prevState,
-      thankYouMessage: newValue as string,
-    })),
 });

@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { videoQuestionsAtom } from "@/recoil/atom";
+import { videoReviewQuestionsAtom } from "@/recoil/atom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus } from "lucide-react";
 
 const VideoQuestionsInput = () => {
-  const [questions, setQuestions] = useRecoilState(videoQuestionsAtom);
+  const [questions, setQuestions] = useRecoilState(videoReviewQuestionsAtom);
 
   const updateQuestion = (index: number, value: string) => {
     const newQuestions = [...questions];

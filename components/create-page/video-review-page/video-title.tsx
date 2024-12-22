@@ -2,10 +2,10 @@
 import { useRecoilState } from "recoil";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { videoTitle } from "@/recoil/atom";
+import { videoReviewTitleAtom } from "@/recoil/atom";
 
 export const VideoTitleInput = () => {
-  const [title, setTitle] = useRecoilState(videoTitle);
+  const [title, setTitle] = useRecoilState(videoReviewTitleAtom);
   return (
     <div>
       <Label htmlFor="title" className="text-md font-semibold">

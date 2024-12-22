@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRecoilState } from "recoil";
-import { sidebarAtom } from "@/recoil/atom";
+import { isSidebarOpenAtom } from "@/recoil/atom";
 import {
   BarChart2,
   Hourglass,
@@ -26,7 +26,7 @@ const navItems = [
 ];
 
 const Sidebar = () => {
-  const [sidebarOpen, setSidebarOpen] = useRecoilState(sidebarAtom);
+  const [sidebarOpen, setSidebarOpen] = useRecoilState(isSidebarOpenAtom);
   const pathname = usePathname();
 
   return (
