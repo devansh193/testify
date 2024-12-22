@@ -20,9 +20,14 @@ export const imageAtom = atom({
   },
 });
 
-export const titleAtom = atom<string>({
-  key: "titleAtom",
-  default: "testify",
+export const pageTitleAtom = atom<string>({
+  key: "pageTitleAtom",
+  default: "Show us some love with your feedback!",
+});
+
+export const boardAtom = atom<string>({
+  key: "boardAtom",
+  default: "TESTIFY",
 });
 
 export const personalPageTitle = atom<string>({
@@ -33,12 +38,17 @@ export const personalPageTitle = atom<string>({
 export const descriptionAtom = atom<string>({
   key: "descriptionAtom",
   default:
-    "A one stop solution for the collection and management of user testimonials.",
+    "We appreciate you taking the time to share your experience with testify. Your feedback helps us improve and helps others make informed decisions.",
 });
 
 export const slideAtom = atom<number>({
   key: "slideNumber",
   default: 0,
+});
+
+export const videoTitle = atom<string>({
+  key: "videoTitle",
+  default: "Lights, Camera, Shoot",
 });
 
 export const videoSlideAtom = atom<number>({

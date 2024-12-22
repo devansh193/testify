@@ -45,13 +45,13 @@ export default function Create() {
   ];
 
   return (
-    <div className="flex h-full p-2">
+    <div className="flex flex-col lg:flex-row h-full p-2">
       {/* Sidebar */}
-      <div className="hidden lg:block bg-transparent">
+      <div className={`hidden lg:block bg-transparent lg:w-1/4`}>
         {slides[slide]?.sidebar || null}
       </div>
       {/* Main Content */}
-      <div className="flex-1 items-center justify-center h-full bg-white rounded-xl shadow-md">
+      <div className="flex-1 flex items-center justify-center min-h-[98vh] bg-white rounded-xl shadow-md">
         <MaxWidthWrapper>{slides[slide]?.main || null}</MaxWidthWrapper>
       </div>
     </div>

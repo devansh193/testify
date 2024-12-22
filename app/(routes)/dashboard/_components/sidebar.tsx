@@ -20,7 +20,7 @@ export const DashSidebar = () => {
 
   if (isDesktop) {
     return (
-      <div className="hidden md:flex fixed top-0 left-0 w-[250px] h-full flex-col p-2">
+      <div className="hidden md:flex fixed top-0 left-0 w-[350px] h-full flex-col p-2">
         <SidebarContent />
       </div>
     );

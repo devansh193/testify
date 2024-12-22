@@ -16,7 +16,7 @@ export const DescriptionInput = () => {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Your product title"
-        className="mt-1"
+        className="mt-1 min-h-[100px]"
       />
     </div>
   );

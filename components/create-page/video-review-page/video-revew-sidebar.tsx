@@ -5,10 +5,11 @@ import VideoQuestionsInput from "./video-questions-input";
 import { VideoSlideButton } from "./video-slide-button";
 import { Button } from "@/components/ui/button";
 import Testify from "@/components/logo/testify";
+import { VideoTitleInput } from "./video-title";
 
 export const VideoReviewSidebar = () => {
   return (
-    <div className="w-[350px] flex flex-col h-full">
+    <div className="w-[450px] flex flex-col h-full">
       <div className="space-y-6 p-2 flex-grow">
         <div>
           <Testify />
@@ -16,6 +17,7 @@ export const VideoReviewSidebar = () => {
         <div>
           <h1 className="text-lg font-semibold">Video review</h1>
         </div>
+        <VideoTitleInput />
         <VideoQuestionsInput />
       </div>
       <div className="p-4 bottom-0 space-y-4">

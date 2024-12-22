@@ -1,9 +1,9 @@
 import { DescriptionInput } from "./description-input";
-import { ImageInput } from "./image-input";
 import { TitleInput } from "./title-input";
 import { VideoToggle } from "./video-toggle";
 import { SlideButton } from "../slide-button";
 import Testify from "@/components/logo/testify";
+import { BoardInput } from "./board-input";
 
 export const ProductDetailSidebar = () => {
   return (
@@ -15,9 +15,9 @@ export const ProductDetailSidebar = () => {
         <div>
           <h1 className="text-lg font-semibold">Product details</h1>
         </div>
+        <BoardInput />
         <TitleInput />
         <DescriptionInput />
-        <ImageInput />
         <VideoToggle />
       </div>
       <div className="p-4 bottom-0">

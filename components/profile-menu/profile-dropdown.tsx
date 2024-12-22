@@ -25,7 +25,7 @@ const ProfileDropdown = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <button className="group flex items-center gap-2 px-6 py-3 cursor-pointer justify-center rounded-full bg-neutral-800 hover:scale-110 transition-transform duration-200">
+        <button className="group w-full flex items-center gap-2 px-6 py-3 cursor-pointer justify-center rounded-full bg-neutral-800 hover:scale-110 transition-transform duration-200">
           <User color="white" className="size-4" />
           <h1 className="text-white text-sm">{session?.user.name}</h1>
         </button>
