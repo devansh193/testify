@@ -6,6 +6,7 @@ import { Providers } from "../providers/session-provider";
 import { Toaster } from "sonner";
 import QueryProviders from "@/providers/query-client-provider";
 import { Roboto } from "next/font/google";
+import { CSPostHogProvider } from "@/_analytics/provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,7 +45,9 @@ export default function RootLayout({
         <QueryProviders>
           <RecoilContextProvider>
             <Toaster richColors />
-            <Providers>{children}</Providers>
+            <Providers>
+              <CSPostHogProvider>{children}</CSPostHogProvider>
+            </Providers>
           </RecoilContextProvider>
         </QueryProviders>
       </body>

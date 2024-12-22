@@ -39,3 +39,22 @@ model Testimonial {
   product    Product  @relation(fields: [productId], references: [id])
   createdAt  DateTime @default(now())
 }
+
+// model Product {
+//   id           String        @id @default(uuid())
+//   boardName    String
+//   pageTitle        String        @unique
+//   pageDescription  String
+//   isVideoReview    boolean
+//   textReviewPageTitle string
+//   textQuestions    String[]
+//   videoReviewPageTitle string
+//   videoQuestions    String[]
+//   personalPageTitle string
+//   thankYouPageTitle string
+//   thankyouPageMessage string
+//   personalPageImage? string
+//   userId       String
+//   user         User          @relation(fields: [userId], references: [id])
+//   testimonials Testimonial[]
+// }

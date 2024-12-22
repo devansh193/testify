@@ -55,7 +55,7 @@ export default function PersonalPage() {
               </Label>
               <Input
                 type="email"
-                placeholder="jhondoea@gmail.com"
+                placeholder="tylerdurden@fightclub.com"
                 className="mt-1"
               />
             </div>
@@ -63,7 +63,7 @@ export default function PersonalPage() {
               <Label className="text-sm font-semibold text-gray-500">
                 Your profession
               </Label>
-              <Input type="text" placeholder="Boxer" className="mt-1" />
+              <Input type="text" placeholder="Soap salesman" className="mt-1" />
             </div>
           </div>
           <div className="space-y-2 sm:space-y-0 sm:space-x-4 mt-4 w-full">

@@ -32,7 +32,7 @@ export const feedbackBoardTitleAtom = atom<string>({
 
 export const personalFeedbackTitleAtom = atom<string>({
   key: "personalFeedbackTitleAtom", // Previously: personalPageTitle
-  default: "Get personal 😏",
+  default: "How about getting personal?",
 });
 
 export const feedbackDescriptionAtom = atom<string>({
@@ -142,4 +142,26 @@ export const productIdAtom = atom<string>({
 export const isSidebarOpenAtom = atom<boolean>({
   key: "isSidebarOpenAtom", // Previously: sidebarAtom
   default: false,
+});
+
+export const tagsAtom = atom<string[]>({
+  key: "tagAtom",
+  default: [
+    "Easy to use",
+    "UX/UI",
+    "Provides result",
+    "Great value",
+    "Innovative",
+    "Invaluable resource",
+    "Time saver",
+    "Great features",
+    "Comprehensive",
+    "Engaging",
+    "Customer-focused",
+    "Best-in-market",
+    "Trustworthy",
+    "Convenient",
+    "Reliable",
+    "Safety & security",
+  ],
 });
