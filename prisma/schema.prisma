@@ -8,53 +8,67 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  email    String    @unique
-  name     String?
-  image    String?
-  password String
-  products Product[]
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  image     String?
+  password  String?
+  boards    Board[]
+  accounts  Account[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
-model Product {
-  id           String        @id @default(uuid())
-  title        String        @unique
-  description  String
-  questions    String[]
-  rating       Boolean
-  image        String?
-  testimonials Testimonial[]
-  userId       String
-  user         User          @relation(fields: [userId], references: [id])
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Board {
+  id                   String        @id @default(uuid())
+  boardTitle           String        @unique
+  pageTitle            String
+  pageDescription      String
+  isVideoReview        Boolean
+  textReviewPageTitle  String?
+  textQuestions        String[]
+  videoReviewPageTitle String
+  videoQuestions       String[]
+  personalPageTitle    String
+  thankYouPageTitle    String
+  thankYouPageMessage  String
+  thankYouPageImage    String?
+  userId               String
+  user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testimonials         Testimonial[]
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
 }
 
 model Testimonial {
   id         String   @id @default(uuid())
   name       String
-  email      String   @unique
+  email      String
   textReview String
   rating     Int?
-  image      String?
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id])
+  userImage  String?
+  boardId    String
+  board      Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
-
-// model Product {
-//   id           String        @id @default(uuid())
-//   boardName    String
-//   pageTitle        String        @unique
-//   pageDescription  String
-//   isVideoReview    boolean
-//   textReviewPageTitle string
-//   textQuestions    String[]
-//   videoReviewPageTitle string
-//   videoQuestions    String[]
-//   personalPageTitle string
-//   thankYouPageTitle string
-//   thankyouPageMessage string
-//   personalPageImage? string
-//   userId       String
-//   user         User          @relation(fields: [userId], references: [id])
-//   testimonials Testimonial[]
-// }

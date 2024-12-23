@@ -1,6 +1,6 @@
 "use client";
-import { SlideButton } from "../slide-button";
-import { ThankyouInput } from "./thankyou-message";
+import { SlideButton } from "../create-page-slide-button";
+import { ThankyouInput } from "./thankyou-page-input";
 import Testify from "@/components/logo/testify";
 
 export const ThankyouSidebar = () => {

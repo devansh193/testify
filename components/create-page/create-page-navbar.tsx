@@ -1,7 +1,7 @@
 import { feedbackBoardTitleAtom } from "@/recoil/atom";
 // import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRecoilValue } from "recoil";
-import { SlideButton } from "./slide-button";
+import { SlideButton } from "./create-page-slide-button";
 
 export const CreateNav = () => {
   const board = useRecoilValue(feedbackBoardTitleAtom);

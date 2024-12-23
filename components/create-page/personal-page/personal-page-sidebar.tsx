@@ -1,7 +1,7 @@
 "use client";
 
-import { SlideButton } from "../slide-button";
-import { PersonalTitleInput } from "./personal-title";
+import { SlideButton } from "../create-page-slide-button";
+import { PersonalTitleInput } from "./personal-title-input";
 import Testify from "@/components/logo/testify";
 
 export const PersonalSidebar = () => {

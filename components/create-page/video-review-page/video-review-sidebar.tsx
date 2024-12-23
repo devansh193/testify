@@ -1,11 +1,11 @@
 "use client";
 import { Trash2 } from "lucide-react";
-import { SlideButton } from "../slide-button";
-import VideoQuestionsInput from "./video-questions-input";
+import { SlideButton } from "../create-page-slide-button";
+import VideoQuestionsInput from "./videoReview-page-questions-input";
 import { VideoSlideButton } from "./video-slide-button";
 import { Button } from "@/components/ui/button";
 import Testify from "@/components/logo/testify";
-import { VideoTitleInput } from "./video-title";
+import { VideoTitleInput } from "./videoReview-page-title-input";
 
 export const VideoReviewSidebar = () => {
   return (

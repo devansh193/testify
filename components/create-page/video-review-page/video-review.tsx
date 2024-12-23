@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { videoReviewQuestionsAtom, videoReviewTitleAtom } from "@/recoil/atom";
 import { Dot, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CreateNav } from "../nav";
+import { CreateNav } from "../create-page-navbar";
 
 export default function VideoReview() {
   const questions = useRecoilValue(videoReviewQuestionsAtom);

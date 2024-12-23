@@ -5,7 +5,7 @@ import { feedbackQuestionsAtom, ratingTitleAtom } from "@/recoil/atom";
 import { Dot } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { CreateNav } from "../nav";
+import { CreateNav } from "../create-page-navbar";
 
 export default function TextReview() {
   const questions = useRecoilValue(feedbackQuestionsAtom);

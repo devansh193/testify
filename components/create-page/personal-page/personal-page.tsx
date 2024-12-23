@@ -5,7 +5,7 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileImage, Pencil } from "lucide-react";
-import { CreateNav } from "../nav";
+import { CreateNav } from "../create-page-navbar";
 
 export default function PersonalPage() {
   const title = useRecoilValue(personalFeedbackTitleAtom);

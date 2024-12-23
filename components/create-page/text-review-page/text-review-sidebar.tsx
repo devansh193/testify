@@ -1,7 +1,7 @@
 "use client";
-import { SlideButton } from "../slide-button";
-import QuestionsInput from "./questions-input";
-import { RatingTitleInput } from "./rating-title";
+import { SlideButton } from "../create-page-slide-button";
+import QuestionsInput from "./textReview-questions-input";
+import { RatingTitleInput } from "./textReview-page-title-input";
 import Testify from "@/components/logo/testify";
 
 export const TextReviewSidebar = () => {

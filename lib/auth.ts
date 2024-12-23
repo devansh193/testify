@@ -23,20 +23,17 @@ export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
       credentials: {
-        email: { type: "text", placeholder: "Email" },
+        email: { type: "email", placeholder: "Email" },
         password: { type: "password", placeholder: "Password" },
       },
       async authorize(credentials) {
         if (!credentials || !credentials.email || !credentials.password) {
           throw new ErrorHandler("Missing credentials", "VALIDATION_ERROR");
         }
-
-        // Validate email format
         const validatedCredentials = SigninSchema.safeParse(credentials);
         if (!validatedCredentials.success) {
           throw new ErrorHandler("Input validation failed", "VALIDATION_ERROR");
         }
-
         try {
           const user = await prisma.user.findUnique({
             where: { email: validatedCredentials.data.email },
@@ -49,6 +46,9 @@ export const authOptions: NextAuthOptions = {
             );
           }
 
+          if (!user.password) {
+            throw new ErrorHandler("Password is missing", "VALIDATION_ERROR");
+          }
           const passwordMatch = await bcrypt.compare(
             validatedCredentials.data.password,
             user.password
@@ -59,7 +59,6 @@ export const authOptions: NextAuthOptions = {
               "AUTHENTICATION_FAILED"
             );
           }
-
           return user;
         } catch (error) {
           if (error instanceof PrismaClientInitializationError) {
@@ -102,10 +101,9 @@ export const authOptions: NextAuthOptions = {
         }
       } catch (error) {
         if (error instanceof PrismaClientInitializationError) {
-          throw new Error("Database connection error");
+          console.log("Database connection error");
         }
         console.error("Session error:", error);
-        throw new Error("Failed to fetch user session");
       }
       return session;
     },

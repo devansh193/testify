@@ -1,9 +1,9 @@
-import { DescriptionInput } from "./description-input";
-import { TitleInput } from "./title-input";
+import { DescriptionInput } from "./page-description-input";
+import { TitleInput } from "./page-title-input";
 import { VideoToggle } from "./video-toggle";
-import { SlideButton } from "../slide-button";
+import { SlideButton } from "../create-page-slide-button";
 import Testify from "@/components/logo/testify";
-import { BoardInput } from "./board-input";
+import { BoardInput } from "./board-title-input";
 
 export const ProductDetailSidebar = () => {
   return (

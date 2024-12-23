@@ -7,7 +7,7 @@ import {
 } from "@/recoil/atom";
 import { Button } from "../../ui/button";
 import { Pencil, Video } from "lucide-react";
-import { CreateNav } from "../nav";
+import { CreateNav } from "../create-page-navbar";
 
 export default function ProductDetails() {
   const title = useRecoilValue(feedbackPageTitleAtom);

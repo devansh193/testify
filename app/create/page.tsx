@@ -7,10 +7,10 @@ import { currentSlideIndexAtom, isVideoReviewEnabledAtom } from "@/recoil/atom";
 import { ProductDetailSidebar } from "@/components/create-page/product-details-page/product-detail-sidebar";
 import ProductDetails from "@/components/create-page/product-details-page/product-details";
 import { TextReviewSidebar } from "@/components/create-page/text-review-page/text-review-sidebar";
-import TextReview from "@/components/create-page/text-review-page/text-reviews";
+import TextReview from "@/components/create-page/text-review-page/text-reviews-page";
 import { ThankyouSidebar } from "@/components/create-page/thankyou-page/thankyou-sidebar";
 import { Thankyou } from "@/components/create-page/thankyou-page/thankyou-main";
-import { VideoReviewSidebar } from "@/components/create-page/video-review-page/video-revew-sidebar";
+import { VideoReviewSidebar } from "@/components/create-page/video-review-page/video-review-sidebar";
 import VideoReview from "@/components/create-page/video-review-page/video-review";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 
