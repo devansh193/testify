@@ -126,6 +126,3 @@ export const BoardSchema = z.object({
 
   userId: z.string().uuid("Invalid user ID"),
 });
-
-// Type inference
-export type CreateBoardInput = z.infer<typeof BoardSchema>;

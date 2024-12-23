@@ -8,6 +8,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 import { useCreateAccount } from "@/features/user/api/use-create-account";
+import Testify from "@/components/logo/testify";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -41,14 +42,15 @@ export default function SignUpPage() {
     <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center gap-x-2">
             <Logo />
+            <Testify />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             Create your account
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Start collecting and sharing powerful testimonials
+            And start collecting and sharing powerful testimonials
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

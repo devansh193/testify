@@ -9,7 +9,7 @@ import { Button } from "../../ui/button";
 import { Pencil, Video } from "lucide-react";
 import { CreateNav } from "../create-page-navbar";
 
-export default function ProductDetails() {
+export default function BoardDetails() {
   const title = useRecoilValue(feedbackPageTitleAtom);
   const description = useRecoilValue(feedbackDescriptionAtom);
   const video = useRecoilValue(isVideoReviewEnabledAtom);

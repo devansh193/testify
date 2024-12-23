@@ -5,7 +5,7 @@ import { SlideButton } from "../create-page-slide-button";
 import Testify from "@/components/logo/testify";
 import { BoardInput } from "./board-title-input";
 
-export const ProductDetailSidebar = () => {
+export const BoardDetailSidebar = () => {
   return (
     <div className="w-[450px] flex flex-col h-full">
       <div className="space-y-6 p-2 flex-grow">

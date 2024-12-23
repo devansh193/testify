@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { User, Settings } from "lucide-react";
+import { User, Settings, User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,12 +24,24 @@ const ProfileDropdown = () => {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <button className="group w-full flex items-center gap-2 px-6 py-3 cursor-pointer justify-center rounded-full bg-neutral-800 hover:scale-110 transition-transform duration-200">
-          <User color="white" className="size-4" />
-          <h1 className="text-white text-sm">{session?.user.name}</h1>
-        </button>
+      <DropdownMenuTrigger asChild className="">
+        <div className="p-2 bg-neutral-200 ring-2 ring-neutral-300 rounded-full flex items-center justify-center hover:cursor-pointer ">
+          {session?.user ? (
+            <h1 className="text-black text-sm font-semibold">
+              {session.user.name
+                ? session.user.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()
+                : "U"}
+            </h1>
+          ) : (
+            <User2 className="text-white" />
+          )}
+        </div>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent className="z-[99999] m-2 min-w-44 bg-neutral-100 dark:bg-neutral-900">
         <DropdownMenuGroup>
           {menuItemLinks.map(({ href, label, icon }) => (

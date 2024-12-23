@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import Logo from "@/components/logo/Logo";
 import Link from "next/link";
 import { Loader } from "lucide-react";
+import Testify from "@/components/logo/testify";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
@@ -66,8 +67,9 @@ export default function SignIn() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-white p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center gap-x-2">
             <Logo />
+            <Testify />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             Sign in to your account

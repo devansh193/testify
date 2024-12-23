@@ -3,9 +3,8 @@ import PersonalPage from "@/components/create-page/personal-page/personal-page";
 import { PersonalSidebar } from "@/components/create-page/personal-page/personal-page-sidebar";
 import { useRecoilValue } from "recoil";
 import { currentSlideIndexAtom, isVideoReviewEnabledAtom } from "@/recoil/atom";
-
-import { ProductDetailSidebar } from "@/components/create-page/product-details-page/product-detail-sidebar";
-import ProductDetails from "@/components/create-page/product-details-page/product-details";
+import { BoardDetailSidebar } from "@/components/create-page/board-details-page/board-detail-sidebar";
+import BoardDetails from "@/components/create-page/board-details-page/board-details";
 import { TextReviewSidebar } from "@/components/create-page/text-review-page/text-review-sidebar";
 import TextReview from "@/components/create-page/text-review-page/text-reviews-page";
 import { ThankyouSidebar } from "@/components/create-page/thankyou-page/thankyou-sidebar";
@@ -20,8 +19,8 @@ export default function Create() {
 
   const slides = [
     {
-      sidebar: <ProductDetailSidebar />,
-      main: <ProductDetails />,
+      sidebar: <BoardDetailSidebar />,
+      main: <BoardDetails />,
     },
     {
       sidebar: <TextReviewSidebar />,

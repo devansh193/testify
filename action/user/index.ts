@@ -16,25 +16,23 @@ export async function createUser(
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
-
     if (existingUser) {
       return {
         success: false,
         status: 409,
-        message: "User with email already exist. Go to Sign-in",
+        message: "User with email already exists. Go to Sign-in",
       };
     }
     const hashedPassword =
       provider === "credentials" ? await bcrypt.hash(password, 10) : null;
-
-    const createUser = await prisma.$transaction(async (prisma) => {
-      const user = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: hashedPassword,
-        },
-      });
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
+    setTimeout(async () => {
       await prisma.account.create({
         data: {
           userId: user.id,
@@ -43,21 +41,18 @@ export async function createUser(
           providerAccountId: providerAccountId ?? user.id,
         },
       });
-      return user;
-    });
-
+    }, 0);
     return {
       success: true,
       status: 201,
       message: "User created successfully.",
-      user: createUser,
+      user: user,
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
     console.log(_error);
     return {
       success: false,
-      status: 409,
+      status: 500, // Changed status code to 500 for server error
       message: "Internal server error.",
     };
   }
