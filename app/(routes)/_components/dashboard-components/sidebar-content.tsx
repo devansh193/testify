@@ -3,7 +3,7 @@ import { LogOut, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Navigation } from "./sidebar-nav";
 import Testify from "@/components/logo/testify";
-import Logo from "@/components/logo/Logo";
+import { signOut } from "next-auth/react";
 
 export const SidebarContent = () => {
   return (
@@ -28,18 +28,18 @@ export const SidebarContent = () => {
           </span>
         </Link>
         <div className="">
-          <Link
-            href={"/settings"}
+          <button
             className={cn(
               "flex w-full items-center justify-start rounded-lg p-2 text-black text-sm font-sans font-medium transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
               "group"
             )}
+            onClick={() => signOut()}
           >
             <LogOut className="mr-2 h-5 w-5 transition-all duration-200 ease-in-out group-hover:scale-110" />
             <span className="transition-all duration-300 ease-in-out transform group-hover:translate-x-1 group-hover:scale-110">
               Logout
             </span>
-          </Link>
+          </button>
         </div>
       </div>
     </div>

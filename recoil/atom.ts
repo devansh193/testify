@@ -27,7 +27,7 @@ export const feedbackPageTitleAtom = atom<string>({
 
 export const feedbackBoardTitleAtom = atom<string>({
   key: "feedbackBoardTitleAtom", // Previously: boardAtom
-  default: "T",
+  default: "TESTIFY",
 });
 
 export const personalFeedbackTitleAtom = atom<string>({

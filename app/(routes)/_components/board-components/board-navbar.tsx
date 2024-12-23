@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Bell, Plus, User2 } from "lucide-react";
 import Link from "next/link";
 
-export const DashboardNavbar = () => {
+export const BoardNavbar = () => {
   return (
-    <div className="h-16 bg-white p-4 flex items-center justify-between border-b">
-      <h1 className="text-2xl font-sans font-semibold">Testify</h1>
+    <div className="h-16 bg-[#FFFFFF] p-4 flex items-center md:justify-between justify-end border-b border-neutral-200">
+      <h1 className="hidden md:block text-2xl font-sans font-semibold">
+        Testify
+      </h1>
       <div className="flex items-center justify-center gap-x-6">
         <Link href={"/create"}>
           <Button variant={"outline"}>

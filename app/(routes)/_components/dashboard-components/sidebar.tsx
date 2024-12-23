@@ -20,7 +20,7 @@ export const DashSidebar = () => {
 
   if (isDesktop) {
     return (
-      <div className="hidden md:flex fixed top-0 left-0 w-[250px] h-full flex-col p-2">
+      <div className="hidden md:flex fixed top-0 left-0 w-[250px] h-full flex-col p-2 border-r border-neutral-200">
         <SidebarContent />
       </div>
     );
@@ -34,7 +34,7 @@ export const DashSidebar = () => {
           <span className="sr-only">Toggle Sidebar</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[250px] p-0">
+      <SheetContent side="left" className="w-[300px] p-0">
         <SidebarContent />
       </SheetContent>
     </Sheet>
