@@ -86,10 +86,7 @@ export const BoardContent = () => {
             </div>
           </div>
           <div className="flex items-center justify-center w-full gap-x-4 mt-2">
-            <Button
-              className="flex items-center justify-center w-full h-[45px]"
-              variant={"outline"}
-            >
+            <Button className="flex items-center justify-center w-full h-[45px] bg-neutral-800">
               <Link className="mr-2" />
               <h1>Copy link</h1>
             </Button>

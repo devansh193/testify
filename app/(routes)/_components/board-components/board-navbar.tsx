@@ -1,26 +1,32 @@
 import ProfileDropdown from "@/components/profile-menu/profile-dropdown";
-import { Button } from "@/components/ui/button";
-import { Bell, Plus } from "lucide-react";
-import Link from "next/link";
+import { Bell, Search, Settings } from "lucide-react";
 
 export const BoardNavbar = () => {
   return (
-    <div className="h-14 bg-[#FFFFFF] p-4 flex items-center md:justify-between justify-end border-b border-neutral-200">
-      <h1 className="hidden md:block text-2xl font-sans font-semibold">
-        Testify
+    <div className="h-16 bg-[#FFFFFF] p-4 flex items-center md:justify-between justify-end border-b border-neutral-200">
+      <h1 className="hidden md:flex ">
+        <p className="font-sans text-2xl font-semibold mr-2">Boards</p>
+        <p className="font-sans m-1 text-neutral-500 font-medium">
+          Manage your boards
+        </p>
       </h1>
       <div className="flex items-center justify-center gap-x-6">
-        <Link href={"/create"}>
-          <Button variant={"outline"}>
-            <Plus className="mr-2" />{" "}
-            <h1 className="font-sans text-md">Add Board</h1>
-          </Button>
-        </Link>
-        <Bell />
-        {/* <div className="p-2 bg-neutral-200 ring-2 ring-neutral-300 rounded-full ">
-          <User2 />
-        </div> */}
-        <ProfileDropdown />
+        <div className="m-2 flex items-center justify-center pl-2 rounded-lg">
+          <Search className="text-[#414651] font-normal mr-2" />
+          <input
+            className="bg-[#FAFAF8] w-full md:w-[400px] p-2 placeholder:text-[#414651]"
+            placeholder="Search board"
+          />
+        </div>
+        <div className="flex items-center justify-center gap-x-6">
+          <h1 className="hover:scale-125 transition-transform duration-150">
+            <Settings className="size-4" />
+          </h1>
+          <h1 className="hover:scale-125 transition-transform duration-150">
+            <Bell className="size-4" />
+          </h1>
+          <ProfileDropdown />
+        </div>
       </div>
     </div>
   );

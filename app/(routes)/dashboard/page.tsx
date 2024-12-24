@@ -1,17 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
+"use client";
 import { DashboardContent } from "../_components/dashboard-components/dashboard-content";
-
+import { DashboardNavbar } from "../_components/dashboard-components/dashboard-navbar";
+import { Header } from "../_components/dashboard-components/header";
 export default function Dashboard() {
   return (
-    <div className=" bg-white w-full h-full shadow-lg">
+    <div className=" bg-[#FAFAF8] w-full h-full shadow-lg">
+      <div>
+        <DashboardNavbar />
+      </div>
       <div className="m-4">
-        <div className="flex items-center justify-between my-4">
-          <h1 className="text-3xl font-semibold font-sans">Dashboard</h1>
-          <Button variant={"outline"}>
-            <Link className="mr-2" /> Copy link
-          </Button>
-        </div>
+        <Header />
         <div>
           <DashboardContent />
         </div>

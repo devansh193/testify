@@ -25,7 +25,7 @@ const ProfileDropdown = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild className="">
-        <div className="p-2 bg-neutral-200 ring-2 ring-neutral-300 rounded-full flex items-center justify-center hover:cursor-pointer ">
+        <div className="p-2 bg-neutral-200 rounded-full flex items-center justify-center hover:cursor-pointer ">
           {session?.user ? (
             <h1 className="text-black text-sm font-semibold">
               {session.user.name
