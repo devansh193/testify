@@ -1,17 +1,12 @@
-import Link from "next/link";
-import { LogOut, Settings } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Navigation } from "./sidebar-nav";
-import Testify from "@/components/logo/testify";
-import { signOut } from "next-auth/react";
 import Logo from "@/components/logo/Logo";
-import { usePathname } from "next/navigation";
-import BoardSidebarNavigation from "../board-components/board-sidebar-navigation";
+import Testify from "@/components/logo/testify";
+import { cn } from "@/lib/utils";
+import { LogOut, Settings } from "lucide-react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import BoardSidebarNavigation from "./board-sidebar-navigation";
 
-export const SidebarContent = () => {
-  const pathname = usePathname();
-  const isProductDetail = /^\/boards\/[^/]+$/.test(pathname);
-
+const BoardDetailSidebar = () => {
   return (
     <div className="flex flex-col h-full">
       <div className=" h-14 border-b p-2 flex items-center justify-start gap-x-2">
@@ -19,7 +14,7 @@ export const SidebarContent = () => {
         <Testify />
       </div>
       <div className="flex-grow p-2">
-        {isProductDetail ? <BoardSidebarNavigation /> : <Navigation />}
+        <BoardSidebarNavigation />
       </div>
       <div className="flex flex-col gap-y-2 p-2">
         <Link
@@ -52,3 +47,4 @@ export const SidebarContent = () => {
     </div>
   );
 };
+export default BoardDetailSidebar;

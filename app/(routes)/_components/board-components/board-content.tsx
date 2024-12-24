@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
+import { Copy, Edit, Link } from "lucide-react";
 
 const mockData = [
   {
@@ -55,14 +55,20 @@ const mockData = [
 
 export const BoardContent = () => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 md:mx-4">
       {mockData.map((item) => (
         <div
           key={item.label}
           className="flex flex-col items-start border px-4 py-2 rounded-xl bg-[#FFFFFF] gap-y-4 hover:scale-105 transition-transform duration-200 hover:shadow-md"
         >
           <div className="flex flex-col gap-y-2">
-            <h1 className="font-sans font-medium text-xl">{item.label}</h1>
+            <div className="flex items-center justify-between">
+              <h1 className="font-sans font-semibold text-xl">{item.label}</h1>
+              <h1 className="flex items-center justify-center gap-x-2">
+                <Edit className="size-4 hover:cursor-pointer" />
+                <Copy className="size-4 hover:cursor-pointer" />
+              </h1>
+            </div>
             <p className="text-justify font-sans text-sm">{item.description}</p>
           </div>
           <div className="flex flex-col w-full gap-y-1">

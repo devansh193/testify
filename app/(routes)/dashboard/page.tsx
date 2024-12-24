@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "lucide-react";
-import { DashboardNavbar } from "../_components/dashboard-components/dashboard-navbar";
 import { DashboardContent } from "../_components/dashboard-components/dashboard-content";
 
 export default function Dashboard() {

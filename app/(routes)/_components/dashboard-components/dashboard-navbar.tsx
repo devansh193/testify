@@ -1,12 +1,12 @@
 import { Bell } from "@/assets/icons/bell";
 import ProfileDropdown from "@/components/profile-menu/profile-dropdown";
 import { Button } from "@/components/ui/button";
-import { Plus, User2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export const DashboardNavbar = () => {
   return (
-    <div className="h-16 bg-[#FFFFFF] p-4 flex items-center md:justify-between justify-end border-b border-neutral-200">
+    <div className="h-14 bg-[#FFFFFF] p-4 flex items-center md:justify-between justify-end border-b border-neutral-200">
       <h1 className="hidden md:block text-2xl font-sans font-semibold">
         Testify
       </h1>
