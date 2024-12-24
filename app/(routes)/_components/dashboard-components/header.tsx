@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
-export const Header = () => {
+export const DashboardHeader = () => {
   return (
     <div>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
         className="bg-primary/10 p-4 rounded-xl mb-6 flex items-center justify-between"
       >
         <div className="flex items-center gap-4 h-14">

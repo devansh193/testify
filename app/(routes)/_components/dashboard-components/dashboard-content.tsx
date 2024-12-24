@@ -1,5 +1,5 @@
 import { MessageSquare, Package2, Star, User } from "lucide-react";
-
+import { motion } from "framer-motion";
 const data = [
   {
     label: "Total boards",
@@ -33,24 +33,35 @@ const data = [
 
 export const DashboardContent = () => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
-      {data.map((item) => (
-        <div
-          className="col-span-1 flex flex-col p-6 rounded-lg bg-[#FFFFFF] shadow-md gap-y-2  hover:scale-105 transition-transform duration-150 hover:shadow-md"
-          key={item.label}
-        >
-          <div className="flex items-center justify-between">
-            <h1 className="font-sans font-medium text-md">{item.label}</h1>
-            <item.icon className="size-4 text-neutral-500" color={item.color} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-sans font-semibold">{item.total}</h1>
-          </div>
-          <div>
-            <h1 className="text-sm">+2 from last month</h1>
-          </div>
+    <div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
+          {data.map((item) => (
+            <div
+              className="col-span-1 flex flex-col p-6 rounded-lg bg-[#FFFFFF] shadow-md gap-y-2 hover:scale-105 transition-transform duration-150 hover:shadow-md"
+              key={item.label}
+            >
+              <div className="flex items-center justify-between">
+                <h1 className="font-sans font-medium text-md">{item.label}</h1>
+                <div>
+                  <item.icon className="size-4" color={item.color} />
+                </div>
+              </div>
+              <div>
+                <h1 className="text-2xl font-sans font-semibold">
+                  {item.total}
+                </h1>
+              </div>
+              <div>
+                <h1 className="text-sm">+2 from last month</h1>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </motion.div>
     </div>
   );
 };

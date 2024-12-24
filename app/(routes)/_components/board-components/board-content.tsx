@@ -1,5 +1,6 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit, Link } from "lucide-react";
+import { Copy, Edit, Trash2 } from "lucide-react";
 
 const mockData = [
   {
@@ -8,13 +9,6 @@ const mockData = [
       "A centralized platform to gather and analyze user feedback effortlessly.",
     testimonials: 245,
     averageRating: "4.7",
-  },
-  {
-    label: "Review Vault",
-    description:
-      "Store and showcase all your product reviews in one secure location.",
-    testimonials: 178,
-    averageRating: "4.5",
   },
   {
     label: "Opinion Tracker",
@@ -55,47 +49,50 @@ const mockData = [
 
 export const BoardContent = () => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 md:mx-4">
-      {mockData.map((item) => (
-        <div
-          key={item.label}
-          className="flex flex-col items-start border px-4 py-2 rounded-xl bg-[#FFFFFF] gap-y-4 hover:scale-105 transition-transform duration-200 hover:shadow-md"
-        >
-          <div className="flex flex-col gap-y-2">
-            <div className="flex items-center justify-between">
-              <h1 className="font-sans font-semibold text-xl">{item.label}</h1>
-              <h1 className="flex items-center justify-center gap-x-2">
-                <Edit className="size-4 hover:cursor-pointer" />
-                <Copy className="size-4 hover:cursor-pointer" />
-              </h1>
+    <div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
+        {mockData.map((item) => (
+          <div
+            key={item.label}
+            className="flex flex-col items-start px-4 py-2 rounded-xl bg-zinc-50 gap-y-4 hover:scale-105 transition-transform duration-200 hover:shadow-md shadow-md"
+          >
+            <div className="flex flex-col gap-y-2">
+              <div className="flex items-center justify-between">
+                <h1 className="font-sans font-semibold text-xl">
+                  {item.label}
+                </h1>
+                <h1 className="flex items-center justify-center gap-x-2">
+                  <Copy className="size-4 hover:cursor-pointer" />
+                  <Edit className="size-4 hover:cursor-pointer" />
+                  <Trash2 className="size-4 hover:cursor-pointer" />
+                </h1>
+              </div>
+              <p className=" font-sans text-sm">{item.description}</p>
             </div>
-            <p className="text-justify font-sans text-sm">{item.description}</p>
-          </div>
-          <div className="flex flex-col w-full gap-y-1">
-            <div className="flex items-center justify-between">
-              <h1 className="text-sm font-sans font-medium">Testimonials</h1>
-              <h1 className="text-sm font-sans font-semibold">
-                {item.testimonials}
-              </h1>
+            <div className="flex flex-col w-full gap-y-1">
+              <div className="flex items-center justify-between">
+                <h1 className="text-sm font-sans font-medium">Testimonials</h1>
+                <h1 className="text-sm font-sans font-semibold">
+                  {item.testimonials}
+                </h1>
+              </div>
+              <div className="flex items-center justify-between">
+                <h1 className="text-sm font-sans font-medium">
+                  Average rating
+                </h1>
+                <h1 className="text-sm font-sans font-semibold">
+                  {item.averageRating}
+                </h1>
+              </div>
             </div>
-            <div className="flex items-center justify-between">
-              <h1 className="text-sm font-sans font-medium">Average rating</h1>
-              <h1 className="text-sm font-sans font-semibold">
-                {item.averageRating}
-              </h1>
+            <div className="flex items-center justify-center w-full gap-x-4 mt-2">
+              <Button variant={"default"} className="w-full  bg-neutral-800">
+                View details
+              </Button>
             </div>
           </div>
-          <div className="flex items-center justify-center w-full gap-x-4 mt-2">
-            <Button className="flex items-center justify-center w-full h-[45px] bg-neutral-800">
-              <Link className="mr-2" />
-              <h1>Copy link</h1>
-            </Button>
-            <Button variant={"outline"} className="w-full h-[45px]">
-              View details
-            </Button>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
