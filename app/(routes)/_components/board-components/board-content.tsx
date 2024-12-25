@@ -1,9 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
+// import { motion } from "framer-motion";
 import { Copy, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const mockData = [
+interface BoardItem {
+  id: number;
+  label: string;
+  description: string;
+  testimonials: number;
+  averageRating: string;
+}
+
+const mockData: BoardItem[] = [
   {
     id: 1,
     label: "Feedback Hub",
@@ -58,8 +67,30 @@ export const BoardContent = () => {
   const router = useRouter();
   return (
     <div>
+      {/* {mockData.length === 0 ? (
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 50,
+              mass: 0.5,
+            }}
+          >
+            <div className="flex flex-col items-center justify-center mt-10 p-10 gap-y-4 bg-[#F9FAFC] rounded-xl border border-neutral-200 shadow-lg">
+              <h1 className="font-sans text-xl font-medium">
+                It looks like you haven&apos;t added any boards yet. Let&apos;s
+                fix that and get the reviews rolling in! 🚀
+              </h1>
+              <Button>Add board</Button>
+            </div>
+          </motion.div>
+        </div>
+      ) : ( */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-6 mx-6">
-        {mockData.map((item) => (
+        {mockData?.map((item) => (
           <div
             key={item.id}
             className="flex flex-col items-start px-4 py-2 rounded-xl bg-white gap-y-4 transition-shadow duration-300 hover:shadow-xl shadow-md"
@@ -116,6 +147,7 @@ export const BoardContent = () => {
           </div>
         ))}
       </div>
+      {/* )} */}
     </div>
   );
 };

@@ -53,7 +53,7 @@ export async function createUser(
     console.log(_error);
     return {
       success: false,
-      status: 500, // Changed status code to 500 for server error
+      status: 500,
       message: "Internal server error.",
     };
   }

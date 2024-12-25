@@ -18,3 +18,13 @@ export interface AuthResponse {
   account?: Account;
   errors?: unknown;
 }
+
+export type AuthProvider = "credentials" | "google" | "facebook" | "github";
+
+export type CreateUserProps = {
+  name: string;
+  email: string;
+  password: string;
+  provider: AuthProvider;
+  providerAccountId: string | null;
+};
