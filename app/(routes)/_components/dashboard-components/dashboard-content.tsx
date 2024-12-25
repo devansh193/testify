@@ -41,7 +41,7 @@ export const DashboardContent = () => {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
           {data.map((item) => (
             <div
-              className="col-span-1 flex flex-col p-6 rounded-lg bg-[#FFFFFF] shadow-md gap-y-2 hover:scale-105 transition-transform duration-150 hover:shadow-md"
+              className="col-span-1 flex flex-col p-6 rounded-lg bg-[#FFFFFF] shadow-md gap-y-2 transition-shadow duration-300 hover:shadow-xl"
               key={item.label}
             >
               <div className="flex items-center justify-between">

@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const BoardHeader = () => {
   return (
-    <div className="flex items-center justify-between my-4 mb-6">
+    <div className="flex items-center justify-between my-4 mb-6 mx-7">
       <div className="flex flex-col">
         <h1 className="text-xl font-semibold font-sans">Manage your Boards</h1>
         <p className="font-sans text-sm text-neutral-500 font-medium">
@@ -10,7 +11,9 @@ export const BoardHeader = () => {
         </p>
       </div>
       <div>
-        <Button>Create boards</Button>
+        <Link href={"/create"}>
+          <Button>Create board</Button>
+        </Link>
       </div>
     </div>
   );
