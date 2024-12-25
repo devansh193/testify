@@ -6,6 +6,11 @@ export const DashboardHeader = () => {
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
+        transition={{
+          type: "spring",
+          stiffness: 500,
+          damping: 30,
+        }}
         className="bg-primary/10 p-4 rounded-xl mb-6 flex items-center justify-between"
       >
         <div className="flex items-center gap-4 h-14">

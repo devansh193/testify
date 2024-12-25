@@ -1,4 +1,3 @@
-import { Account, User } from "@prisma/client";
 import { z } from "zod";
 
 export const QuestionSchema = z.object({
@@ -54,15 +53,6 @@ export const AccountSchema = z.object({
   id_token: z.string().optional(),
   session_state: z.string().optional(),
 });
-
-export interface AuthResponse {
-  success: boolean;
-  status: number;
-  message: string;
-  user?: User;
-  account?: Account;
-  errors?: unknown;
-}
 
 export const BoardSchema = z.object({
   boardTitle: z

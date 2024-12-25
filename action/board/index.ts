@@ -1,9 +1,11 @@
 "use server";
 import prisma from "@/lib/db";
-import { AuthResponse, BoardSchema } from "@/schema/schema";
+import { BoardSchema } from "@/schema/schema";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { ApiResponse, AuthResponse } from "@/types";
+import { Board } from "@prisma/client";
 
 export type CreateBoardInput = z.infer<typeof BoardSchema>;
 
@@ -17,7 +19,7 @@ export async function createBoard(
       return {
         success: false,
         status: 401,
-        message: "Login required.",
+        message: "User is not authenticated. Please log in to proceed.",
       };
     }
     const validatedData = BoardSchema.safeParse(data);
@@ -86,6 +88,94 @@ export async function createBoard(
     };
   } catch (_error) {
     console.error("Error creating board:", _error);
+    return {
+      success: false,
+      status: 500,
+      message: "Internal server error. Please try again later.",
+    };
+  }
+}
+
+export async function getBoards({
+  userId,
+}: {
+  userId: string;
+}): Promise<ApiResponse<Board[]>> {
+  try {
+    const session = await getServerSession();
+    if (!session) {
+      return {
+        success: false,
+        status: 401,
+        message: "User is not authenticated. Please log in to proceed.",
+      };
+    }
+
+    const boards = await prisma.board.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        testimonials: true,
+      },
+    });
+
+    return {
+      success: true,
+      status: 200,
+      message: "Boards fetched successfully",
+      data: boards,
+    };
+  } catch (_error) {
+    console.error("Error fetching boards:", _error);
+    return {
+      success: false,
+      status: 500,
+      message: "Internal server error. Please try again later.",
+    };
+  }
+}
+
+export async function getBoardById({
+  boardId,
+}: {
+  boardId: string;
+}): Promise<ApiResponse<Board>> {
+  try {
+    const session = await getServerSession();
+    if (!session) {
+      return {
+        success: false,
+        status: 401,
+        message: "User is not authenticated. Please log in to proceed.",
+      };
+    }
+
+    const board = await prisma.board.findUnique({
+      where: {
+        id: boardId,
+      },
+      include: {
+        testimonials: true,
+      },
+    });
+
+    if (!board) {
+      return {
+        success: false,
+        status: 404,
+        message: "Board not found",
+      };
+    }
+
+    return {
+      success: true,
+      status: 200,
+      message: "Board fetched successfully",
+      data: board,
+    };
+  } catch (_error) {
+    console.error("Error fetching board:", _error);
     return {
       success: false,
       status: 500,

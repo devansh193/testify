@@ -35,8 +35,14 @@ export const DashboardContent = () => {
   return (
     <div>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 200, // Moderate speed for smooth entry
+          damping: 25, // Controlled bounce without excessive oscillation
+          mass: 0.5, // Adjust weight to make the animation feel lighter
+        }}
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
           {data.map((item) => (
