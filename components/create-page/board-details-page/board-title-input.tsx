@@ -1,24 +1,28 @@
 "use client";
-import { useRecoilState } from "recoil";
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
+import { feedbackBoardTitleErrorSelector } from "@/recoil/selectors";
 import { feedbackBoardTitleAtom } from "@/recoil/atom";
 
 export const BoardInput = () => {
-  const [boardName, setBoardName] = useRecoilState(feedbackBoardTitleAtom);
+  const [boardTitle, setBoardTitle] = useRecoilState(feedbackBoardTitleAtom);
+  const error = useRecoilValue(feedbackBoardTitleErrorSelector);
 
   return (
     <div>
       <Label htmlFor="title" className="text-md font-semibold">
-        Board name
+        Board Title
       </Label>
       <Input
         id="title"
-        value={boardName}
-        onChange={(e) => setBoardName(e.target.value)}
-        placeholder="Your product title"
-        className="mt-1"
+        value={boardTitle}
+        onChange={(e) => setBoardTitle(e.target.value)}
+        placeholder="Enter board title"
+        className={`mt-1`}
       />
+      {error && <span className="text-red-500 text-sm mt-1">{error}</span>}{" "}
     </div>
   );
 };

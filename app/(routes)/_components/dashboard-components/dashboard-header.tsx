@@ -4,12 +4,13 @@ export const DashboardHeader = () => {
   return (
     <div>
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{
           type: "spring",
-          stiffness: 500,
-          damping: 30,
+          stiffness: 200,
+          damping: 25,
+          mass: 0.5,
         }}
         className="bg-primary/10 p-4 rounded-xl mb-6 flex items-center justify-between"
       >

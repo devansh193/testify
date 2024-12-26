@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { feedbackQuestionsAtom } from "@/recoil/atom";
+import { feedbackQuestionsErrorSelector } from "@/recoil/selectors";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Trash2, Plus } from "lucide-react";
 
 const QuestionsInput = () => {
   const [questions, setQuestions] = useRecoilState(feedbackQuestionsAtom);
+  const error = useRecoilValue(feedbackQuestionsErrorSelector);
 
   const updateQuestion = (index: number, value: string) => {
     const newQuestions = [...questions];
@@ -36,6 +38,7 @@ const QuestionsInput = () => {
                 placeholder={`Points to remember ${index + 1}`}
                 value={question}
                 onChange={(e) => updateQuestion(index, e.target.value)}
+                className={error ? "border-red-500" : ""}
               />
               <Button
                 variant="ghost"
@@ -47,6 +50,8 @@ const QuestionsInput = () => {
             </div>
           ))}
         </div>
+        {error && <span className="text-red-500 text-sm mt-1">{error}</span>}{" "}
+        {/* Show error */}
         <Button
           variant="outline"
           size="sm"

@@ -1,10 +1,15 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export default function Testify() {
+interface TestifyProps {
+  className?: string;
+}
+
+export default function Testify({ className, ...props }: TestifyProps) {
   return (
-    <Link href={"/"}>
-      <div className="flex items-center space-x-2">
-        <span className="text-2xl text-black font-sans font-semibold">
+    <Link href="/">
+      <div className={cn("flex items-center space-x-2", className)} {...props}>
+        <span className="text-xl sm:text-2xl text-black font-sans font-semibold">
           testify
         </span>
       </div>

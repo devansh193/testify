@@ -20,19 +20,15 @@ export const userImageAtom = atom({
   },
 });
 
+// BOARD DETAILS PAGE ATOMS
 export const feedbackPageTitleAtom = atom<string>({
   key: "feedbackPageTitleAtom", // Previously: pageTitleAtom
   default: "Show us some love with your feedback!",
 });
 
 export const feedbackBoardTitleAtom = atom<string>({
-  key: "feedbackBoardTitleAtom", // Previously: boardAtom
+  key: "feedbackBoardTitleAtom",
   default: "TESTIFY",
-});
-
-export const personalFeedbackTitleAtom = atom<string>({
-  key: "personalFeedbackTitleAtom", // Previously: personalPageTitle
-  default: "How about getting personal?",
 });
 
 export const feedbackDescriptionAtom = atom<string>({
@@ -41,14 +37,68 @@ export const feedbackDescriptionAtom = atom<string>({
     "We appreciate you taking the time to share your experience with testify. Your feedback helps us improve and helps others make informed decisions.",
 });
 
-export const currentSlideIndexAtom = atom<number>({
-  key: "currentSlideIndexAtom", // Previously: slideAtom
-  default: 0,
+export const isVideoReviewEnabledAtom = atom<boolean>({
+  key: "isVideoReviewEnabledAtom", // Previously: videoAtom
+  default: true,
 });
+
+// TEXT REVIEW PAGE ATOMS
+
+export const ratingTitleAtom = atom<string>({
+  key: "ratingTitleAtom", // Previously: ratingTitleAtom
+  default: "Rate your experience",
+});
+
+export const feedbackQuestionsAtom = atom<string[]>({
+  key: "feedbackQuestionsAtom", // Previously: questionsAtom
+  default: [
+    "What problems did we help you solve?",
+    "What have you been able to achieve since using our product/service?",
+    "What exceeded your expectations or surprised you the most?",
+    "What would you tell someone considering our product/service?",
+  ],
+});
+
+// VIDEO REVIEW PAGE ATOM
 
 export const videoReviewTitleAtom = atom<string>({
   key: "videoReviewTitleAtom", // Previously: videoTitle
   default: "Lights, Camera, Shoot",
+});
+
+export const videoReviewQuestionsAtom = atom<string[]>({
+  key: "videoReviewQuestionsAtom", // Previously: videoQuestionsAtom
+  default: [
+    "What problems did we help you solve?",
+    "What have you been able to achieve since using our product/service?",
+    "What exceeded your expectations or surprised you the most?",
+    "What would you tell someone considering our product/service?",
+  ],
+});
+
+//  PERSONAL PAGE ATOMS
+
+export const personalFeedbackTitleAtom = atom<string>({
+  key: "personalFeedbackTitleAtom", // Previously: personalPageTitle
+  default: "How about getting personal?",
+});
+
+// THANKYOU PAGE ATOMS
+
+export const thankyouTitleAtom = atom<string>({
+  key: "thankyouTitleAtom",
+  default: "You’re the Real MVP! 🙌",
+});
+
+export const thankyouDescriptionAtom = atom<string>({
+  key: "thankyouDescriptionAtom", // Previously: descriptionAtom
+  default:
+    "Big shout out to you for dropping your feedback—it means the world to us! Your reviews help us level up and bring you even cooler stuff. Thanks for being awesome—keep being you!",
+});
+
+export const currentSlideIndexAtom = atom<number>({
+  key: "currentSlideIndexAtom", // Previously: slideAtom
+  default: 0,
 });
 
 export const videoSlideIndexAtom = atom<number>({
@@ -77,36 +127,6 @@ export const slideSelector = selector<number>({
       set(currentSlideIndexAtom, clampedValue);
     }
   },
-});
-
-export const feedbackQuestionsAtom = atom<string[]>({
-  key: "feedbackQuestionsAtom", // Previously: questionsAtom
-  default: [
-    "What problems did we help you solve?",
-    "What have you been able to achieve since using our product/service?",
-    "What exceeded your expectations or surprised you the most?",
-    "What would you tell someone considering our product/service?",
-  ],
-});
-
-export const videoReviewQuestionsAtom = atom<string[]>({
-  key: "videoReviewQuestionsAtom", // Previously: videoQuestionsAtom
-  default: [
-    "What problems did we help you solve?",
-    "What have you been able to achieve since using our product/service?",
-    "What exceeded your expectations or surprised you the most?",
-    "What would you tell someone considering our product/service?",
-  ],
-});
-
-export const isVideoReviewEnabledAtom = atom<boolean>({
-  key: "isVideoReviewEnabledAtom", // Previously: videoAtom
-  default: true,
-});
-
-export const ratingTitleAtom = atom<string>({
-  key: "ratingTitleAtom", // Previously: ratingTitleAtom
-  default: "Rate your experience",
 });
 
 export const isStarRatingEnabledAtom = atom<boolean>({
