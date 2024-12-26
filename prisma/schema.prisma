@@ -40,7 +40,7 @@ model Account {
 }
 
 model Board {
-  id                   String        @id @default(uuid())
+  id                   String        @id @unique @default(uuid())
   boardTitle           String        @unique
   pageTitle            String
   pageDescription      String

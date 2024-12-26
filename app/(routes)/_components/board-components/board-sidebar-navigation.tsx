@@ -79,8 +79,10 @@ const BoardSidebarNavigation = () => {
                 key={item.title}
                 href={item.href}
                 className={cn(
-                  "flex w-full items-center font-sans font-medium  justify-start rounded-lg p-2 text-sm transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-                  isActive ? "bg-[#DDDDDD] text-neutral-700" : "text-black",
+                  "flex w-full items-center font-sans font-semibold justify-start rounded-lg p-2 text-sm overflow-hidden hover:bg-white hover:border hover:shadow-md transition-shadow",
+                  isActive
+                    ? "bg-[#FFFFFF] text-neutral-700 border font-bold shadow-md"
+                    : "text-neutral-500",
                   "group"
                 )}
               >
@@ -108,8 +110,10 @@ const BoardSidebarNavigation = () => {
                 key={item.title}
                 href={item.href}
                 className={cn(
-                  "flex w-full items-center font-sans font-medium  justify-start rounded-lg p-2 text-sm transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-                  isActive ? "bg-[#DDDDDD] text-neutral-700" : "text-black",
+                  "flex w-full items-center font-sans font-semibold  justify-start rounded-lg p-2 text-sm transition-all overflow-hidden hover:bg-white hover:border hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+                  isActive
+                    ? "bg-[#FFFFFF] text-neutral-700 border font-bold shadow-md"
+                    : "text-neutral-500",
                   "group"
                 )}
               >
@@ -137,8 +141,10 @@ const BoardSidebarNavigation = () => {
                 key={item.title}
                 href={item.href}
                 className={cn(
-                  "flex w-full items-center font-sans font-medium  justify-start rounded-lg p-2 text-sm transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-                  isActive ? "bg-[#DDDDDD] text-neutral-700" : "text-black",
+                  "flex w-full items-center font-sans font-semibold  justify-start rounded-lg p-2 text-sm transition-all overflow-hidden hover:bg-white hover:border hover:shadow-md",
+                  isActive
+                    ? "bg-[#FFFFFF] text-neutral-700 border font-bold shadow-md"
+                    : "text-neutral-500",
                   "group"
                 )}
               >

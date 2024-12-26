@@ -12,6 +12,8 @@ import {
   videoReviewTitleAtom,
 } from "./atom";
 
+// BOARD DETAILS PAGE SELECTORS
+
 export const feedbackBoardTitleErrorSelector = selector<string | null>({
   key: "feedbackBoardTitleErrorSelector",
   get: ({ get }) => {
@@ -54,6 +56,8 @@ export const feedbackDescriptionErrorSelector = selector<string | null>({
   },
 });
 
+// TEXT REVIEW PAGE SELECTORS
+
 export const ratingTitleErrorSelector = selector<string | null>({
   key: "ratingTitleErrorSelector",
   get: ({ get }) => {
@@ -78,6 +82,8 @@ export const feedbackQuestionsErrorSelector = selector<string | null>({
     return null;
   },
 });
+
+// VIDEO REVIEW PAGE SELECTORS
 
 export const videoReviewTitleErrorSelector = selector<string | null>({
   key: "videoReviewTitleErrorSelector",
@@ -104,6 +110,8 @@ export const videoReviewQuestionsErrorSelector = selector<string | null>({
   },
 });
 
+//  PERSONAL PAGE SELECTORS
+
 export const personalFeedbackTitleErrorSelector = selector<string | null>({
   key: "personalFeedbackTitleErrorSelector",
   get: ({ get }) => {
@@ -117,6 +125,8 @@ export const personalFeedbackTitleErrorSelector = selector<string | null>({
     return null;
   },
 });
+
+// THANKYOU PAGE SELECTORS
 
 export const thankyouTitleErrorSelector = selector<string | null>({
   key: "thankyouTitleErrorSelector",

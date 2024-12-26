@@ -25,7 +25,7 @@ export const SidebarContent = () => {
         <Link
           href={"/settings"}
           className={cn(
-            "flex w-full items-center justify-start rounded-lg p-2 text-black text-sm font-sans font-medium transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+            "flex w-full items-center justify-start rounded-lg p-2 text-black text-sm font-sans font-medium transition-all overflow-hidden hover:bg-white hover:border hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
             "group"
           )}
         >
@@ -37,7 +37,7 @@ export const SidebarContent = () => {
         <div className="">
           <button
             className={cn(
-              "flex w-full items-center justify-start rounded-lg p-2 text-black text-sm font-sans font-medium transition-all overflow-hidden hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+              "flex w-full items-center justify-start rounded-lg p-2 text-black text-sm font-sans font-medium transition-all overflow-hidden hover:bg-white hover:border hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
               "group"
             )}
             onClick={() => signOut()}

@@ -64,7 +64,7 @@ export default function Create() {
             <Sidebar className="size-4" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="top" className="w-full sm:w-[400px]">
+        <SheetContent side="top" className="w-full sm:w-full md:w-[400px]">
           {slides[slide]?.sidebar || null}
         </SheetContent>
       </Sheet>

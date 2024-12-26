@@ -21,6 +21,7 @@ export const userImageAtom = atom({
 });
 
 // BOARD DETAILS PAGE ATOMS
+
 export const feedbackPageTitleAtom = atom<string>({
   key: "feedbackPageTitleAtom", // Previously: pageTitleAtom
   default: "Show us some love with your feedback!",
@@ -111,7 +112,7 @@ export const videoSlideSelector = selector<number>({
   get: ({ get }) => get(videoSlideIndexAtom),
   set: ({ set }, newValue) => {
     if (typeof newValue === "number") {
-      const clampedValue = Math.max(0, Math.min(2, newValue));
+      const clampedValue = Math.max(0, Math.min(1, newValue));
       set(videoSlideIndexAtom, clampedValue);
     }
   },
