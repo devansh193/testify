@@ -5,6 +5,7 @@ import { UserSchema } from "@/schema/schema";
 import { AuthResponse } from "@/types";
 import bcrypt from "bcrypt";
 import { z } from "zod";
+import { CallQueue } from "../notification";
 
 export async function createUser(
   name: string,
@@ -43,6 +44,13 @@ export async function createUser(
         },
       });
     }, 0);
+    const token: string = user.id;
+    const mail: string = user.email;
+    const messageBody: { mail: string; token: string } = { token, mail };
+
+    console.log("QUEUE CALLING");
+    CallQueue(messageBody);
+    console.log("QUEUE CALLED");
     return {
       success: true,
       status: 201,

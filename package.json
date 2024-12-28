@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.716.0",
     "@mapbox/node-pre-gyp": "^1.0.11",
     "@prisma/client": "^5.19.1",
     "@radix-ui/react-accordion": "^1.2.1",
@@ -28,6 +29,7 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.56.2",
     "@types/bcrypt": "^5.0.2",
+    "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
