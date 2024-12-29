@@ -1,51 +1,27 @@
 export const colOne = [
-  {
-    label: "Features",
-    href: "/features",
-  },
-  {
-    label: "Pricing",
-    href: "/pricing",
-  },
-  {
-    label: "Testimonials",
-    href: "/testimonials",
-  },
+  { label: "Features", href: "/features" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Documentation", href: "/docs" },
+  { label: "API", href: "/api" },
 ];
 
 export const colTwo = [
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "Blogs",
-    href: "/blogs",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
+  { label: "About Us", href: "/about" },
+  { label: "Careers", href: "/careers" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const colThree = [
-  {
-    label: "Privacy policy",
-    href: "/privacy",
-  },
-  {
-    label: "Terms of service",
-    href: "/#",
-  },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Cookie Policy", href: "/cookies" },
+  { label: "GDPR", href: "/gdpr" },
 ];
 
 export const colFour = [
-  {
-    label: "twitter",
-    href: "/#",
-  },
-  {
-    label: "Github",
-    href: "/#",
-  },
+  { label: "Facebook", href: "https://facebook.com" },
+  { label: "Twitter", href: "https://twitter.com" },
+  { label: "Instagram", href: "https://instagram.com" },
+  { label: "LinkedIn", href: "https://linkedin.com" },
 ];

@@ -1,70 +1,111 @@
+"use client";
 import { colFour, colOne, colThree, colTwo } from "@/constants/footer-items";
 import Link from "next/link";
-import Testify from "./logo/testify";
 import TestifyLogo from "./logo/Logo";
+import { Separator } from "@/components/ui/separator";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
 export const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-evenly py-24 p-4 w-full bg-[#AECEDE]">
-        <div className="flex items-center justify-center gap-x-2">
-          <TestifyLogo />
-          <Testify />
-        </div>
-        <div className="space-y-4">
-          <h1 className="font-sans font-semibold text-sm">PLATFORM</h1>
-          <div className="flex flex-col items-start gap-y-1">
-            {colOne.map((item) => (
-              <Link key={item.label} href={item.href}>
-                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
-                  {item.label}
-                </h1>
+    <footer className=" text-[#E7D6C9] z-50 mt-24">
+      <div className="container mx-auto px-4 py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="col-span-1 lg:col-span-2">
+            <div className="flex items-center gap-x-2 mb-4">
+              <TestifyLogo />
+              <span className="text-2xl font-bold text-white">Testify</span>
+            </div>
+            <p className="text-sm text-gray-400 mb-4">
+              Empowering your platform, step by step.
+            </p>
+            <div className="flex space-x-4">
+              <Link
+                href={colFour[0].href}
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Facebook size={20} />
               </Link>
-            ))}
+              <Link
+                href={colFour[1].href}
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Twitter size={20} />
+              </Link>
+              <Link
+                href={colFour[2].href}
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Instagram size={20} />
+              </Link>
+              <Link
+                href={colFour[3].href}
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Linkedin size={20} />
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="space-y-4">
-          <h1 className="font-sans font-semibold text-sm">COMPANY</h1>
-          <div className="flex flex-col items-start gap-y-1">
-            {colTwo.map((item) => (
-              <Link key={item.label} href={item.href}>
-                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
-                  {item.label}
-                </h1>
-              </Link>
-            ))}
+
+          {/* Links Columns */}
+          <div>
+            <h2 className="font-semibold text-white mb-4">Platform</h2>
+            <ul className="space-y-2">
+              {colOne.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-gray-400 hover:text-white transition"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="space-y-4">
-          <h1 className="font-sans font-semibold text-sm">LEGAL</h1>
-          <div className="flex flex-col items-start gap-y-1">
-            {colThree.map((item) => (
-              <Link key={item.label} href={item.href}>
-                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
-                  {item.label}
-                </h1>
-              </Link>
-            ))}
+
+          <div>
+            <h2 className="font-semibold text-white mb-4">Company</h2>
+            <ul className="space-y-2">
+              {colTwo.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-gray-400 hover:text-white transition"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="space-y-4">
-          <h1 className="font-sans font-semibold text-sm">SOCIALS</h1>
-          <div className="flex flex-col items-start gap-y-1">
-            {colFour.map((item) => (
-              <Link key={item.label} href={item.href}>
-                <h1 className="relative inline-block before:absolute before:-bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-200 hover:before:w-full">
-                  {item.label}
-                </h1>
-              </Link>
-            ))}
+
+          <div>
+            <h2 className="font-semibold text-white mb-4">Legal</h2>
+            <ul className="space-y-2">
+              {colThree.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-gray-400 hover:text-white transition"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center p-4 bg-[#AECEDE]">
-        <p className="text-sm text-black font-sans text-center">
-          © 2024 Testify. All rights reserved.
+
+      <Separator className="bg-gray-800" />
+
+      <div className="container mx-auto px-4 py-6">
+        <p className="text-center text-sm text-gray-400">
+          © {currentYear} Testify. All rights reserved.
         </p>
       </div>
-    </div>
+    </footer>
   );
 };
