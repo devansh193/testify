@@ -1,35 +1,19 @@
-import { Greeting } from "@/components/greeting";
-import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
-import ProfileDropdown from "@/components/profile-menu/profile-dropdown";
 
 export const NavAuth = () => {
-  const { data: session } = useSession();
   return (
-    <>
-      {session ? (
-        <div className="ml-8 space-x-8 flex items-center justify-center">
-          <span className="text-sm flex gap-x-2 font-semibold text-gray-700">
-            <Greeting />, <p>{session.user?.name}</p>{" "}
-          </span>
-          <ProfileDropdown />
-        </div>
-      ) : (
-        <div className="flex flex-col ml-8 space-x-8 md:flex-row items-center justify-center">
-          <Link
-            href={"/sign-in"}
-            className="font-sans font-medium text-lg hover:bg-white p-2 rounded-lg"
-          >
-            Login
-          </Link>
-          <Link href={"/sign-up"}>
-            <Button className="font-sans font-medium text-md">
-              Sign up free
-            </Button>
-          </Link>
-        </div>
-      )}
-    </>
+    <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 md:ml-8">
+      <Link
+        href="/sign-in"
+        className="font-sans font-medium text-white text-lg hover:bg-neutral-900 hover:text-white transition-colors duration-300 p-2 rounded-lg"
+      >
+        Login
+      </Link>
+      <Link href={"/sign-up"}>
+        <button className="bg-gradient-to-r from-[#E6D6C8] to-white text-black font-semibold font-sans rounded-xl px-6 py-2 shadow-md hover:shadow-lg transition-transform duration-300 transform hover:scale-105">
+          Get Started for Free
+        </button>
+      </Link>
+    </div>
   );
 };

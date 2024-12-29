@@ -12,7 +12,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   name          String?
-  image         String?
+  imageUrl      String?
   password      String?
   accounts      Account[]
   createdAt     DateTime  @default(now())
@@ -62,14 +62,15 @@ model Board {
 }
 
 model Testimonial {
-  id         String   @id @default(uuid())
-  name       String
-  email      String
-  textReview String
-  rating     Int?
-  userImage  String?
-  boardId    String
-  board      Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String   @id @default(uuid())
+  name         String
+  email        String
+  textReview   String
+  rating       Int?
+  userImageUrl String?
+  videoUrl     String?
+  boardId      String
+  board        Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
