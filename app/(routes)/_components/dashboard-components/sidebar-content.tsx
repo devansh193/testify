@@ -15,7 +15,7 @@ export const SidebarContent = () => {
   return (
     <div className="flex flex-col h-full">
       <div className=" h-16 border-b p-2 flex items-center justify-start gap-x-2">
-        <Logo />
+        <Logo className="text-white" />
         <Testify />
       </div>
       <div className="flex-grow p-2">
