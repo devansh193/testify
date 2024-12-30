@@ -73,7 +73,7 @@ export const getAllBoards = withSession<
   return new SuccessResponse(message, 200, boards).serialize();
 });
 
-export const getBoardById = withSession<string, SuccessResponse<Board>>(
+export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
   async (session, boardId) => {
     if (!boardId) {
       throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");

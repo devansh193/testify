@@ -116,3 +116,15 @@ export const BoardSchema = z.object({
 
   userId: z.string().uuid("Invalid user ID"),
 });
+
+export const TestimonialSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  textReview: z.string().min(1, "Text review is required"),
+  rating: z.number().int().min(1).max(5),
+  userImageUrl: z.string().url("Invalid URL").optional(),
+  videoUrl: z.string().url("Invalid URL").optional(),
+  boardId: z.string().uuid(),
+});
+
+export type TestimonialType = z.infer<typeof TestimonialSchema>;
