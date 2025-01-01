@@ -47,6 +47,27 @@ export const getAllTestimonials = withSession<
   return new SuccessResponse(message, 200, testimonials);
 });
 
+// // Fetch all written testimonials
+
+// export const getAllWrittenTestimonials = withSession<
+//   string,
+//   ServerActionReturnType<Testimonial[]>
+// >(async (session, boardId) => {
+//   if (!boardId || !session.user.id) {
+//     throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");
+//   }
+//   const testimonials = await prisma.testimonial.findMany({
+//     where: {
+//       boardId: boardId,
+//     },
+//     select:{
+//       textReview: true
+//     }
+//   });
+//   const message = "Testimonials fetched successfully.";
+//   return new SuccessResponse(message, 200, testimonials);
+// });
+
 // Fetching testimonial by uniqueID
 export const getTestimonialById = withSession<
   string,

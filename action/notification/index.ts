@@ -32,7 +32,6 @@ export const CallQueue = async (messageBody: MessageBodyTypes) => {
     },
     MessageBody: JSON.stringify(messageBody),
   });
-
   const response = await client.send(command);
   console.log(response);
   return response;

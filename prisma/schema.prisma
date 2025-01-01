@@ -74,3 +74,10 @@ model Testimonial {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+model Token {
+  id       String   @id @default(cuid())
+  email    String
+  token    String   @unique
+  expireAt DateTime
+}
