@@ -83,10 +83,11 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, account, profile }) {
-      if (account && profile) {
-        token.email = profile.email as string;
-        token.id = account.providerAccountId;
+    async jwt({ token, user }) {
+      if (user) {
+        token.email = user.email as string;
+        token.id = user.id;
+        token.isEmailVerified = user.isEmailVerified;
       }
       return token;
     },
@@ -98,6 +99,7 @@ export const authOptions: NextAuthOptions = {
 
         if (user && session && session.user) {
           session.user.id = user.id as string;
+          // session.user.
         }
       } catch (error) {
         if (error instanceof PrismaClientInitializationError) {
