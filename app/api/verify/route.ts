@@ -20,6 +20,13 @@ export async function POST(req: NextRequest) {
     if (currentTime > dbToken.expireAt) {
       return NextResponse.json({ error: "Token has expired" }, { status: 410 });
     }
+    // Updating email-verified field in table.
+    await prisma.user.update({
+      where: { id: dbToken.userId },
+      data: {
+        emailVerified: currentTime,
+      },
+    });
     return NextResponse.json(
       { message: "Token is valid", data: dbToken },
       { status: 200 }

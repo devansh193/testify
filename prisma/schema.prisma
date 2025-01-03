@@ -18,6 +18,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   Board         Board[]
+  Token         Token[]
 }
 
 model Account {
@@ -80,4 +81,8 @@ model Token {
   email    String
   token    String   @unique
   expireAt DateTime
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
