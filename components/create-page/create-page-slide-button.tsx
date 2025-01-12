@@ -1,16 +1,45 @@
 "use client";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Button } from "../ui/button";
-import { slideSelector, isVideoReviewEnabledAtom } from "@/recoil/atom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { createBoard } from "@/action/board";
+import {
+  feedbackBoardTitleAtom,
+  feedbackPageTitleAtom,
+  feedbackDescriptionAtom,
+  isVideoReviewEnabledAtom,
+  ratingTitleAtom,
+  feedbackQuestionsAtom,
+  videoReviewTitleAtom,
+  videoReviewQuestionsAtom,
+  personalFeedbackTitleAtom,
+  thankyouTitleAtom,
+  thankyouDescriptionAtom,
+  slideSelector,
+  logoUrlAtom,
+} from "@/recoil/atom";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 export const SlideButton = () => {
+  const { data: session } = useSession();
   const currentSlide = useRecoilValue(slideSelector);
   const videoReview = useRecoilValue(isVideoReviewEnabledAtom);
   const totalSlides = videoReview ? 5 : 4;
-
+  const boardTitle = useRecoilValue(feedbackBoardTitleAtom);
+  const pageTitle = useRecoilValue(feedbackPageTitleAtom);
+  const pageDescription = useRecoilValue(feedbackDescriptionAtom);
+  const isVideoReview = useRecoilValue(isVideoReviewEnabledAtom);
+  const textReviewPageTitle = useRecoilValue(ratingTitleAtom);
+  const textQuestions = useRecoilValue(feedbackQuestionsAtom);
+  const videoReviewPageTitle = useRecoilValue(videoReviewTitleAtom);
+  const videoQuestions = useRecoilValue(videoReviewQuestionsAtom);
+  const personalPageTitle = useRecoilValue(personalFeedbackTitleAtom);
+  const thankYouPageTitle = useRecoilValue(thankyouTitleAtom);
+  const thankYouPageMessage = useRecoilValue(thankyouDescriptionAtom);
+  const thankYouPageImage = useRecoilValue(logoUrlAtom);
   const setSlide = useSetRecoilState(slideSelector);
-
+  const userId = session?.user?.id || "";
   const handleNextClick = () => {
     setSlide((slide) => slide + 1);
   };
@@ -19,8 +48,32 @@ export const SlideButton = () => {
     setSlide((slide) => slide - 1);
   };
 
-  const handleSubmitClick = () => {
-    console.log("Form submitted");
+  const handleSubmitClick = async () => {
+    console.log("Before try-catch");
+    try {
+      const payload = {
+        boardTitle,
+        pageTitle,
+        pageDescription,
+        isVideoReview,
+        textReviewPageTitle,
+        textQuestions,
+        videoReviewPageTitle,
+        videoQuestions,
+        personalPageTitle,
+        thankYouPageTitle,
+        thankYouPageMessage,
+        thankYouPageImage,
+        userId,
+      };
+      console.log("Before action");
+      const response = await createBoard(payload);
+      console.log("After action");
+      console.log(response.message, "Chud gaya");
+      toast.message(`${response.message} ${"CHUD GAYA CODE"}`);
+    } catch (_error) {
+      console.log(_error);
+    }
   };
 
   return (

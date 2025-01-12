@@ -20,7 +20,10 @@ export const createBoard = withSession<
   if (!auth || !auth.user) {
     throw new ErrorHandler("Not authorized", "UNAUTHORIZED");
   }
+  console.log("Before schema is parsed", "YAHIN PE CHUDA HAI CODE");
   const result = BoardSchema.parse(data);
+  console.log(result);
+  console.log("BHAI CHUD GAYA CODE");
   const {
     boardTitle,
     pageTitle,
@@ -36,6 +39,10 @@ export const createBoard = withSession<
     thankYouPageImage,
     userId,
   } = result;
+  // if (!result.userId) {
+  //   throw new ErrorHandler("User Id is required", "BAD_REQUEST");
+  // }
+  console.log("I am here 1");
   await prisma.board.create({
     data: {
       boardTitle: boardTitle,
@@ -53,6 +60,7 @@ export const createBoard = withSession<
       userId: userId,
     },
   });
+  console.log("I am here 2");
   const message = "Board created successfully.";
   return new SuccessResponse(message, 201).serialize();
 });

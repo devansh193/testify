@@ -104,13 +104,6 @@ export default function AboutPage() {
                 },
               ].map((member, index) => (
                 <div key={index} className="text-center">
-                  <Image
-                    src={member.image}
-                    alt={member.name.charAt(0)}
-                    width={150}
-                    height={150}
-                    className="rounded-full bg-neutral-200  mx-auto mb-4"
-                  />
                   <h4 className="text-lg font-semibold">{member.name}</h4>
                   <p className="text-gray-500">{member.role}</p>
                 </div>

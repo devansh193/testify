@@ -7,14 +7,14 @@ export function Main() {
         <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
         <div className="relative px-4 sm:px-7 py-2 sm:py-4 bg-black rounded-full leading-none flex items-center">
           <span className="flex items-center space-x-5">
-            <span className="text-xs sm:text-sm md:text-base text-gray-100">
+            <span className="text-xs sm:text-xs md:text-base text-gray-100">
               Trusted by 35,000+ people
             </span>
           </span>
         </div>
       </div>
       <div className="text-center">
-        <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-sans font-bold leading-tight">
+        <h1 className="mt-4 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-sans font-bold leading-tight">
           Collect and showcase
           <br />
           customer testimonials

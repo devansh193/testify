@@ -6,7 +6,7 @@ import { currentSlideIndexAtom, isVideoReviewEnabledAtom } from "@/recoil/atom";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Sidebar } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import PersonalPage from "@/components/create-page/personal-page/personal-page";
 import { PersonalSidebar } from "@/components/create-page/personal-page/personal-page-sidebar";
@@ -57,11 +57,11 @@ export default function Create() {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
-            className="lg:hidden fixed mt-2 left-4 top-4 z-50"
+            className="lg:hidden fixed mt-6 top-4 ml-4 z-50"
           >
-            <Sidebar className="size-4" />
+            <Menu className="size-4" />
           </Button>
         </SheetTrigger>
         <SheetContent side="top" className="w-full sm:w-full md:w-[400px]">

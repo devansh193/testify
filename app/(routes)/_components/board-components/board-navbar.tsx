@@ -3,15 +3,18 @@ import { Bell, Search, Settings } from "lucide-react";
 
 export const BoardNavbar = () => {
   return (
-    <div className="h-16 bg-[#FAFAF8] p-4 flex items-center md:justify-between justify-end border-b">
-      <h1 className="hidden md:flex ">
+    <div
+      className="h-16 bg-[#FAFAF8] fixed top-0 left-[250px] p-4 flex items-center md:justify-between justify-end border-b"
+      style={{ width: "calc(100% - 250px)" }}
+    >
+      <h1 className="hidden md:flex">
         <p className="font-sans md:text-2xl text- font-semibold">Boards</p>
       </h1>
       <div className="flex items-center justify-center gap-x-6">
         <div className="m-2 flex items-center justify-center pl-2 rounded-lg border-2 border-neutral-200">
           <Search className="text-[#414651] font-normal mr-2" />
           <input
-            className="bg-[#FAFAF8] w-full  md:w-[400px] p-2 focus:ring-2 focus:ring-neutral-300 placeholder:text-[#414651]"
+            className="bg-[#FAFAF8] w-full md:w-[400px] p-2 focus:ring-2 focus:ring-neutral-300 placeholder:text-[#414651]"
             placeholder="Search board..."
           />
         </div>

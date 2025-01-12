@@ -5,10 +5,13 @@ import { BoardHeader } from "../_components/board-components/board-header";
 export default function Board() {
   return (
     <div className="bg-[#FAFAF8] w-full h-full shadow-lg">
-      <div>
+      {/* Fixed Navbar */}
+      <div className="">
         <BoardNavbar />
       </div>
-      <div className="m-4">
+
+      {/* Main Content */}
+      <div className="m-4 mt-24">
         <BoardHeader />
         <div>
           <BoardContent />

@@ -1,6 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
-// import { motion } from "framer-motion";
 import { Copy, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -89,44 +87,45 @@ export const BoardContent = () => {
           </motion.div>
         </div>
       ) : ( */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-6 mx-6">
+      <div className="grid gap-4 md:grid-cols-1 gap-x-12 gap-y-6 mx-6">
         {mockData?.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col items-start px-4 py-2 rounded-xl bg-white gap-y-4 transition-shadow duration-300 hover:shadow-xl shadow-md"
+            className="w-full flex flex-col items-start p-4 rounded-xl bg-white gap-y-4 hover:cursor-pointer transition-shadow duration-300 hover:shadow-xl shadow-md h-[200px]"
+            onClick={() => router.push(`/boards/${item.id}`)}
           >
-            <div className="flex flex-col gap-y-2">
-              <div className="flex items-center justify-between">
+            <div className="flex flex-col w-full gap-y-2">
+              <div className="flex items-center justify-between w-full">
                 <h1 className="font-sans font-semibold text-xl">
                   {item.label}
                 </h1>
-                <h1 className="flex items-center justify-center gap-x-2">
+                <div className="flex items-center justify-center gap-x-2">
                   <Copy
                     className="size-4 hover:cursor-pointer hover:scale-110 transition-transform duration-150"
                     color="blue"
                   />
-
                   <Edit
                     className="size-4 hover:cursor-pointer hover:scale-110 transition-transform duration-150"
                     color="green"
                   />
-
                   <Trash2
                     className="size-4 hover:cursor-pointer hover:scale-110 transition-transform duration-150"
                     color="red"
                   />
-                </h1>
+                </div>
               </div>
-              <p className="text-left font-sans text-sm">{item.description}</p>
+              <p className="text-left font-sans text-sm w-full">
+                {item.description}
+              </p>
             </div>
             <div className="flex flex-col w-full gap-y-1">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between w-full">
                 <h1 className="text-md font-sans font-medium">Testimonials</h1>
                 <h1 className="text-xl font-sans font-semibold">
                   {item.testimonials}
                 </h1>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between w-full">
                 <h1 className="text-md font-sans font-medium">
                   Average rating
                 </h1>
@@ -134,15 +133,6 @@ export const BoardContent = () => {
                   {item.averageRating}
                 </h1>
               </div>
-            </div>
-            <div className="flex items-start justify-start gap-x-4 mt-2">
-              <Button
-                variant={"default"}
-                className="rounded-lg  bg-neutral-800"
-                onClick={() => router.push(`/boards/${item.id}`)}
-              >
-                View details
-              </Button>
             </div>
           </div>
         ))}
