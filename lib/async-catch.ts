@@ -7,7 +7,6 @@ export function withServerActionAsyncCatcher<T, R>(
 ): withServerActionAsyncCatcherType<T, R> {
   return async (args: T): Promise<R> => {
     try {
-      console.log("Inside async_error_catcher");
       return await serverAction(args);
     } catch (error) {
       return standardizeApiError(error) as R;

@@ -112,8 +112,6 @@ export const BoardSchema = z.object({
     .min(1, "Thank you page message is required")
     .max(1000, "Thank you page message must be less than 1000 characters"),
 
-  thankYouPageImage: z.string().url("Invalid image URL").nullable().optional(),
-
   userId: z.string().uuid("Invalid user ID"),
 });
 

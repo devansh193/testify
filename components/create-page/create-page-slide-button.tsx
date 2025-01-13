@@ -1,8 +1,6 @@
-"use client";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Button } from "../ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { createBoard } from "@/action/board";
+import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import {
   feedbackBoardTitleAtom,
   feedbackPageTitleAtom,
@@ -16,12 +14,13 @@ import {
   thankyouTitleAtom,
   thankyouDescriptionAtom,
   slideSelector,
-  logoUrlAtom,
 } from "@/recoil/atom";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { useCreateBoard } from "@/features/board/api/use-create-board";
 
 export const SlideButton = () => {
+  const { mutate: createBoard } = useCreateBoard();
   const { data: session } = useSession();
   const currentSlide = useRecoilValue(slideSelector);
   const videoReview = useRecoilValue(isVideoReviewEnabledAtom);
@@ -37,7 +36,6 @@ export const SlideButton = () => {
   const personalPageTitle = useRecoilValue(personalFeedbackTitleAtom);
   const thankYouPageTitle = useRecoilValue(thankyouTitleAtom);
   const thankYouPageMessage = useRecoilValue(thankyouDescriptionAtom);
-  const thankYouPageImage = useRecoilValue(logoUrlAtom);
   const setSlide = useSetRecoilState(slideSelector);
   const userId = session?.user?.id || "";
   const handleNextClick = () => {
@@ -48,34 +46,51 @@ export const SlideButton = () => {
     setSlide((slide) => slide - 1);
   };
 
-  const handleSubmitClick = async () => {
-    console.log("Before try-catch");
-    try {
-      const payload = {
-        boardTitle,
-        pageTitle,
-        pageDescription,
-        isVideoReview,
-        textReviewPageTitle,
-        textQuestions,
-        videoReviewPageTitle,
-        videoQuestions,
-        personalPageTitle,
-        thankYouPageTitle,
-        thankYouPageMessage,
-        thankYouPageImage,
-        userId,
-      };
-      console.log("Before action");
-      const response = await createBoard(payload);
-      console.log("After action");
-      console.log(response.message, "Chud gaya");
-      toast.message(`${response.message} ${"CHUD GAYA CODE"}`);
-    } catch (_error) {
-      console.log(_error);
-    }
-  };
+  const handleSubmitClick = () => {
+    const toastId = toast.message("Creating board...", {
+      icon: <Loader className="animate-spin" />,
+    });
 
+    const payload = {
+      boardTitle,
+      pageTitle,
+      pageDescription,
+      isVideoReview,
+      textReviewPageTitle,
+      textQuestions,
+      videoReviewPageTitle,
+      videoQuestions,
+      personalPageTitle,
+      thankYouPageTitle,
+      thankYouPageMessage,
+      userId,
+    };
+
+    createBoard(payload, {
+      onSuccess: (data) => {
+        if (data.code === 409) {
+          toast.error(
+            "Board already exists. Please choose a different title.",
+            {
+              icon: "",
+              id: toastId,
+            }
+          );
+        } else {
+          toast.success(data.message || "Board created successfully!", {
+            icon: "",
+            id: toastId,
+          });
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message || "Something went wrong.", {
+          icon: "",
+          id: toastId,
+        });
+      },
+    });
+  };
   return (
     <div className="flex items-center justify-between gap-x-2">
       <Button

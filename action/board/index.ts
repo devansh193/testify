@@ -15,15 +15,23 @@ export type CreateBoardInput = z.infer<typeof BoardSchema>;
 export const createBoard = withSession<
   CreateBoardInput,
   ServerActionReturnType
->(async (data) => {
+>(async (session, data) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user) {
     throw new ErrorHandler("Not authorized", "UNAUTHORIZED");
   }
-  console.log("Before schema is parsed", "YAHIN PE CHUDA HAI CODE");
   const result = BoardSchema.parse(data);
-  console.log(result);
-  console.log("BHAI CHUD GAYA CODE");
+
+  const check = await prisma.board.findUnique({
+    where: {
+      boardTitle: result.boardTitle,
+    },
+  });
+  if (check) {
+    console.log("Error");
+    throw new ErrorHandler("Board with this title already exists.", "CONFLICT");
+  }
+
   const {
     boardTitle,
     pageTitle,
@@ -36,13 +44,12 @@ export const createBoard = withSession<
     personalPageTitle,
     thankYouPageTitle,
     thankYouPageMessage,
-    thankYouPageImage,
     userId,
   } = result;
-  // if (!result.userId) {
-  //   throw new ErrorHandler("User Id is required", "BAD_REQUEST");
-  // }
-  console.log("I am here 1");
+
+  if (!result.userId) {
+    throw new ErrorHandler("User Id is required", "BAD_REQUEST");
+  }
   await prisma.board.create({
     data: {
       boardTitle: boardTitle,
@@ -56,7 +63,6 @@ export const createBoard = withSession<
       personalPageTitle: personalPageTitle,
       thankYouPageTitle: thankYouPageTitle,
       thankYouPageMessage: thankYouPageMessage,
-      thankYouPageImage: thankYouPageImage,
       userId: userId,
     },
   });
