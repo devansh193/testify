@@ -12,6 +12,8 @@ import { SuccessResponse } from "@/lib/success";
 
 export type CreateBoardInput = z.infer<typeof BoardSchema>;
 
+// Create a new board
+
 export const createBoard = withSession<
   CreateBoardInput,
   ServerActionReturnType
@@ -28,10 +30,8 @@ export const createBoard = withSession<
     },
   });
   if (check) {
-    console.log("Error");
     throw new ErrorHandler("Board with this title already exists.", "CONFLICT");
   }
-
   const {
     boardTitle,
     pageTitle,
@@ -66,11 +66,11 @@ export const createBoard = withSession<
       userId: userId,
     },
   });
-  console.log("I am here 2");
   const message = "Board created successfully.";
   return new SuccessResponse(message, 201).serialize();
 });
 
+// get all boards
 export const getAllBoards = withSession<
   undefined,
   ServerActionReturnType<Board[]>
@@ -87,6 +87,7 @@ export const getAllBoards = withSession<
   return new SuccessResponse(message, 200, boards).serialize();
 });
 
+// get board by id
 export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
   async (session, boardId) => {
     if (!boardId) {

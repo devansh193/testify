@@ -7,7 +7,7 @@ import { TestimonialSchema, TestimonialType } from "@/schema/schema";
 import { ServerActionReturnType } from "@/types/api.types";
 import { Testimonial } from "@prisma/client";
 
-// Creating a new testimonial.
+// creating a new testimonial.
 export const createTestimonial = withServerActionAsyncCatcher<
   TestimonialType,
   ServerActionReturnType
@@ -30,7 +30,7 @@ export const createTestimonial = withServerActionAsyncCatcher<
   return new SuccessResponse(message, 201).serialize();
 });
 
-// Fetching all testimonials associated with the boardId
+// fetch all testimonials by board id
 export const getAllTestimonials = withSession<
   string,
   ServerActionReturnType<Testimonial[]>
@@ -68,7 +68,7 @@ export const getAllTestimonials = withSession<
 //   return new SuccessResponse(message, 200, testimonials);
 // });
 
-// Fetching testimonial by uniqueID
+// fetch testimonial by id
 export const getTestimonialById = withSession<
   string,
   ServerActionReturnType<Testimonial>

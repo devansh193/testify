@@ -5,6 +5,7 @@ import { BoardSchema } from "@/schema/schema";
 import { z } from "zod";
 
 type createBoardInput = z.infer<typeof BoardSchema>;
+// create a new board using the createBoard action
 export const useCreateBoard = () => {
   const mutation = useMutation<ServerActionReturnType, Error, createBoardInput>(
     {
