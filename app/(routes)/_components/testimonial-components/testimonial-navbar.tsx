@@ -3,10 +3,7 @@ import { Bell, Search, Settings } from "lucide-react";
 
 export const TestimonialNavbar = () => {
   return (
-    <div
-      className="h-16 bg-white fixed top-0 left-[250px] p-4 flex items-center md:justify-between justify-end border-b"
-      style={{ width: "calc(100% - 250px)" }}
-    >
+    <div className="h-16 bg-white fixed top-0 p-4 flex items-center md:justify-between justify-end border-b w-full">
       <h1 className="hidden md:flex">
         <p className="font-sans md:text-2xl text- font-semibold">
           Testimonials

@@ -74,6 +74,54 @@ const testimonials = [
     date: "July 10, 2023",
     status: "Pending" as const,
   },
+  {
+    id: "7",
+    customer: {
+      name: "Sarah Connor",
+      email: "sarah@tech.com",
+      avatar: "",
+    },
+    rating: 4,
+    text: "Great platform with room for some improvements in the reporting...",
+    date: "July 10, 2023",
+    status: "Pending" as const,
+  },
+  {
+    id: "8",
+    customer: {
+      name: "Sarah Connor",
+      email: "sarah@tech.com",
+      avatar: "",
+    },
+    rating: 4,
+    text: "Great platform with room for some improvements in the reporting...",
+    date: "July 10, 2023",
+    status: "Pending" as const,
+  },
+  {
+    id: "9",
+    customer: {
+      name: "Sarah Connor",
+      email: "sarah@tech.com",
+      avatar: "",
+    },
+    rating: 4,
+    text: "Great platform with room for some improvements in the reporting...",
+    date: "July 10, 2023",
+    status: "Pending" as const,
+  },
+  {
+    id: "10",
+    customer: {
+      name: "Sarah Connor",
+      email: "sarah@tech.com",
+      avatar: "",
+    },
+    rating: 4,
+    text: "Great platform with room for some improvements in the reporting...",
+    date: "July 10, 2023",
+    status: "Pending" as const,
+  },
 ];
 
 const TestimonialsContent = () => {

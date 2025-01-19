@@ -6,7 +6,7 @@ const DashLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="">
         <DashSidebar />
       </div>
-      <div className="md:ml-[250px] w-full flex flex-col">{children}</div>
+      <div className="lg:ml-[250px] w-full flex flex-col">{children}</div>
     </div>
   );
 };
