@@ -26,7 +26,7 @@ export const TestimonialHeader = () => {
           <DropdownMenuTrigger asChild>
             <Button
               className="flex items-center justify-between w-[200px] rounded-lg px-4 py-2"
-              variant={"ghost"}
+              variant={"outline"}
               size={"lg"}
             >
               <h1 className="font-sans text-md">All boards</h1>

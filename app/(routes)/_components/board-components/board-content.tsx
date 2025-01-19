@@ -84,7 +84,7 @@ export const BoardContent = () => {
         {mockData?.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col items-start p-4 rounded-xl bg-white gap-y-4 hover:cursor-pointer transition-shadow duration-300 shadow-sm hover:shadow-md"
+            className="flex border border-zinc-50 flex-col items-start p-4 rounded-xl bg-white gap-y-4 hover:cursor-pointer transition-shadow duration-300 shadow-sm hover:shadow-md"
           >
             <div className="flex flex-col w-full gap-y-2">
               <div className="flex items-center justify-between w-full">

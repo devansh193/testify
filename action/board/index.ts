@@ -1,12 +1,13 @@
 "use server";
+
 import prisma from "@/lib/db";
 import { BoardSchema } from "@/schema/schema";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { Board } from "@prisma/client";
 import { withSession } from "@/lib/session";
 import { ServerActionReturnType } from "@/types/api.types";
+import { Board } from "@prisma/client";
 import { ErrorHandler } from "@/lib/error";
 import { SuccessResponse } from "@/lib/success";
 
