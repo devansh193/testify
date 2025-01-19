@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 export const DashboardNavbar = () => {
   const { data: session } = useSession();
   return (
-    <div className="h-16 bg-[#FAFAF8] p-4 flex items-center md:justify-between justify-end border-b">
+    <div className="h-16 bg-white p-4 flex items-center md:justify-between justify-end border-b">
       <h1 className="hidden md:flex text-2xl font-sans font-semibold p-4">
         <Greeting />
         <span className="ml-1">{session?.user.name}</span>

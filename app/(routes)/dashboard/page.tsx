@@ -4,7 +4,7 @@ import { DashboardNavbar } from "../_components/dashboard-components/dashboard-n
 import { DashboardHeader } from "../_components/dashboard-components/dashboard-header";
 export default function Dashboard() {
   return (
-    <div className=" bg-[#FAFAF8] w-full h-full shadow-lg">
+    <div className=" bg-white w-full h-full shadow-lg">
       <div>
         <DashboardNavbar />
       </div>

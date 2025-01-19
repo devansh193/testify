@@ -4,7 +4,7 @@ import { BoardHeader } from "../_components/board-components/board-header";
 
 export default function Board() {
   return (
-    <div className="bg-[#FAFAF8] w-full h-full shadow-lg">
+    <div className="bg-white w-full h-full shadow-lg">
       {/* Fixed Navbar */}
       <div className="">
         <BoardNavbar />

@@ -1,5 +1,6 @@
 "use client";
-import { Copy, Edit, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { EllipsisVertical, User2, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface BoardItem {
@@ -8,6 +9,8 @@ interface BoardItem {
   description: string;
   testimonials: number;
   averageRating: string;
+  isActive?: boolean;
+  createdAt: string;
 }
 
 const mockData: BoardItem[] = [
@@ -18,6 +21,8 @@ const mockData: BoardItem[] = [
       "A centralized platform to gather and analyze user feedback effortlessly.",
     testimonials: 245,
     averageRating: "4.7",
+    isActive: true,
+    createdAt: "July 15, 2023",
   },
   {
     id: 2,
@@ -26,6 +31,8 @@ const mockData: BoardItem[] = [
       "Track customer opinions and insights to improve your business strategy.",
     testimonials: 92,
     averageRating: "4.3",
+    isActive: true,
+    createdAt: "July 15, 2023",
   },
   {
     id: 3,
@@ -34,6 +41,8 @@ const mockData: BoardItem[] = [
       "Organize and display user testimonials to enhance your product's credibility.",
     testimonials: 89,
     averageRating: "4.4",
+    isActive: true,
+    createdAt: "July 15, 2023",
   },
   {
     id: 4,
@@ -42,6 +51,8 @@ const mockData: BoardItem[] = [
       "Advanced analytics to uncover trends and insights from user feedback.",
     testimonials: 230,
     averageRating: "4.5",
+    isActive: false,
+    createdAt: "July 15, 2023",
   },
   {
     id: 5,
@@ -50,6 +61,8 @@ const mockData: BoardItem[] = [
       "Empower your customers to voice their opinions and drive meaningful change.",
     testimonials: 187,
     averageRating: "4.6",
+    isActive: false,
+    createdAt: "July 15, 2023",
   },
   {
     id: 6,
@@ -58,86 +71,89 @@ const mockData: BoardItem[] = [
       "Collect real user stories to showcase authentic experiences with your brand.",
     testimonials: 134,
     averageRating: "4.3",
+    isActive: true,
+    createdAt: "July 15, 2023",
   },
 ];
 
 export const BoardContent = () => {
   const router = useRouter();
   return (
-    <div>
-      {/* {mockData.length === 0 ? (
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 50,
-              mass: 0.5,
-            }}
-          >
-            <div className="flex flex-col items-center justify-center mt-10 p-10 gap-y-4 bg-[#F9FAFC] rounded-xl border border-neutral-200 shadow-lg">
-              <h1 className="font-sans text-xl font-medium">
-                It looks like you haven&apos;t added any boards yet. Let&apos;s
-                fix that and get the reviews rolling in! 🚀
-              </h1>
-              <Button>Add board</Button>
-            </div>
-          </motion.div>
-        </div>
-      ) : ( */}
-      <div className="grid gap-4 md:grid-cols-1 gap-x-12 gap-y-6 mx-6">
+    <div className="p-4">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6">
         {mockData?.map((item) => (
           <div
             key={item.id}
-            className="w-full flex flex-col items-start p-4 rounded-xl bg-white gap-y-4 hover:cursor-pointer transition-shadow duration-300 hover:shadow-xl shadow-md h-[200px]"
-            onClick={() => router.push(`/boards/${item.id}`)}
+            className="flex flex-col items-start p-4 rounded-xl bg-white gap-y-4 hover:cursor-pointer transition-shadow duration-300 shadow-sm hover:shadow-md"
           >
             <div className="flex flex-col w-full gap-y-2">
               <div className="flex items-center justify-between w-full">
-                <h1 className="font-sans font-semibold text-xl">
+                <h1 className="font-sans font-semibold text-lg">
                   {item.label}
                 </h1>
                 <div className="flex items-center justify-center gap-x-2">
-                  <Copy
-                    className="size-4 hover:cursor-pointer hover:scale-110 transition-transform duration-150"
-                    color="blue"
-                  />
-                  <Edit
-                    className="size-4 hover:cursor-pointer hover:scale-110 transition-transform duration-150"
-                    color="green"
-                  />
-                  <Trash2
-                    className="size-4 hover:cursor-pointer hover:scale-110 transition-transform duration-150"
-                    color="red"
-                  />
+                  <h1
+                    className={`text-xs px-2 py-1 rounded-full  ${
+                      item.isActive
+                        ? "bg-[#DCFCE7] text-[#1A803E]"
+                        : "bg-[#FEE2E2] text-[#B91C1C]"
+                    }`}
+                  >
+                    {item.isActive ? "Active" : "Inactive"}
+                  </h1>
                 </div>
               </div>
-              <p className="text-left font-sans text-sm w-full">
-                {item.description}
+              <p className="text-left font-sans text-sm text-[#6B7280]">
+                Created on {item.createdAt}
               </p>
             </div>
-            <div className="flex flex-col w-full gap-y-1">
-              <div className="flex items-center justify-between w-full">
-                <h1 className="text-md font-sans font-medium">Testimonials</h1>
-                <h1 className="text-xl font-sans font-semibold">
-                  {item.testimonials}
-                </h1>
+            <div className="flex flex-col gap-y-2">
+              <div className="flex items-center text-[#4B5563]">
+                <User2 className="w-4 h-4 mr-2" />
+                <h1 className="text-sm font-sans mr-1">{item.testimonials}</h1>
+                <h1 className="text-sm font-sans">responses</h1>
               </div>
-              <div className="flex items-center justify-between w-full">
-                <h1 className="text-md font-sans font-medium">
+              <div className="flex items-center text-[#4B5563]">
+                <Zap className="w-4 h-4 mr-2" />
+                <h1 className="text-sm font-sans mr-1">{item.averageRating}</h1>
+                <h1 className="text-sm font-sans font-medium">
                   Average rating
                 </h1>
-                <h1 className="text-xl font-sans font-semibold">
-                  {item.averageRating}
-                </h1>
               </div>
+            </div>
+            <div className="flex items-center justify-between w-full gap-x-2">
+              <Button
+                variant={"ghost"}
+                size={"lg"}
+                className="flex-1 bg-white rounded-xl"
+              >
+                {item.isActive ? "Edit board" : "Continue editing"}
+              </Button>
+              {item.isActive ? (
+                <Button
+                  variant={"ghost"}
+                  size={"lg"}
+                  className="flex-1 bg-white rounded-xl"
+                  onClick={() => router.push(`/boards/${item.id}`)}
+                >
+                  View details
+                </Button>
+              ) : (
+                <Button
+                  variant={"ghost"}
+                  size={"lg"}
+                  className="flex-1 bg-[#2463EB] text-white rounded-xl hover:bg-blue-700 hover:text-white"
+                >
+                  Publish
+                </Button>
+              )}
+              <Button variant={"ghost"} size={"icon"} className="p-2 bg-white">
+                <EllipsisVertical />
+              </Button>
             </div>
           </div>
         ))}
       </div>
-      {/* )} */}
     </div>
   );
 };

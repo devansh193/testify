@@ -87,7 +87,7 @@ const BoardSidebarNavigation = () => {
                 )}
               >
                 <item.icon className="mr-2 h-5 w-5 transition-all duration-200 ease-in-out group-hover:scale-110" />
-                <span className="transition-all duration-300 ease-in-out transform group-hover:translate-x-1 group-hover:scale-110">
+                <span className="transition-all duration-100 ease-in-out transform group-hover:translate-x-1 group-hover:scale-110">
                   {item.title}
                 </span>
               </Link>

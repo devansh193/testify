@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export const BoardHeader = () => {
@@ -12,7 +13,10 @@ export const BoardHeader = () => {
       </div>
       <div>
         <Link href={"/create"}>
-          <Button>Create board</Button>
+          <Button className="bg-[#2463EB] hover:bg-blue-700 text-md rounded-xl">
+            <Plus className="size-4 mr-2" />
+            Create New Board
+          </Button>
         </Link>
       </div>
     </div>
