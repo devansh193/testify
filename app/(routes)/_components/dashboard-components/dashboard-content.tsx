@@ -44,8 +44,8 @@ export const DashboardContent = () => {
         transition={{
           type: "spring",
           stiffness: 200,
-          damping: 25, // Controlled bounce without excessive oscillation
-          mass: 0.5, // Adjust weight to make the animation feel lighter
+          damping: 25,
+          mass: 0.5,
         }}
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">

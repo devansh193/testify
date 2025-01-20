@@ -1,39 +1,29 @@
 "use client";
-
 import Link from "next/link";
-import { Home, Link as Link3, MessageSquare, Package2 } from "lucide-react";
+import { Plus, Workflow } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 const routes = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: Home,
+    label: "Add board",
+    icon: Plus,
+    href: "/create",
   },
   {
-    label: "Boards",
-    href: "/boards",
-    icon: Package2,
-  },
-  {
-    label: "Testimonials",
-    href: "/testimonials",
-    icon: MessageSquare,
-  },
-  {
-    label: "Share links",
-    href: "/links",
-    icon: Link3,
+    label: "Integrations",
+    icon: Workflow,
+    href: "/create",
   },
 ];
 
-export const Navigation = () => {
+export const QuickActions = () => {
   const pathname = usePathname();
-
   return (
     <ul className="flex flex-col p-4 space-y-1">
-      <h1 className="font-semibold text-neutral-700 text-md mb-2">Menu</h1>
+      <h1 className="font-semibold text-neutral-700 text-md mb-2">
+        Quick Actions
+      </h1>
       {routes.map((item) => {
         const isActive = pathname === item.href;
         const Icon = item.icon;

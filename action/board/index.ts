@@ -76,11 +76,14 @@ export const getAllBoards = withSession<
   undefined,
   ServerActionReturnType<Board[]>
 >(async (session) => {
+  console.log("____________________aagayaaaa___________________");
   const userId = session.user.id;
-
   const boards = await prisma.board.findMany({
     where: {
       userId: userId,
+    },
+    include: {
+      testimonials: true,
     },
     orderBy: { createdAt: "desc" },
   });

@@ -1,26 +1,40 @@
 "use client";
 import { Greeting } from "@/components/greeting";
+import { MobileSidebar } from "@/components/mobile-sidebar";
 import ProfileDropdown from "@/components/profile-menu/profile-dropdown";
-import { Bell, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { BoardNavbar } from "../board-components/board-navbar";
+import { TestimonialNavbar } from "../testimonial-components/testimonial-navbar";
 
-export const DashboardNavbar = () => {
+export const Navbar = () => {
+  const pathname = usePathname();
   const { data: session } = useSession();
   return (
-    <div className="h-16 bg-white p-4 flex items-center md:justify-between justify-end border-b">
-      <h1 className="hidden md:flex text-2xl font-sans font-semibold p-4">
-        <Greeting />
-        <span className="ml-1">{session?.user.name}</span>
-      </h1>
-      <div className="flex items-center justify-center gap-x-6">
-        <h1 className="hover:scale-125 transition-transform duration-150">
-          <Settings className="size-4" />
+    <nav className="h-16 border-b py-4 px-6 flex items-center justify-between bg-white z-50">
+      <div className="flex-col hidden lg:flex">
+        <h1 className="font-medium">
+          {" "}
+          <Greeting /> {session?.user.name}
         </h1>
-        <h1 className="hover:scale-125 transition-transform duration-150">
-          <Bell className="size-4" />
-        </h1>
-        <ProfileDropdown />
       </div>
-    </div>
+      <MobileSidebar />
+      <div className="flex items-center justify-center gap-x-4">
+        <>
+          {pathname ? pathname === "/boards" && <BoardNavbar /> : null}
+          {pathname
+            ? pathname === "/testimonials" && <TestimonialNavbar />
+            : null}
+        </>
+        <div className="flex items-center justify-center gap-x-4">
+          <Link href={"/settings"}>
+            <Settings className="size-4" />
+          </Link>
+          <ProfileDropdown />
+        </div>
+      </div>
+    </nav>
   );
 };

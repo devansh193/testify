@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useGetBoards } from "@/features/board/api/use-get-boards";
 import { EllipsisVertical, User2, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -77,6 +78,7 @@ const mockData: BoardItem[] = [
 ];
 
 export const BoardContent = () => {
+  const { data, isLoading, isError } = useGetBoards();
   const router = useRouter();
   return (
     <div className="p-4">

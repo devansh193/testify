@@ -1,41 +1,21 @@
-"use client";
-import { useState, useEffect } from "react";
-import { PanelRight } from "lucide-react";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { SidebarContent } from "./sidebar-content";
+import { Navigation } from "./sidebar-nav";
+import { QuickActions } from "@/components/Quickaction";
+import Logo from "@/components/logo/Logo";
+import Testify from "@/components/logo/testify";
+import { Separator } from "@/components/ui/separator";
 
-export const DashSidebar = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
-  if (isDesktop) {
-    return (
-      <div className="hidden lg:flex fixed top-0 left-0 w-[250px] h-full flex-col border-r border-neutral-200">
-        <SidebarContent />
-      </div>
-    );
-  }
-
+export const Sidebar = () => {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="link" size="icon" className="fixed top-4 left-4 z-50">
-          <PanelRight className="h-5 w-5" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="w-[300px] p-0">
-        <SidebarContent />
-      </SheetContent>
-    </Sheet>
+    <aside className="h-full bg-neutral-100 py-2 w-full border-r-2">
+      <div className="h-14 px-2 flex items-center border-b gap-x-4">
+        <Logo />
+        <Testify />
+      </div>
+      <Navigation />
+      <div className="px-4">
+        <Separator />
+      </div>
+      <QuickActions />
+    </aside>
   );
 };
