@@ -28,3 +28,10 @@ export type CreateUserProps = {
   provider: AuthProvider;
   providerAccountId: string | null;
 };
+export type BoardResult = {
+  id: string;
+  boardTitle: string;
+  isActive: boolean;
+  testimonialCount: number;
+  createdAt: string;
+};

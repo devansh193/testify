@@ -10,6 +10,7 @@ import { ServerActionReturnType } from "@/types/api.types";
 import { Board } from "@prisma/client";
 import { ErrorHandler } from "@/lib/error";
 import { SuccessResponse } from "@/lib/success";
+import { BoardResult } from "@/types";
 
 export type CreateBoardInput = z.infer<typeof BoardSchema>;
 
@@ -74,7 +75,7 @@ export const createBoard = withSession<
 // get all boards
 export const getAllBoards = withSession<
   undefined,
-  ServerActionReturnType<Board[]>
+  ServerActionReturnType<BoardResult[]>
 >(async (session) => {
   console.log("____________________aagayaaaa___________________");
   const userId = session.user.id;
@@ -82,13 +83,28 @@ export const getAllBoards = withSession<
     where: {
       userId: userId,
     },
-    include: {
-      testimonials: true,
+    select: {
+      id: true,
+      isActive: true,
+      boardTitle: true,
+      _count: {
+        select: {
+          testimonials: true,
+        },
+      },
+      createdAt: true,
     },
     orderBy: { createdAt: "desc" },
   });
+  const boardResults: BoardResult[] = boards.map((board) => ({
+    id: board.id,
+    isActive: board.isActive ?? true,
+    boardTitle: board.boardTitle,
+    testimonialCount: board._count.testimonials,
+    createdAt: board.createdAt.toISOString(),
+  }));
   const message = "Boards fetched successfully";
-  return new SuccessResponse(message, 200, boards).serialize();
+  return new SuccessResponse(message, 200, boardResults).serialize();
 });
 
 // get board by id
@@ -113,3 +129,26 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
     return new SuccessResponse(message, 200, board);
   }
 );
+// Get board details by board title.
+export const getBoardByTitle = withSession<
+  string,
+  ServerActionReturnType<Board>
+>(async (session, boardTitle) => {
+  if (!boardTitle) {
+    throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");
+  }
+  const userId = session.user.id;
+  const board = await prisma.board.findUnique({
+    where: {
+      boardTitle: boardTitle,
+    },
+  });
+  if (!board || board.userId !== userId) {
+    throw new ErrorHandler(
+      "Board not found or unauthorized access.",
+      "UNAUTHORIZED"
+    );
+  }
+  const message = "Board fetched successfully.";
+  return new SuccessResponse(message, 200, board);
+});

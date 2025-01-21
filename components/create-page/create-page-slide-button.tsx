@@ -18,6 +18,7 @@ import {
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useCreateBoard } from "@/features/board/api/use-create-board";
+import { redirect } from "next/navigation";
 
 export const SlideButton = () => {
   const { mutate: createBoard } = useCreateBoard();
@@ -81,6 +82,7 @@ export const SlideButton = () => {
             icon: "",
             id: toastId,
           });
+          redirect("/boards");
         }
       },
       onError: (error) => {

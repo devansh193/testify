@@ -44,6 +44,7 @@ model Account {
 model Board {
   id                   String        @id @unique @default(uuid())
   boardTitle           String        @unique
+  isActive             Boolean?      @default(true)
   pageTitle            String
   pageDescription      String
   isVideoReview        Boolean
