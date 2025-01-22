@@ -2,13 +2,14 @@ import Image from "next/image";
 
 export const MarketingImage = () => {
   return (
-    <div className="ring-4 ring-neutral-800 rounded-md">
+    <div className="relative mx-auto max-w-lg sm:max-w-3xl lg:max-w-7xl bg-white border border-neutral-300 rounded-xl ring-8 ring-neutral-100 overflow-hidden">
       <Image
         src="/marketing.jpeg"
         alt="Marketing Image"
-        width={1300} // Specify the desired width
-        height={900} // Specify the desired height
-        className="rounded-md"
+        width={1100}
+        height={700}
+        className="w-full h-auto rounded-lg"
+        priority
       />
     </div>
   );

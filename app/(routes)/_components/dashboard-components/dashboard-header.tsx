@@ -25,7 +25,7 @@ export const DashboardHeader = () => {
             </p>
           </div>
         </div>
-        <button className="bg-[#2463EB] text-white px-4 py-2 rounded-xl hover:bg-blue-700">
+        <button className="bg-blue-700 text-white px-4 py-2 rounded-xl hover:bg-blue-600">
           Create New Board
         </button>
       </motion.div>

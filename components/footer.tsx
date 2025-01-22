@@ -16,33 +16,33 @@ export const Footer = () => {
             <div className="col-span-1 lg:col-span-2">
               <div className="flex items-center gap-x-2 mb-4">
                 <TestifyLogo />
-                <span className="text-2xl font-bold text-white">Testify</span>
+                <span className="text-2xl font-bold text-black">testify</span>
               </div>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-sm text-[#64758B] mb-4">
                 Empowering your platform, step by step.
               </p>
               <div className="flex space-x-4">
                 <Link
                   href={colFour[0].href}
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-[#64758B] hover:text-neutral-900 transition"
                 >
                   <Facebook size={20} />
                 </Link>
                 <Link
                   href={colFour[1].href}
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-[#64758B] hover:text-neutral-900 transition"
                 >
                   <Twitter size={20} />
                 </Link>
                 <Link
                   href={colFour[2].href}
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-[#64758B] hover:text-neutral-900 transition"
                 >
                   <Instagram size={20} />
                 </Link>
                 <Link
                   href={colFour[3].href}
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-[#64758B] hover:text-neutral-900 transition"
                 >
                   <Linkedin size={20} />
                 </Link>
@@ -51,13 +51,13 @@ export const Footer = () => {
 
             {/* Links Columns */}
             <div>
-              <h2 className="font-semibold text-white mb-4">Platform</h2>
+              <h2 className="font-semibold text-black mb-4">Platform</h2>
               <ul className="space-y-2">
                 {colOne.map((item) => (
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="text-gray-400 hover:text-white transition"
+                      className="text-[#64758B] hover:text-neutral-900 transition"
                     >
                       {item.label}
                     </Link>
@@ -67,13 +67,13 @@ export const Footer = () => {
             </div>
 
             <div>
-              <h2 className="font-semibold text-white mb-4">Company</h2>
+              <h2 className="font-semibold text-black mb-4">Company</h2>
               <ul className="space-y-2">
                 {colTwo.map((item) => (
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="text-gray-400 hover:text-white transition"
+                      className="text-[#64758B] hover:text-neutral-900 transition"
                     >
                       {item.label}
                     </Link>
@@ -83,13 +83,13 @@ export const Footer = () => {
             </div>
 
             <div>
-              <h2 className="font-semibold text-white mb-4">Legal</h2>
+              <h2 className="font-semibold text-black mb-4">Legal</h2>
               <ul className="space-y-2">
                 {colThree.map((item) => (
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="text-gray-400 hover:text-white transition"
+                      className="text-[#64758B] hover:text-neutral-900 transition"
                     >
                       {item.label}
                     </Link>
@@ -101,7 +101,7 @@ export const Footer = () => {
         </div>
       </footer>
       <div className="z-50">
-        <Separator className="bg-gray-800" />
+        <Separator className="bg-[#F5F5F5]" />
         <div className="container mx-auto px-4 py-6 w-full">
           <p className="text-center text-sm text-gray-400">
             © {currentYear} Testify. All rights reserved.

@@ -23,12 +23,12 @@ const data = [
 
 export const Problem = () => {
   return (
-    <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto py-16 px-4">
       <div className="flex flex-col items-center justify-center gap-y-4 text-center mb-16">
-        <h2 className="text-neutral-500  text-lg font-semibold uppercase tracking-wide">
-          Problem
+        <h2 className="text-blue-500  text-xs font-semibold uppercase tracking-wide">
+          PROBLEM
         </h2>
-        <h1 className="text-4xl font-bold text-white sm:text-5xl ">
+        <h1 className="text-4xl font-medium text-black sm:text-5xl ">
           Manually managing your testimonials is a hassle.
         </h1>
       </div>
@@ -42,7 +42,7 @@ export const Problem = () => {
                     <item.icon className=" text-white" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-white">
+                <h3 className="text-2xl font-semibold text-black">
                   {item.label}
                 </h3>
               </div>

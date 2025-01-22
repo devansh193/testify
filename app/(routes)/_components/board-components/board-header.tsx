@@ -13,7 +13,7 @@ export const BoardHeader = () => {
       </div>
       <div>
         <Link href={"/create"}>
-          <Button className="bg-[#2463EB] hover:bg-blue-700 text-md rounded-xl">
+          <Button className="bg-blue-700 hover:bg-blue-600 text-md rounded-xl">
             <Plus className="size-4 mr-2" />
             Create New Board
           </Button>
