@@ -2,7 +2,7 @@ interface ZLayoutProps {
   children: React.ReactNode;
 }
 
-export const zlayout = ({ children }: ZLayoutProps) => {
+const UserLayout = ({ children }: ZLayoutProps) => {
   return (
     <div className="min-h-screen">
       <div className="flex flex-col w-full lg:pl-[264px]">
@@ -14,3 +14,4 @@ export const zlayout = ({ children }: ZLayoutProps) => {
     </div>
   );
 };
+export default UserLayout;

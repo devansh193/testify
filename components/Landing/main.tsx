@@ -1,8 +1,9 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function Main() {
   return (
-    <div className="flex flex-col items-center justify-center gap-y-4 max-w-4xl mx-auto mt-2">
+    <div className="flex flex-col items-center justify-center gap-y-4 max-w-3xl mx-auto mt-2">
       <div className="relative group">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
         <div className="relative px-4 sm:px-7 py-2 sm:py-4 bg-black rounded-full leading-none flex items-center">
@@ -26,8 +27,8 @@ export function Main() {
       </p>
       <div className="mt-6 sm:mt-8">
         <Link href={"/sign-in"}>
-          <button className="bg-gradient-to-r from-[#E6D6C8] to-white text-black font-semibold font-sans rounded-xl px-6 py-4 shadow-md hover:shadow-lg transition-transform duration-300 transform hover:scale-105">
-            Get Started for Free
+          <button className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-[#E6D6C8] to-white text-black font-semibold font-sans rounded-xl px-4 py-2 shadow-md hover:shadow-lg transition-transform duration-300 transform hover:scale-105">
+            Get Started for Free <ArrowRight />
           </button>
         </Link>
       </div>

@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-black fixed w-full z-50">
-      <div className="bg-[#21201F] m-2 sm:m-4 mx-4 sm:mx-8 h-16 sm:h-20 rounded-xl flex items-center justify-between">
+      <div className="bg-[#21201F] m-2 sm:m-6 mx-4 sm:mx-8 h-14 sm:h-20 rounded-xl flex items-center justify-between">
         <div className="flex items-end justify-center gap-x-2 ml-2 sm:ml-4">
           <Logo />
           <Testify className="text-white" />

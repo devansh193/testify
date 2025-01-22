@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { ApiResponse } from "@/lib/apiResponse";
 import prisma from "@/lib/db";
 import { NextResponse } from "next/server";
