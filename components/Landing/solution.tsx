@@ -1,103 +1,98 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 
 export const Solution = () => {
   return (
-    <div className="bg-[#F5F5F5] w-full px-8  py-12">
+    <div className="bg-[#F5F5F5] w-full px-4 sm:px-8 py-24">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-blue-500  text-xs font-semibold uppercase tracking-wide text-center">
-          SOLUTION
-        </h2>
-        <h1 className="text-4xl font-medium text-black sm:text-5xl text-center mt-4">
-          Empower Your Business with Testify
-        </h1>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          <div className="lg:col-span-2 rounded-lg shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Advanced AI Algorithms</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">
-                    Our platform utilizes cutting-edge AI algorithms to provide
-                    accurate and efficient solutions for your business needs.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Data-Driven Insights</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">
-                    Leverage our platform to gain valuable insights and make
-                    informed decisions backed by advanced analytics.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Seamless Integration</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600">
-                  Easily integrate our AI solutions into your existing workflows
-                  and systems for a smooth and efficient operation.
+        {/* Heading Section */}
+        <div className="text-center">
+          <h2 className="text-blue-500 text-xs font-semibold uppercase tracking-wide">
+            SOLUTION
+          </h2>
+          <h1 className="text-4xl font-medium text-black sm:text-5xl mt-4">
+            Empower Your Business with Testify
+          </h1>
+        </div>
+
+        {/* Grid Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
+          {/* Left Column - Features */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Feature 1 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow transform duration-500">
+                <h1 className="text-black text-xl font-semibold mb-4">
+                  Seamlessly Manage Your Boards
+                </h1>
+                <p className="text-gray-600 font-medium text-base">
+                  Collect and organize all your testimonials in one place. No
+                  more scattered reviews—just a clean, easy-to-manage hub.
                 </p>
-              </CardContent>
-            </Card>
+                <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                  <Image
+                    className="rounded-xl p-2"
+                    src={"/marketing.jpeg"}
+                    alt="img"
+                    height={300}
+                    width={450}
+                  />
+                </div>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h1 className="text-black text-xl font-semibold mb-4">
+                  Centralized Testimonial Hub
+                </h1>
+                <p className="text-gray-600 font-medium text-base">
+                  Collect and organize all your testimonials in one place. No
+                  more scattered reviews—just a clean, easy-to-manage hub.
+                </p>
+                <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                  <Image
+                    className="rounded-xl p-2"
+                    src={"/testimonials.png"}
+                    alt="img"
+                    height={300}
+                    width={450}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <h1 className="text-black text-xl font-semibold mb-4">
+                Effortless Add Your Product
+              </h1>
+              <p className="text-gray-600 font-medium text-base">
+                Curate, update, and showcase the best testimonials in seconds.
+                Keep your social proof fresh and relevant.
+              </p>
+              <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                <Image
+                  className="rounded-xl p-2"
+                  src={"/create.png"}
+                  alt="img"
+                  height={350}
+                  width={500}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="lg:col-span-1 bg-gradient-to-br from-blue-700 to-violet-700 rounded-lg shadow-lg p-6 text-white">
-            <h2 className="text-2xl font-bold mb-4">Why Choose Us</h2>
-            <ul className="space-y-4">
-              <li className="flex items-center">
-                <svg
-                  className="w-6 h-6 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Cutting-edge Technology
-              </li>
-              <li className="flex items-center">
-                <svg
-                  className="w-6 h-6 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Expert Support Team
-              </li>
-              <li className="flex items-center">
-                <svg
-                  className="w-6 h-6 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Scalable Solutions
-              </li>
-            </ul>
+          {/* Right Column - Why Choose Us */}
+          <div className="bg-gradient-to-br from-blue-700 to-violet-700 rounded-xl shadow-lg p-6 text-white">
+            <h2 className="text-2xl font-bold mb-6">Why Choose Testify</h2>
+            <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+              <Image
+                className="rounded-xl p-2"
+                src={"/sidebar.png"}
+                alt="img"
+                height={500}
+                width={400}
+              />
+            </div>
           </div>
         </div>
       </div>

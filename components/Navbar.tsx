@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
-    <div className="top-0 fixed w-full z-40 bg-white px-4">
+    <div className="top-0 fixed w-full z-40 bg-white bg-opacity-80 backdrop-blur-sm px-4">
       <div className="max-w-7xl mx-auto h-14 sm:h-20 flex items-center justify-between">
         <div className="flex items-center gap-x-2">
           <Logo />

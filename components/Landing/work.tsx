@@ -1,78 +1,113 @@
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+"use client";
 
-export const Work = () => {
+import { Upload, Zap, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { StepImage } from "@/components/Landing/step-image";
+import { ProgressBar } from "@/components/Landing/progress-bar";
+
+const steps = [
+  {
+    icon: Upload,
+    title: "1. Upload Your Data",
+    description:
+      "Simply upload your data to our secure platform. We support various file formats and data types to ensure a seamless integration with your existing systems.",
+  },
+  {
+    icon: Zap,
+    title: "2. Click Start",
+    description:
+      "Our advanced AI algorithms automatically process and analyze your data, extracting valuable insights and patterns that would be difficult to identify manually.",
+  },
+  {
+    icon: Sparkles,
+    title: "3. Get Actionable Insights",
+    description:
+      "Receive clear, actionable insights and recommendations based on the AI analysis. Use these insights to make data-driven decisions and improve your business strategies.",
+  },
+];
+
+const STEP_DURATION = 3000;
+
+export default function HowItWorks() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const stepInterval = setInterval(() => {
+      setCurrentStep((prev) => (prev + 1) % steps.length);
+      setProgress(0);
+    }, STEP_DURATION);
+
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev < 100) {
+          return prev + 1;
+        }
+        return prev;
+      });
+    }, STEP_DURATION / 100);
+
+    return () => {
+      clearInterval(stepInterval);
+      clearInterval(progressInterval);
+    };
+  }, []);
+
+  const totalProgress = (currentStep * 100 + progress) / steps.length;
+
   return (
-    <div className=" mt-8 sm:mt-12 w-full max-w-5xl mx-auto p-4 flex flex-col justify-center items-center">
-      <h1 className="text-4xl font-sans font-semibold bg-gradient-to-r from-white to-[#E7D6C9] bg-clip-text text-transparent">
-        How it works?
-      </h1>
-      <div className="grid grid-cols-2 gap-x-12 mt-12">
-        <div className="col-span-1  flex items-center justify-center">
-          <Image
-            src={"/dashboard.jpeg"}
-            alt="dashboard"
-            height={200}
-            width={400}
-            className="ring-8 ring-[#262626] rounded-xl p-1"
-          />
-        </div>
-        <div className="col-span-1 flex flex-col items-center justify-center gap-y-4">
-          <h1 className="text-2xl font-sans font-semibold">Create board</h1>
-          <p className="text-lg font-sans font-medium text-justify">
-            This page allows users to create a board by entering the required
-            details. The board serves as a foundation for organizing and
-            managing information, whether for projects, tasks, or reviews. Users
-            can customize their board to suit their needs and begin managing
-            their content efficiently.
+    <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-8 lg:px-16 lg:mx-36">
+      <div className="flex justify-center mb-8">
+        <div className="text-center">
+          <p className="text-blue-500 font-medium tracking-wide uppercase text-xs">
+            HOW IT WORKS
           </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mt-4">
+            Just 3 steps to get started
+          </h2>
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-4 gap-x-12">
-        <div className="col-span-1 flex flex-col items-center justify-center gap-y-4">
-          <h1 className="text-2xl font-sans font-semibold">Create board</h1>
-          <p className="text-lg font-sans font-medium text-justify">
-            This page allows users to create a board by entering the required
-            details. The board serves as a foundation for organizing and
-            managing information.
-          </p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+        <div className="space-y-8 sm:space-y-12">
+          <div className="space-y-4"></div>
+          <div className="space-y-8 sm:space-y-12 relative">
+            <ProgressBar progress={totalProgress} />
+            {steps.map((step, index) => (
+              <motion.div
+                key={index}
+                className={`flex gap-4 sm:gap-6 pl-6 sm:pl-8 transition-opacity duration-300 ${
+                  currentStep === index ? "opacity-100" : "opacity-50"
+                }`}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: currentStep === index ? 1 : 0.5 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="flex-shrink-0">
+                  <div
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-50 flex items-center justify-center transition-all duration-300 ${
+                      currentStep === index ? "scale-110 bg-blue-100" : ""
+                    }`}
+                  >
+                    <step.icon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
+                  </div>
+                </div>
+                <div className="space-y-1 sm:space-y-2">
+                  <h3 className="text-lg sm:text-xl font-semibold text-black">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-        <div className="col-span-1  flex items-center justify-center">
-          <Image
-            src={"/board-create.jpeg"}
-            alt="dashboard"
-            height={200}
-            width={400}
-            className="ring-8 p-1 ring-[#262626] rounded-xl"
-          />
+        <div className="lg:pl-8">
+          <StepImage currentStep={currentStep} />
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-4 gap-x-12">
-        <div className="col-span-1  flex items-center justify-center">
-          <Image
-            src={"/board-manage.jpeg"}
-            alt="dashboard"
-            height={200}
-            width={400}
-            className="ring-8 p-1 ring-[#262626] rounded-xl"
-          />
-        </div>
-        <div className="col-span-1 flex flex-col items-center justify-center gap-y-4">
-          <h1 className="text-2xl font-sans font-semibold">Create board</h1>
-          <p className="text-lg font-sans font-medium text-justify">
-            This page allows users to create a board by entering the required
-            details. The board serves as a foundation for organizing and
-            managing information.
-          </p>
-        </div>
-      </div>
-
-      <Link href={"/sign-in"} className="mt-10">
-        <button className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-[#E6D6C8] to-white text-black font-semibold font-sans rounded-xl px-6 py-4 shadow-md hover:shadow-lg transition-transform duration-300 transform hover:scale-105">
-          Get Started for Free <ArrowRight />
-        </button>
-      </Link>
-    </div>
+    </section>
   );
-};
+}

@@ -1,8 +1,9 @@
+"use client";
 import { Advert } from "@/components/Landing/advert";
 import { Main } from "@/components/Landing/main";
 import { Problem } from "@/components/Landing/problem";
 import { Solution } from "@/components/Landing/solution";
-// import { Work } from "@/components/Landing/work";
+import HowItWork from "@/components/Landing/work";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
       <Advert />
       <Problem />
       <Solution />
-      {/* <Work /> */}
+      <HowItWork />
     </div>
   );
 }
