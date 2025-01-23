@@ -16,7 +16,6 @@ export const Solution = () => {
 
         {/* Grid Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
-          {/* Left Column - Features */}
           <div className="lg:col-span-2 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Feature 1 */}
@@ -83,14 +82,18 @@ export const Solution = () => {
 
           {/* Right Column - Why Choose Us */}
           <div className="bg-gradient-to-br from-blue-700 to-violet-700 rounded-xl shadow-lg p-6 text-white">
-            <h2 className="text-2xl font-bold mb-6">Why Choose Testify</h2>
+            <h2 className="text-2xl font-bold mb-4">Seamless integration</h2>
+            <p className="text-white font-medium text-base">
+              Curate, update, and showcase the best testimonials in seconds.
+              Keep your social proof fresh and relevant.
+            </p>
             <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
               <Image
                 className="rounded-xl p-2"
                 src={"/sidebar.png"}
                 alt="img"
-                height={500}
-                width={400}
+                height={1200}
+                width={500}
               />
             </div>
           </div>

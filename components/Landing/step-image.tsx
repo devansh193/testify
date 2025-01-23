@@ -11,12 +11,12 @@ const images = [
     alt: "Upload data interface demonstration",
   },
   {
-    src: "/testimonials.png",
-    alt: "Click start interface demonstration",
-  },
-  {
     src: "/marketing.jpeg",
     alt: "Insights interface demonstration",
+  },
+  {
+    src: "/testimonials.png",
+    alt: "Click start interface demonstration",
   },
 ];
 
@@ -24,7 +24,7 @@ export function StepImage({ currentStep }: StepImageProps) {
   const image = images[currentStep % images.length];
 
   return (
-    <div className="relative md:h-[400px] p-2 mt-10">
+    <div className="relative md:h-[450px] p-2 mt-10">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStep}

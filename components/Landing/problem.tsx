@@ -28,7 +28,7 @@ export const Problem = () => {
         <h2 className="text-blue-500 text-sm font-semibold uppercase tracking-wide">
           PROBLEM
         </h2>
-        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl">
+        <h1 className="text-3xl font-medium text-gray-900 sm:text-4xl md:text-5xl">
           Manually managing your testimonials is a hassle.
         </h1>
       </div>

@@ -9,19 +9,19 @@ import { ProgressBar } from "@/components/Landing/progress-bar";
 const steps = [
   {
     icon: Upload,
-    title: "1. Upload Your Data",
+    title: "1. Create Your Board",
     description:
       "Simply upload your data to our secure platform. We support various file formats and data types to ensure a seamless integration with your existing systems.",
   },
   {
     icon: Zap,
-    title: "2. Click Start",
+    title: "2. Share Link With Your Users",
     description:
       "Our advanced AI algorithms automatically process and analyze your data, extracting valuable insights and patterns that would be difficult to identify manually.",
   },
   {
     icon: Sparkles,
-    title: "3. Get Actionable Insights",
+    title: "3. Manage Your Testimonials",
     description:
       "Receive clear, actionable insights and recommendations based on the AI analysis. Use these insights to make data-driven decisions and improve your business strategies.",
   },
@@ -63,7 +63,7 @@ export default function HowItWorks() {
           <p className="text-blue-500 font-medium tracking-wide uppercase text-xs">
             HOW IT WORKS
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mt-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium text-black mt-4">
             Just 3 steps to get started
           </h2>
         </div>
