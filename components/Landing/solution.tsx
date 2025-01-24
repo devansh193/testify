@@ -27,34 +27,38 @@ export const Solution = () => {
                   Collect and organize all your testimonials in one place. No
                   more scattered reviews—just a clean, easy-to-manage hub.
                 </p>
-                <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                  <Image
-                    className="rounded-xl p-2"
-                    src={"/marketing.jpeg"}
-                    alt="img"
-                    height={300}
-                    width={450}
-                  />
+                <div className="flex items-center justify-center mt-5">
+                  <div className="relative rounded-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-lg">
+                    <Image
+                      className="rounded-[12px]"
+                      src={"/marketing.jpeg"}
+                      alt="Centralized Testimonial Hub"
+                      height={300}
+                      width={450}
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <h1 className="text-black text-xl font-semibold mb-4">
+              <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <h1 className="text-black text-xl font-semibold mb-3 text-center">
                   Centralized Testimonial Hub
                 </h1>
-                <p className="text-gray-600 font-medium text-base">
+                <p className="text-gray-600 font-medium text-base text-center leading-relaxed">
                   Collect and organize all your testimonials in one place. No
                   more scattered reviews—just a clean, easy-to-manage hub.
                 </p>
-                <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                  <Image
-                    className="rounded-xl p-2"
-                    src={"/testimonials.png"}
-                    alt="img"
-                    height={300}
-                    width={450}
-                  />
+                <div className="flex items-center justify-center mt-5">
+                  <div className="relative rounded-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-lg">
+                    <Image
+                      className="rounded-[12px]"
+                      src="/testimonials.png"
+                      alt="Centralized Testimonial Hub"
+                      height={300}
+                      width={450}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -68,14 +72,16 @@ export const Solution = () => {
                 Curate, update, and showcase the best testimonials in seconds.
                 Keep your social proof fresh and relevant.
               </p>
-              <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                <Image
-                  className="rounded-xl p-2"
-                  src={"/create.png"}
-                  alt="img"
-                  height={350}
-                  width={500}
-                />
+              <div className="flex items-center justify-center mt-5">
+                <div className="relative rounded-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-lg">
+                  <Image
+                    className="rounded-md"
+                    src={"/create.png"}
+                    alt="Centralized Testimonial Hub"
+                    height={300}
+                    width={450}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -87,9 +93,9 @@ export const Solution = () => {
               Curate, update, and showcase the best testimonials in seconds.
               Keep your social proof fresh and relevant.
             </p>
-            <div className="flex items-center justify-center mt-4 rounded-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+            <div className="flex items-center justify-center mt-4 shadow-lg rounded-2xl overflow-hidden transform transition-transform duration-300 hover:scale-105">
               <Image
-                className="rounded-xl p-2"
+                className="rounded-[18px] p-2"
                 src={"/sidebar.png"}
                 alt="img"
                 height={1200}

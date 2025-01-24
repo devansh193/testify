@@ -1,8 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { BoardResult } from "@/types";
-import { EllipsisVertical, User2, Zap } from "lucide-react";
+import {
+  EllipsisVertical,
+  Pause,
+  Pencil,
+  Trash,
+  User2,
+  Zap,
+} from "lucide-react";
 import Link from "next/link";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 export const BoardCard = ({
   id,
   boardTitle,
@@ -73,9 +85,27 @@ export const BoardCard = ({
             Publish
           </Button>
         )}
-        <Button variant={"ghost"} size={"icon"} className="p-2 bg-white">
-          <EllipsisVertical />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
+              <EllipsisVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <Pause className="mr-2 h-4 w-4" />
+              <span>Pause</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Pencil className="mr-2 h-4 w-4" />
+              <span>Edit</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Trash className="mr-2 h-4 w-4" />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
