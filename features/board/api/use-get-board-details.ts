@@ -1,12 +1,12 @@
-import { getAllBoards } from "@/action/board";
+import { getBoardByTitle } from "@/action/board";
 import { useQuery } from "@tanstack/react-query";
 
-// Fetch all boards
-export const useGetBoards = () => {
+export const useGetBoardDetails = (data: string) => {
   return useQuery({
-    queryKey: ["boards"],
-    queryFn: async () => {
-      const response = await getAllBoards();
+    queryKey: ["board", data],
+    queryFn: async ({ queryKey }) => {
+      const [_, data] = queryKey;
+      const response = await getBoardByTitle("Testify");
       if (!response.status) {
         throw new Error(response.message);
       }

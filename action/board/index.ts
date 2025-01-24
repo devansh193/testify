@@ -11,6 +11,8 @@ import { Board } from "@prisma/client";
 import { ErrorHandler } from "@/lib/error";
 import { SuccessResponse } from "@/lib/success";
 import { BoardResult } from "@/types";
+import { equal } from "assert";
+import { withServerActionAsyncCatcher } from "@/lib/async-catch";
 
 export type CreateBoardInput = z.infer<typeof BoardSchema>;
 
@@ -130,25 +132,46 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
   }
 );
 // Get board details by board title.
-export const getBoardByTitle = withSession<
+export const getBoardByTitle = withServerActionAsyncCatcher<
   string,
   ServerActionReturnType<Board>
->(async (session, boardTitle) => {
+>(async (boardTitle) => {
   if (!boardTitle) {
-    throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");
+    throw new ErrorHandler("Board title missing.", "BAD_REQUEST");
   }
-  const userId = session.user.id;
-  const board = await prisma.board.findUnique({
+  const board = await prisma.board.findFirst({
     where: {
-      boardTitle: boardTitle,
+      boardTitle: {
+        equals: boardTitle,
+        mode: "insensitive",
+      },
     },
   });
-  if (!board || board.userId !== userId) {
-    throw new ErrorHandler(
-      "Board not found or unauthorized access.",
-      "UNAUTHORIZED"
-    );
+  console.log("Board detail hai bc-----------", board);
+  if (!board) {
+    throw new ErrorHandler("Failed", "BAD_REQUEST");
   }
   const message = "Board fetched successfully.";
   return new SuccessResponse(message, 200, board);
+});
+
+// Delete board by board Id
+export const deleteBoard = withSession<
+  string,
+  ServerActionReturnType<undefined>
+>(async (session, boardId) => {
+  if (!boardId) {
+    throw new ErrorHandler("Board Id is required.", "BAD_REQUEST");
+  }
+  const result = prisma.board.delete({
+    where: {
+      id: boardId,
+    },
+  });
+  if (!result) {
+    throw new ErrorHandler("Failed to delete board.", "CONFLICT");
+  }
+  console.log("Deleted");
+  const message = "Board deleted successfully.";
+  return new SuccessResponse(message, 200, undefined).serialize();
 });

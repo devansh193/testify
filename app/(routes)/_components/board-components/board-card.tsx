@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { BoardResult } from "@/types";
 import {
   EllipsisVertical,
+  Loader,
   Pause,
   Pencil,
   Trash,
@@ -15,6 +16,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { useDeleteBoard } from "@/features/board/api/use-delete-board";
 export const BoardCard = ({
   id,
   boardTitle,
@@ -22,6 +25,32 @@ export const BoardCard = ({
   testimonialCount,
   createdAt,
 }: BoardResult) => {
+  const { mutate } = useDeleteBoard();
+
+  const onDelete = (boardId: string) => {
+    const toastId = toast.message("Deleting board...", {
+      icon: <Loader className="animate-spin" />,
+    });
+    mutate(boardId, {
+      onSuccess: (data) => {
+        {
+          toast.success(data.message || "Board deleted successfully!", {
+            icon: "",
+            id: toastId,
+          });
+        }
+      },
+      onError: (error) => {
+        toast.error(
+          error.message || "Failed to delete board. Please try again.",
+          {
+            icon: "",
+            id: toastId,
+          }
+        );
+      },
+    });
+  };
   return (
     <div
       key={id}
@@ -102,7 +131,7 @@ export const BoardCard = ({
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Trash className="mr-2 h-4 w-4" />
-              <span>Delete</span>
+              <span onClick={() => onDelete(id)}>Delete</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

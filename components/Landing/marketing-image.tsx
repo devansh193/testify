@@ -5,7 +5,7 @@ export const MarketingImage = () => {
     <div className="bg-white border border-neutral-200 rounded-3xl shadow-2xl p-2">
       <div className="bg-neutral-100 h-full w-full rounded-[16px] p-1">
         <Image
-          src="/marketing.png"
+          src="/marketing.jpeg"
           alt="Marketing Image"
           width={1024}
           height={1024}
