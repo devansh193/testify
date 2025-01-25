@@ -11,13 +11,11 @@ import { Board } from "@prisma/client";
 import { ErrorHandler } from "@/lib/error";
 import { SuccessResponse } from "@/lib/success";
 import { BoardResult } from "@/types";
-import { equal } from "assert";
 import { withServerActionAsyncCatcher } from "@/lib/async-catch";
 
 export type CreateBoardInput = z.infer<typeof BoardSchema>;
 
 // Create a new board
-
 export const createBoard = withSession<
   CreateBoardInput,
   ServerActionReturnType
@@ -131,6 +129,7 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
     return new SuccessResponse(message, 200, board);
   }
 );
+
 // Get board details by board title.
 export const getBoardByTitle = withServerActionAsyncCatcher<
   string,
@@ -147,12 +146,11 @@ export const getBoardByTitle = withServerActionAsyncCatcher<
       },
     },
   });
-  console.log("Board detail hai bc-----------", board);
   if (!board) {
     throw new ErrorHandler("Failed", "BAD_REQUEST");
   }
   const message = "Board fetched successfully.";
-  return new SuccessResponse(message, 200, board);
+  return new SuccessResponse(message, 200, board).serialize();
 });
 
 // Delete board by board Id

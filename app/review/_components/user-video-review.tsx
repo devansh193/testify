@@ -1,5 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import { userSlideSelector } from "@/recoil/atom";
 import { Dot, Video } from "lucide-react";
+import { useSetRecoilState } from "recoil";
 
 interface UserVideoReviewProps {
   title: string;
@@ -7,8 +10,9 @@ interface UserVideoReviewProps {
 }
 
 export const UserVideoReview = ({ title, questions }: UserVideoReviewProps) => {
+  const setSlide = useSetRecoilState(userSlideSelector);
   return (
-    <div className="h-full flex flex-col p-4 md:p-8">
+    <div className="h-full flex flex-col p-4 md:p-8 pt-10">
       <div className="flex items-center justify-center sm:mt-20 mt-4">
         <div className="w-full max-w-[600px] flex flex-col">
           {/* Video Section */}
@@ -40,7 +44,10 @@ export const UserVideoReview = ({ title, questions }: UserVideoReviewProps) => {
               Upload
             </Button>
             <p className="">or</p>
-            <div className="group cursor-pointer hover:scale-110 transition duration-200">
+            <div
+              className="group cursor-pointer hover:scale-110 transition duration-200"
+              onClick={() => setSlide((slide) => slide - 1)}
+            >
               <h1 className="text-md font-sans">
                 Write a <span className="font-semibold">review</span>
               </h1>
