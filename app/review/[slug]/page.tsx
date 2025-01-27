@@ -55,7 +55,7 @@ const Review = () => {
     <div>
       {currentSlide === 0 ? (
         <UserBoardDetail
-          title={data?.boardTitle || ""}
+          title={data?.pageTitle || ""}
           description={data?.pageDescription || ""}
           isVideoReview={data?.isVideoReview || true}
         />

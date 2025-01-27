@@ -198,7 +198,7 @@ export const userSlideCount = atom<number>({
 });
 
 export const userSlideSelector = selector<number>({
-  key: "slideSelector",
+  key: "userSlideSelector",
   get: ({ get }) => get(userCurrentSlideAtom),
   set: ({ set, get }, newValue) => {
     if (typeof newValue === "number") {

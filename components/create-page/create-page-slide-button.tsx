@@ -37,6 +37,7 @@ export const SlideButton = () => {
   const thankYouPageTitle = useRecoilValue(thankyouTitleAtom);
   const thankYouPageMessage = useRecoilValue(thankyouDescriptionAtom);
   const setSlide = useSetRecoilState(slideSelector);
+
   const userId = session?.user?.id || "";
   const handleNextClick = () => {
     setSlide((slide) => slide + 1);
