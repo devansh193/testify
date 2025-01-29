@@ -10,6 +10,10 @@ import { UserPersonal } from "../_components/user-personal";
 import { UserThankyou } from "../_components/user-thankyou";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import {
+  userPreviousSlideAtom,
+  userSideBoardTitle,
+} from "@/recoil/user-atom/atom";
 
 const Review = () => {
   const params = useParams();
@@ -20,7 +24,14 @@ const Review = () => {
   const setUserSlideCount = useSetRecoilState(userSlideCount);
   setUserSlideCount(totalSlides);
   const currentSlide = useRecoilValue(userCurrentSlideAtom);
-
+  const setCurrentSlide = useSetRecoilState(userCurrentSlideAtom);
+  const setPreviousSlide = useSetRecoilState(userPreviousSlideAtom);
+  const handleSlideChange = (newSlide: number) => {
+    setPreviousSlide(currentSlide);
+    setCurrentSlide(newSlide);
+  };
+  const setTitle = useSetRecoilState(userSideBoardTitle);
+  setTitle(data?.boardTitle || "");
   if (isLoading) {
     return (
       <div className="flex flex-col p-4 md:p-8">
@@ -57,17 +68,19 @@ const Review = () => {
         <UserBoardDetail
           title={data?.pageTitle || ""}
           description={data?.pageDescription || ""}
-          isVideoReview={data?.isVideoReview || true}
+          isVideoReview={data?.isVideoReview || false}
         />
       ) : currentSlide === 1 ? (
         <UserTextReview
           title={data?.textReviewPageTitle || ""}
           questions={data?.textQuestions || [""]}
+          onChange={handleSlideChange}
         />
       ) : currentSlide === 2 ? (
         <UserVideoReview
           title={data?.videoReviewPageTitle || ""}
           questions={data?.videoQuestions || []}
+          onChange={handleSlideChange}
         />
       ) : currentSlide === 3 ? (
         <UserPersonal title={data?.personalPageTitle || ""} />

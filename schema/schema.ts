@@ -126,3 +126,4 @@ export const TestimonialSchema = z.object({
 });
 
 export type TestimonialType = z.infer<typeof TestimonialSchema>;
+export type EmailType = z.infer<typeof emailSchema>;

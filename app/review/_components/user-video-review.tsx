@@ -1,18 +1,20 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import VideoRecorder from "@/components/video-recorder";
-import { userSlideSelector } from "@/recoil/atom";
+// import VideoRecorder from "@/components/video-recorder";
 import { motion } from "framer-motion";
 import { Dot } from "lucide-react";
-import { useSetRecoilState } from "recoil";
 
 interface UserVideoReviewProps {
   title: string;
   questions: string[];
+  onChange: (slide: number) => void;
 }
 
-export const UserVideoReview = ({ title, questions }: UserVideoReviewProps) => {
-  const setSlide = useSetRecoilState(userSlideSelector);
+export const UserVideoReview = ({
+  title,
+  questions,
+  onChange,
+}: UserVideoReviewProps) => {
   return (
     <div className="h-full flex flex-col p-4 md:p-8 pt-10">
       <motion.div
@@ -34,7 +36,7 @@ export const UserVideoReview = ({ title, questions }: UserVideoReviewProps) => {
                   <Video className="text-black" />
                 </h1>
               </div> */}
-                <VideoRecorder />
+                {/* <VideoRecorder /> */}
               </div>
 
               <div className="flex flex-col items-start mt-4 space-y-2">
@@ -49,13 +51,16 @@ export const UserVideoReview = ({ title, questions }: UserVideoReviewProps) => {
               </div>
             </div>
             <div className="flex flex-col items-center justify-center mt-4 gap-y-2">
-              <Button className="h-[45px] w-full py-2 px-4 rounded-lg">
+              <Button
+                className="h-[45px] w-full py-2 px-4 rounded-lg"
+                onClick={() => onChange(3)}
+              >
                 Upload
               </Button>
               <p className="">or</p>
               <div
                 className="group cursor-pointer hover:scale-110 transition duration-200"
-                onClick={() => setSlide((slide) => slide - 1)}
+                onClick={() => onChange(1)}
               >
                 <h1 className="text-md font-sans">
                   Write a <span className="font-semibold">review</span>

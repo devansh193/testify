@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { userSlideSelector } from "@/recoil/atom";
@@ -8,9 +9,14 @@ import { useSetRecoilState } from "recoil";
 interface UserTextReview {
   title: string;
   questions: string[];
+  onChange: (slide: number) => void;
 }
 
-export const UserTextReview = ({ title, questions }: UserTextReview) => {
+export const UserTextReview = ({
+  title,
+  questions,
+  onChange,
+}: UserTextReview) => {
   const setSlide = useSetRecoilState(userSlideSelector);
   return (
     <div className="h-full flex flex-col p-4 gap-y-4">
@@ -18,7 +24,6 @@ export const UserTextReview = ({ title, questions }: UserTextReview) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className=""
       >
         <div className="flex items-center justify-center pt-36">
           <div className="w-full max-w-[600px] flex flex-col">
@@ -51,7 +56,7 @@ export const UserTextReview = ({ title, questions }: UserTextReview) => {
               <p className="">or</p>
               <div
                 className="group cursor-pointer hover:scale-110 transition duration-200"
-                onClick={() => setSlide((slide) => slide + 1)}
+                onClick={() => onChange(2)}
               >
                 <h1 className="text-md font-sans">
                   Record a <span className="font-semibold">video</span>

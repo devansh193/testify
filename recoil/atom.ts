@@ -188,7 +188,7 @@ export const tagsAtom = atom<string[]>({
 });
 
 export const userCurrentSlideAtom = atom<number>({
-  key: "currentSlideIndexAtom",
+  key: "userCurrentSlideIndexAtom",
   default: 0,
 });
 
