@@ -97,7 +97,7 @@ export const UserBoardDetail = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
-        className="mt-20 text-center"
+        className="mt-8 text-center"
       >
         <p className="text-sm text-muted-foreground">
           Trusted by thousands of users worldwide

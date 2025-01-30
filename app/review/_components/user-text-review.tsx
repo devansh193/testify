@@ -9,6 +9,7 @@ import { useSetRecoilState } from "recoil";
 interface UserTextReview {
   title: string;
   questions: string[];
+  isVideoReview: boolean;
   onChange: (slide: number) => void;
 }
 
@@ -16,6 +17,7 @@ export const UserTextReview = ({
   title,
   questions,
   onChange,
+  isVideoReview,
 }: UserTextReview) => {
   const setSlide = useSetRecoilState(userSlideSelector);
   return (
@@ -53,15 +55,19 @@ export const UserTextReview = ({
               >
                 Next
               </Button>
-              <p className="">or</p>
-              <div
-                className="group cursor-pointer hover:scale-110 transition duration-200"
-                onClick={() => onChange(2)}
-              >
-                <h1 className="text-md font-sans">
-                  Record a <span className="font-semibold">video</span>
-                </h1>
-              </div>
+              {isVideoReview && (
+                <>
+                  <p className="">or</p>
+                  <div
+                    className="group cursor-pointer hover:scale-110 transition duration-200"
+                    onClick={() => onChange(2)}
+                  >
+                    <h1 className="text-md font-sans">
+                      Record a <span className="font-semibold">video</span>
+                    </h1>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

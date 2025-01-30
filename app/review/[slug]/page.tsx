@@ -8,12 +8,11 @@ import { UserTextReview } from "../_components/user-text-review";
 import { UserVideoReview } from "../_components/user-video-review";
 import { UserPersonal } from "../_components/user-personal";
 import { UserThankyou } from "../_components/user-thankyou";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import {
   userPreviousSlideAtom,
   userSideBoardTitle,
 } from "@/recoil/user-atom/atom";
+import { LoadingComponent } from "@/app/(routes)/_components/board-components/board-loading";
 
 const Review = () => {
   const params = useParams();
@@ -35,26 +34,8 @@ const Review = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col p-4 md:p-8">
-        <div className="flex items-center justify-center mt-24 sm:mt-48">
-          <div className="max-w-[600px] flex flex-col items-start justify-start gap-y-4 sm:gap-y-2 w-full">
-            <Skeleton className="h-12 w-3/4" />
-            <Skeleton className="h-20 w-full mt-2" />
-            <div className="space-y-2 sm:space-y-0 sm:space-x-4 mt-4 w-full">
-              <Button size="lg" className="h-[45px] w-full sm:w-auto" disabled>
-                <Skeleton className="h-4 w-4 mr-2 rounded-full" />
-                <Skeleton className="h-4 w-24" />
-              </Button>
-              <Button
-                size="lg"
-                className="h-[45px] w-full sm:w-auto mt-2 sm:mt-0"
-                variant="outline"
-                disabled
-              >
-                <Skeleton className="h-4 w-4 mr-2 rounded-full" />
-                <Skeleton className="h-4 w-24" />
-              </Button>
-            </div>
-          </div>
+        <div className="flex items-center justify-center mt-24 sm:mt-24">
+          <LoadingComponent />
         </div>
       </div>
     );
@@ -75,6 +56,7 @@ const Review = () => {
           title={data?.textReviewPageTitle || ""}
           questions={data?.textQuestions || [""]}
           onChange={handleSlideChange}
+          isVideoReview={data?.isVideoReview || false}
         />
       ) : currentSlide === 2 ? (
         <UserVideoReview
