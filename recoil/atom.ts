@@ -186,25 +186,3 @@ export const tagsAtom = atom<string[]>({
     "Safety & security",
   ],
 });
-
-export const userCurrentSlideAtom = atom<number>({
-  key: "userCurrentSlideIndexAtom",
-  default: 0,
-});
-
-export const userSlideCount = atom<number>({
-  key: "slideCount",
-  default: 0,
-});
-
-export const userSlideSelector = selector<number>({
-  key: "userSlideSelector",
-  get: ({ get }) => get(userCurrentSlideAtom),
-  set: ({ set, get }, newValue) => {
-    if (typeof newValue === "number") {
-      const maxSlide = get(userSlideCount);
-      const clampedValue = Math.max(0, Math.min(maxSlide, newValue));
-      set(userCurrentSlideAtom, clampedValue);
-    }
-  },
-});

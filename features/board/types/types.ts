@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductSchema } from "@/schema/schema";
+import { ProductSchema } from "@/schema";
 
 export type RequestType = z.infer<typeof ProductSchema>;
 

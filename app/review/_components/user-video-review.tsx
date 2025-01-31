@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 // import VideoRecorder from "@/components/video-recorder";
 import { motion } from "framer-motion";

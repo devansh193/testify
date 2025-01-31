@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { userCurrentSlideAtom } from "@/recoil/atom";
+import { userCurrentSlideAtom } from "@/recoil/user-atom/atom";
 import {
   userPreviousSlideAtom,
   userSideBoardTitle,

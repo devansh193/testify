@@ -3,8 +3,8 @@ import { useGetBoardDetails } from "@/features/board/api/use-get-board-details";
 import { useParams } from "next/navigation";
 import { UserBoardDetail } from "../_components/user-board-details";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userCurrentSlideAtom, userSlideCount } from "@/recoil/atom";
-import { UserTextReview } from "../_components/user-text-review";
+import { userCurrentSlideAtom, userSlideCount } from "@/recoil/user-atom/atom";
+import UserTextReview from "../_components/user-text-review";
 import { UserVideoReview } from "../_components/user-video-review";
 import { UserPersonal } from "../_components/user-personal";
 import { UserThankyou } from "../_components/user-thankyou";
@@ -23,12 +23,17 @@ const Review = () => {
   const setUserSlideCount = useSetRecoilState(userSlideCount);
   setUserSlideCount(totalSlides);
   const currentSlide = useRecoilValue(userCurrentSlideAtom);
+  const previousSlide = useRecoilValue(userPreviousSlideAtom);
   const setCurrentSlide = useSetRecoilState(userCurrentSlideAtom);
   const setPreviousSlide = useSetRecoilState(userPreviousSlideAtom);
+
   const handleSlideChange = (newSlide: number) => {
     setPreviousSlide(currentSlide);
     setCurrentSlide(newSlide);
+    console.log("Current Slide: ", currentSlide);
+    console.log("Previous Slide: ", previousSlide);
   };
+
   const setTitle = useSetRecoilState(userSideBoardTitle);
   setTitle(data?.boardTitle || "");
   if (isLoading) {

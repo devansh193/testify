@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBoard } from "@/action/board";
 import { ServerActionReturnType } from "@/types/api.types";
-import { BoardSchema } from "@/schema/schema";
+import { BoardSchema } from "@/schema";
 import { z } from "zod";
 
 type CreateBoardInput = z.infer<typeof BoardSchema>;

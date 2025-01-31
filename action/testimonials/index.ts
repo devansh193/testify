@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import { ErrorHandler } from "@/lib/error";
 import { withSession } from "@/lib/session";
 import { SuccessResponse } from "@/lib/success";
-import { TestimonialSchema, TestimonialType } from "@/schema/schema";
+import { TestimonialSchema, TestimonialType } from "@/schema";
 import { ServerActionReturnType } from "@/types/api.types";
 import { Testimonial } from "@prisma/client";
 

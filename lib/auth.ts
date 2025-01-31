@@ -1,9 +1,9 @@
 import { NextAuthOptions, Session } from "next-auth";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 
-import { SigninSchema } from "@/schema/schema";
+import { SigninSchema } from "@/schema";
 import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 import prisma from "@/lib/db";
 import { ErrorHandler } from "./error";

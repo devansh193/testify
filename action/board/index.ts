@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { BoardSchema } from "@/schema/schema";
+import { BoardSchema } from "@/schema";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";

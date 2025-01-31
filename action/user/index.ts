@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { UserSchema } from "@/schema/schema";
+import { UserSchema } from "@/schema";
 import { AuthResponse } from "@/types";
 import bcrypt from "bcrypt";
 import { z } from "zod";

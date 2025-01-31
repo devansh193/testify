@@ -1,20 +1,9 @@
 import { z } from "zod";
 
-export const QuestionSchema = z.object({
-  text: z.string().min(1),
-});
-
-export const ProductSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
-  showLogo: z.boolean(),
-  logoUrl: z.string().url().optional(),
-  questions: z.array(QuestionSchema).min(1),
-  userId: z.string().uuid(),
-});
 export const emailSchema = z
   .string()
   .email({ message: "Invalid email address" });
+
 export const passwordSchema = z
   .string()
   .regex(
@@ -24,10 +13,6 @@ export const passwordSchema = z
         "Password must be at least 8 characters long, and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
     }
   );
-
-export const UserIdSchema = z.string().uuid();
-export const ProductIdSchema = z.string().uuid();
-export const TitleSchema = z.string().min(1);
 
 export const SigninSchema = z.object({
   email: z.string().email("Email is invalid").min(1, "Email is required"),
@@ -115,7 +100,7 @@ export const BoardSchema = z.object({
   userId: z.string().uuid("Invalid user ID"),
 });
 
-export const TestimonialSchema = z.object({
+export const UserTestimonialSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   textReview: z.string().min(1, "Text review is required"),
@@ -125,5 +110,5 @@ export const TestimonialSchema = z.object({
   boardId: z.string().uuid(),
 });
 
-export type TestimonialType = z.infer<typeof TestimonialSchema>;
+export type TestimonialType = z.infer<typeof UserTestimonialSchema>;
 export type EmailType = z.infer<typeof emailSchema>;
