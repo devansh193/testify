@@ -27,14 +27,6 @@ const routes = [
   },
 ];
 
-// const quickActions = [
-//   {
-//     title: "Add board",
-//     icon: Plus,
-//     href: "/create",
-//   },
-// ];
-
 export const Navigation = () => {
   return (
     <ul className="flex flex-col">

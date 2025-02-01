@@ -3,7 +3,7 @@
 import prisma from "@/lib/db";
 import { UserSchema } from "@/schema";
 import { AuthResponse } from "@/types";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { CallQueue } from "../notification";
 

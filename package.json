@@ -47,6 +47,7 @@
     "react-hook-form": "^7.54.2",
     "recharts": "^2.12.7",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "recordrtc": "^5.6.2",
     "resend": "^4.0.1",
     "sharp": "^0.33.5",

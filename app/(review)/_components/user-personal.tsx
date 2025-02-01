@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ratingTitleAtom, userNameAtom } from "@/recoil/atom";
-import { userSlideSelector } from "@/recoil/user-atom/atom";
+import { userSlideSelector } from "@/recoil/client-atom/atom";
 import { motion } from "framer-motion";
 import { FileImage, Pencil, X } from "lucide-react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";

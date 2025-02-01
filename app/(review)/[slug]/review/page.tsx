@@ -1,25 +1,60 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { userSlideSelector } from "@/recoil/user-atom/atom";
+import { useGetBoardDetails } from "@/features/board/api/use-get-board-details";
+import { clientBoardDetails } from "@/recoil/client-atom/atom";
 import { motion } from "framer-motion";
 import { ChevronRight, Edit, Video } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import { LoadingComponent } from "../../_components/loading";
+import { ErrorPage } from "@/components/error-page";
+import { UserNav } from "../../_components/user-nav";
 
-interface UserBoardDetailProps {
-  title: string;
-  description: string;
-  isVideoReview: boolean;
-}
+const Welcome = () => {
+  const router = useRouter();
+  const params = useParams();
+  const { slug } = params;
+  const title = Array.isArray(slug) ? slug[0] : slug;
+  const setClientBoardDetail = useSetRecoilState(clientBoardDetails);
+  const { data, isLoading, error, refetch } = useGetBoardDetails(title);
 
-export const UserBoardDetail = ({
-  title,
-  description,
-  isVideoReview,
-}: UserBoardDetailProps) => {
-  const setSlide = useSetRecoilState(userSlideSelector);
+  useEffect(() => {
+    if (data) {
+      setClientBoardDetail({
+        boardTitle: data.boardTitle || "",
+        pageTitle: data.pageTitle || "",
+        pageDescription: data.pageDescription || "",
+        isVideoReview: data.isVideoReview || false,
+        textReviewPageTitle: data.textReviewPageTitle || "",
+        textQuestions: data.textQuestions || [],
+        videoReviewPageTitle: data.videoReviewPageTitle || "",
+        videoQuestions: data.videoQuestions || [],
+        personalPageTitle: data.personalPageTitle || "",
+        thankYouPageTitle: data.thankYouPageTitle || "",
+        thankYouPageMessage: data.thankYouPageMessage || "",
+        userId: data.userId || "",
+      });
+    }
+  }, [data, setClientBoardDetail]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingComponent />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <ErrorPage onRetry={refetch} />;
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12 bg-gradient-to-b from-background to-secondary/20">
+    <div className="flex flex-col items-center justify-center mt-48 py-12 px-6 bg-gradient-to-b from-background to-secondary/20">
+      <div className="fixed top-0 right-0 left-0 z-10 max-w-7xl mx-auto mt-4">
+        <UserNav />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -30,7 +65,7 @@ export const UserBoardDetail = ({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="inline-block px-4 py-2 text-sm bg-secondary rounded-full text-muted-foreground shadow-md"
+          className="inline-block px-6 py-3 text-sm bg-secondary rounded-full text-muted-foreground shadow-md"
         >
           Share Your Experience
         </motion.span>
@@ -39,7 +74,7 @@ export const UserBoardDetail = ({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground"
+          className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground"
         >
           {title}
         </motion.h1>
@@ -50,7 +85,7 @@ export const UserBoardDetail = ({
           transition={{ delay: 0.6, duration: 0.6 }}
           className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
         >
-          {description}
+          {data?.pageDescription}
         </motion.p>
 
         <motion.div
@@ -62,7 +97,7 @@ export const UserBoardDetail = ({
           <Button
             className="group relative overflow-hidden px-6 py-3 rounded-lg transition-all hover:bg-primary/90 hover:shadow-md"
             size="lg"
-            onClick={() => setSlide(1)}
+            onClick={() => router.push(`/${title}/text-review`)}
           >
             <div className="flex items-center gap-2">
               <Edit className="w-5 h-5" />
@@ -71,12 +106,12 @@ export const UserBoardDetail = ({
             </div>
           </Button>
 
-          {isVideoReview && (
+          {data?.isVideoReview && (
             <Button
               variant="outline"
               className="group relative overflow-hidden px-6 py-3 rounded-lg transition-all hover:bg-secondary hover:shadow-md"
               size="lg"
-              onClick={() => setSlide(2)}
+              onClick={() => router.push(`/${title}/video-review`)}
             >
               <div className="flex items-center gap-2">
                 <Video className="w-5 h-5" />
@@ -106,3 +141,4 @@ export const UserBoardDetail = ({
     </div>
   );
 };
+export default Welcome;

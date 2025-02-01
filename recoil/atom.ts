@@ -1,15 +1,5 @@
 import { atom, selector } from "recoil";
 
-export const userNameAtom = atom<string>({
-  key: "userNameAtom", // Previously: nameAtom
-  default: "",
-});
-
-export const userEmailAtom = atom<string>({
-  key: "userEmailAtom", // Previously: emailAtom
-  default: "",
-});
-
 export const userImageAtom = atom({
   key: "userImageAtom", // Previously: imageAtom
   default: {
@@ -143,16 +133,6 @@ export const logoUrlAtom = atom<string>({
 export const isDialogOpenAtom = atom<boolean>({
   key: "isDialogOpenAtom", // Previously: dialogAtom
   default: false,
-});
-
-export const userRatingAtom = atom<number>({
-  key: "userRatingAtom", // Previously: ratingsAtom
-  default: 0,
-});
-
-export const userTextReviewAtom = atom<string>({
-  key: "userTextReviewAtom", // Previously: textReviewAtom
-  default: "",
 });
 
 export const productIdAtom = atom<string>({
