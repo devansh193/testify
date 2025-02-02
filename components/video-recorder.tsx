@@ -1,6 +1,18 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
-import { Camera, Video, X, Check, Timer } from "lucide-react";
+"use client";
+
+import type React from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
+import { Camera, Video, X, Check, Timer, Loader2 } from "lucide-react";
 import RecordRTC from "recordrtc";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 const VideoRecorder: React.FC = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -8,11 +20,13 @@ const VideoRecorder: React.FC = () => {
   const [recordedVideo, setRecordedVideo] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingDuration, setRecordingDuration] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
   const timerRef = useRef<number>();
 
   const startCamera = async () => {
+    setIsLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -25,6 +39,8 @@ const VideoRecorder: React.FC = () => {
       }
     } catch (err) {
       console.error("Error accessing camera:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,31 +112,37 @@ const VideoRecorder: React.FC = () => {
 
   const keepRecording = () => {
     console.log("Video kept:", recordedVideo);
+    // Here you would typically upload the video or process it further
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-bold text-white mb-2">Video Recorder</h1>
-        <p className="text-gray-400">
-          Create and preview your recordings with ease
-        </p>
-      </div>
-
-      <div className="space-y-8">
+    <Card className="w-full max-w-2xl mx-auto mt-4">
+      <CardHeader>
+        <CardTitle className="text-xl font-medium">Recorder</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
         {!stream && (
-          <button
-            onClick={startCamera}
-            className="w-full flex items-center justify-center gap-3 bg-white text-black py-4 px-8 rounded-xl hover:bg-gray-100 transition-all duration-300 text-lg font-medium"
-          >
-            <Camera className="w-6 h-6" />
-            Open Camera
-          </button>
+          <div className="flex flex-col items-center justify-center space-y-4 p-12 border-2 border-dashed border-gray-300 rounded-lg">
+            <Camera className="w-12 h-12 text-gray-400" />
+            <p className="text-sm text-gray-500">No camera connected</p>
+            <Button onClick={startCamera} disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Connecting...
+                </>
+              ) : (
+                <>
+                  <Camera className="mr-2 h-4 w-4" />
+                  Start Camera
+                </>
+              )}
+            </Button>
+          </div>
         )}
-
         {stream && (
-          <div className="space-y-6">
-            <div className="relative rounded-xl overflow-hidden bg-black aspect-video ring-4 ring-white/10">
+          <div className="space-y-4">
+            <div className="relative rounded-lg overflow-hidden bg-black aspect-video">
               <video
                 ref={videoRef}
                 autoPlay
@@ -128,82 +150,66 @@ const VideoRecorder: React.FC = () => {
                 muted
                 className="w-full h-full object-cover [transform:scaleX(-1)]"
               />
-
               {isRecording && (
-                <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/50 text-white px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                <div className="absolute top-4 left-4 flex items-center space-x-2 bg-black/50 text-white px-3 py-1.5 rounded-full backdrop-blur-sm">
                   <span className="animate-pulse text-red-500">●</span>
                   <Timer className="w-4 h-4" />
-                  <span className="font-mono">
+                  <span className="font-mono text-sm">
                     {formatDuration(recordingDuration)}
                   </span>
                 </div>
               )}
-
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-                {!isRecording ? (
-                  <button
-                    onClick={startRecording}
-                    className="bg-red-600 text-white py-3 px-8 rounded-full hover:bg-red-700 transition-all duration-300 flex items-center gap-2 font-medium shadow-lg hover:shadow-red-500/20"
-                  >
-                    <Video className="w-5 h-5" />
-                    Start Recording
-                  </button>
-                ) : (
-                  <button
-                    onClick={stopRecording}
-                    className="bg-white text-black py-3 px-8 rounded-full hover:bg-gray-100 transition-all duration-300 flex items-center gap-2 font-medium"
-                  >
-                    <span className="w-2 h-2 bg-red-600 rounded-sm" />
-                    Stop Recording
-                  </button>
-                )}
-              </div>
             </div>
-
-            {!isRecording && (
-              <button
-                onClick={stopCamera}
-                className="w-full bg-white/10 text-white py-3 px-4 rounded-xl hover:bg-white/20 transition-all duration-300"
-              >
-                Close Camera
-              </button>
-            )}
+            <div className="flex justify-center space-x-4">
+              {!isRecording ? (
+                <Button onClick={startRecording} variant="destructive">
+                  <Video className="mr-2 h-4 w-4" />
+                  Start Recording
+                </Button>
+              ) : (
+                <Button onClick={stopRecording} variant="secondary">
+                  <span className="mr-2 w-2 h-2 bg-red-600 rounded-full" />
+                  Stop Recording
+                </Button>
+              )}
+              {!isRecording && (
+                <Button onClick={stopCamera} variant="outline">
+                  Close Camera
+                </Button>
+              )}
+            </div>
           </div>
         )}
-
         {recordedVideo && (
-          <div className="space-y-6 bg-white/5 p-6 rounded-xl">
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-              <Video className="w-5 h-5" />
-              Preview Recording
-            </h2>
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Preview Recording</h3>
             <video
               ref={recordedVideoRef}
               src={recordedVideo}
               controls
-              className="w-full rounded-xl ring-4 ring-white/10 [transform:scaleX(-1)]"
+              className="w-full rounded-lg [transform:scaleX(-1)]"
             />
-
-            <div className="flex gap-4">
-              <button
-                onClick={keepRecording}
-                className="flex-1 flex items-center justify-center gap-2 bg-white text-black py-3 px-6 rounded-xl hover:bg-gray-100 transition-all duration-300 font-medium"
-              >
-                <Check className="w-5 h-5" />
+            <div className="flex space-x-4">
+              <Button onClick={keepRecording} className="flex-1">
+                <Check className="mr-2 h-4 w-4" />
                 Keep Recording
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={discardRecording}
-                className="flex-1 flex items-center justify-center gap-2 bg-white/10 text-white py-3 px-6 rounded-xl hover:bg-white/20 transition-all duration-300 font-medium"
+                variant="outline"
+                className="flex-1"
               >
-                <X className="w-5 h-5" />
+                <X className="mr-2 h-4 w-4" />
                 Discard Recording
-              </button>
+              </Button>
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </CardContent>
+      <CardFooter>
+        <Progress value={recordingDuration} max={180} className="w-full" />
+      </CardFooter>
+    </Card>
   );
 };
 
