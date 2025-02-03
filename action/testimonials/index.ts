@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import { ErrorHandler } from "@/lib/error";
 import { withSession } from "@/lib/session";
 import { SuccessResponse } from "@/lib/success";
-import { TestimonialSchema, TestimonialType } from "@/schema";
+import { UserTestimonialSchema, TestimonialType } from "@/schema";
 import { ServerActionReturnType } from "@/types/api.types";
 import { Testimonial } from "@prisma/client";
 
@@ -12,7 +12,7 @@ export const createTestimonial = withServerActionAsyncCatcher<
   TestimonialType,
   ServerActionReturnType
 >(async (data) => {
-  const result = TestimonialSchema.parse(data);
+  const result = UserTestimonialSchema.parse(data);
   const { name, email, textReview, rating, userImageUrl, videoUrl, boardId } =
     result;
   await prisma.testimonial.create({
