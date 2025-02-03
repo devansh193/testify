@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
-import { Dot } from "lucide-react";
+import { ChevronRight, Dot } from "lucide-react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   testimonialState,
@@ -42,6 +42,7 @@ export default function TestimonialForm() {
   const [review, setReview] = useRecoilState(testimonialTextAtom);
   const setTestimonialState = useSetRecoilState(testimonialState);
   const boardDetails = useRecoilValue(clientBoardDetails);
+
   const form = useForm<TestimonialInputSchemaType>({
     resolver: zodResolver(testimonialInputSchema),
     defaultValues: {
@@ -62,37 +63,34 @@ export default function TestimonialForm() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full px-6 bg-gradient-to-b from-background to-secondary/20">
-      <div className="fixed top-0 right-0 left-0 z-10 max-w-5xl mx-auto mt-4">
+    <div className="min-h-screen w-full px-4 py-6 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-center gap-y-4 sm:gap-y-6">
         <UserNav />
-      </div>
-      <div className="mt-24 w-full max-w-2xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full rounded-xl p-6 md:p-8 text-start"
+          className="w-full max-w-[95%] md:max-w-2xl mt-8 sm:mt-12"
         >
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium text-foreground mb-6">
-            {boardDetails.textReviewPageTitle}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl">
+            {boardDetails?.textReviewPageTitle}
           </h1>
-          <div className="mt-4 space-y-4 text-left">
-            {boardDetails?.textQuestions.map((question) => (
-              <p
-                key={question}
-                className="flex items-start text-md md:text-base text-gray-700"
-              >
-                <Dot className="text-gray-700 size-5 mr-2" /> {question}
-              </p>
-            ))}
-          </div>
-
+          {boardDetails?.textQuestions?.length > 0 && (
+            <div className="flex flex-col items-start mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
+              {boardDetails.videoQuestions.map((question, index) => (
+                <div key={index} className="flex items-start w-full">
+                  <Dot className="text-gray-700 size-5 sm:size-6 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm md:text-base font-normal">{question}</p>
+                </div>
+              ))}
+            </div>
+          )}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, (errors) =>
                 console.log("Validation Errors:", errors)
               )}
-              className="mt-8 space-y-6"
+              className="mt-6 sm:mt-8 space-y-4 sm:space-y-6"
             >
               {/* Text Review Input */}
               <FormField
@@ -102,7 +100,7 @@ export default function TestimonialForm() {
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        className="w-full min-h-[150px] p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-all"
+                        className="w-full min-h-[100px] sm:min-h-[150px] p-3 sm:p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-all text-sm sm:text-base"
                         placeholder="Write something..."
                         {...field}
                         onChange={(e) => {
@@ -111,7 +109,7 @@ export default function TestimonialForm() {
                         }}
                       />
                     </FormControl>
-                    <FormMessage className="text-red-500" />
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -129,7 +127,7 @@ export default function TestimonialForm() {
                           field.value ? field.value.toString() : undefined
                         }
                       >
-                        <SelectTrigger className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-all">
+                        <SelectTrigger className="w-full p-3 sm:p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-all text-sm sm:text-base">
                           <SelectValue placeholder="Select a rating" />
                         </SelectTrigger>
                         <SelectContent className="bg-white border border-gray-300 rounded-lg shadow-lg">
@@ -137,7 +135,7 @@ export default function TestimonialForm() {
                             <SelectItem
                               key={num}
                               value={num.toString()}
-                              className="p-3 hover:bg-gray-100 rounded-md"
+                              className="p-2 sm:p-3 hover:bg-gray-100 rounded-md text-sm sm:text-base"
                             >
                               {num} Stars
                             </SelectItem>
@@ -145,43 +143,43 @@ export default function TestimonialForm() {
                         </SelectContent>
                       </Select>
                     </FormControl>
-                    <FormMessage className="text-red-500" />
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
 
               {/* Data Preview */}
-              <div className="p-4 mt-6 bg-gray-50 rounded-lg text-left border border-gray-200">
-                <h3 className="text-lg font-semibold mb-2">Preview:</h3>
-                <pre className="text-sm text-gray-700">
+              <div className="p-3 sm:p-4 mt-4 sm:mt-6 bg-gray-50 rounded-lg text-left border border-gray-200">
+                <h3 className="text-base sm:text-lg font-semibold mb-2">
+                  Preview:
+                </h3>
+                <pre className="text-xs sm:text-sm text-gray-700 overflow-x-auto">
                   {JSON.stringify(form.watch(), null, 2)}
                 </pre>
               </div>
 
               {/* Submit Button */}
-              <div className="flex flex-col items-center gap-4">
-                <Button
-                  type="submit"
-                  className="w-full py-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-medium shadow-md hover:shadow-lg transition-all"
-                >
-                  Next
+              <div className="flex flex-col items-center gap-3 sm:gap-4">
+                <Button className="w-full group relative overflow-hidden h-10 sm:h-12 rounded-xl transition-all hover:bg-primary/90 hover:shadow-lg text-sm sm:text-md font-medium px-4 sm:px-6">
+                  <div className="flex items-center gap-2">
+                    <span>Next</span>
+                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
                 </Button>
               </div>
             </form>
           </Form>
 
-          {/* Video Review Option */}
           {boardDetails?.isVideoReview && (
-            <div className="text-center mt-4">
-              <p className="text-gray-500 mb-2">or</p>
+            <div className="text-center mt-3 sm:mt-4">
               <div
                 className="group cursor-pointer hover:scale-105 transition duration-200"
                 onClick={() =>
                   router.push(`/${boardDetails.boardTitle}/video-review`)
                 }
               >
-                <h1 className="text-sm font-medium group-hover:underline">
-                  Record a <span className="font-semibold">video</span>
+                <h1 className="text-xs sm:text-sm font-medium group-hover:underline">
+                  Prefer to record a video review instead?
                 </h1>
               </div>
             </div>

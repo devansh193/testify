@@ -7,7 +7,7 @@ interface ErrorComponentProps {
 
 export const ErrorPage = ({ onRetry }: ErrorComponentProps) => {
   return (
-    <div className="flex flex-col items-center justify-center h-[50vh]">
+    <div className="flex flex-col items-center justify-center">
       <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
       <h2 className="text-2xl font-semibold mb-2">
         Oops! Something went wrong
