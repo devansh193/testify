@@ -1,13 +1,14 @@
+"use server";
 import { withServerActionAsyncCatcher } from "@/lib/async-catch";
+// import { withServerActionAsyncCatcher } from "@/lib/async-catch";
 import prisma from "@/lib/db";
 import { ErrorHandler } from "@/lib/error";
 import { withSession } from "@/lib/session";
 import { SuccessResponse } from "@/lib/success";
-import { UserTestimonialSchema, TestimonialType } from "@/schema";
+import { TestimonialType, UserTestimonialSchema } from "@/schema";
 import { ServerActionReturnType } from "@/types/api.types";
 import { Testimonial } from "@prisma/client";
 
-// creating a new testimonial.
 export const createTestimonial = withServerActionAsyncCatcher<
   TestimonialType,
   ServerActionReturnType
@@ -29,6 +30,39 @@ export const createTestimonial = withServerActionAsyncCatcher<
   const message = "Testimonial submitted successfully.";
   return new SuccessResponse(message, 201).serialize();
 });
+
+// export const createTestimonial = async ({
+//   name,
+//   email,
+//   textReview,
+//   videoUrl,
+//   userImageUrl,
+//   rating,
+//   boardId,
+// }: TestimonialType): Promise<ServerActionReturnType> => {
+//   try {
+//     await prisma.testimonial.create({
+//       data: {
+//         name,
+//         email,
+//         videoUrl,
+//         userImageUrl,
+//         textReview: textReview,
+//         rating,
+//         boardId,
+//       },
+//     });
+
+//     const message = "Testimonial submitted successfully.";
+//     return new SuccessResponse(message, 201).serialize();
+//   } catch (error) {
+//     console.error(error);
+//     throw new ErrorHandler(
+//       "Failed to create testimonial.",
+//       "INTERNAL_SERVER_ERROR"
+//     );
+//   }
+// };
 
 // fetch all testimonials by board id
 export const getAllTestimonials = withSession<

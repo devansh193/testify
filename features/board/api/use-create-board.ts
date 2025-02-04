@@ -26,6 +26,5 @@ export const useCreateBoard = () => {
       },
     }
   );
-
   return mutation;
 };
