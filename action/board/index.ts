@@ -96,6 +96,7 @@ export const getAllBoards = withSession<
     },
     orderBy: { createdAt: "desc" },
   });
+
   const boardResults: BoardResult[] = boards.map((board) => ({
     id: board.id,
     isActive: board.isActive ?? true,
@@ -114,6 +115,8 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
       throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");
     }
     const userId = session.user.id;
+    console.log("________HAHAHAHHAHA__________");
+    console.log("BoardId:", boardId);
     const board = await prisma.board.findUnique({
       where: {
         id: boardId,
@@ -122,6 +125,7 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
         testimonials: true,
       },
     });
+    console.log("Board details:", board);
     if (!board || board.userId !== userId) {
       throw new ErrorHandler(
         "Board not found or unauthorized access.",
@@ -129,7 +133,7 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
       );
     }
     const message = "Board fetched successfully.";
-    return new SuccessResponse(message, 200, board);
+    return new SuccessResponse(message, 200, board).serialize();
   }
 );
 

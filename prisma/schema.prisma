@@ -55,7 +55,6 @@ model Board {
   personalPageTitle    String
   thankYouPageTitle    String
   thankYouPageMessage  String
-  thankYouPageImage    String?
   userId               String
   user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   testimonials         Testimonial[]

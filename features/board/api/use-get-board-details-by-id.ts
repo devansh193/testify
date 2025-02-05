@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useGetBoardDetailsById = (id: string) => {
   return useQuery({
-    queryKey: ["board_detail"],
+    queryKey: ["board_detail_by_id"],
     queryFn: async () => {
       const response = await getBoardById(id);
       if (!response.status) {
