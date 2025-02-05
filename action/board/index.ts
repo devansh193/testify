@@ -118,6 +118,9 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
       where: {
         id: boardId,
       },
+      include: {
+        testimonials: true,
+      },
     });
     if (!board || board.userId !== userId) {
       throw new ErrorHandler(

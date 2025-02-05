@@ -34,39 +34,6 @@ export const createTestimonial = withServerActionAsyncCatcher<
   return new SuccessResponse(message, 201).serialize();
 });
 
-// export const createTestimonial = async ({
-//   name,
-//   email,
-//   textReview,
-//   videoUrl,
-//   userImageUrl,
-//   rating,
-//   boardId,
-// }: TestimonialType): Promise<ServerActionReturnType> => {
-//   try {
-//     await prisma.testimonial.create({
-//       data: {
-//         name,
-//         email,
-//         videoUrl,
-//         userImageUrl,
-//         textReview: textReview,
-//         rating,
-//         boardId,
-//       },
-//     });
-
-//     const message = "Testimonial submitted successfully.";
-//     return new SuccessResponse(message, 201).serialize();
-//   } catch (error) {
-//     console.error(error);
-//     throw new ErrorHandler(
-//       "Failed to create testimonial.",
-//       "INTERNAL_SERVER_ERROR"
-//     );
-//   }
-// };
-
 // fetch all testimonials by board id
 export const getAllTestimonials = withSession<
   string,
@@ -84,26 +51,25 @@ export const getAllTestimonials = withSession<
   return new SuccessResponse(message, 200, testimonials);
 });
 
-// // Fetch all written testimonials
-
-// export const getAllWrittenTestimonials = withSession<
-//   string,
-//   ServerActionReturnType<Testimonial[]>
-// >(async (session, boardId) => {
-//   if (!boardId || !session.user.id) {
-//     throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");
-//   }
-//   const testimonials = await prisma.testimonial.findMany({
-//     where: {
-//       boardId: boardId,
-//     },
-//     select:{
-//       textReview: true
-//     }
-//   });
-//   const message = "Testimonials fetched successfully.";
-//   return new SuccessResponse(message, 200, testimonials);
-// });
+// fetch all text testimonials by board id
+export const getAllWrittenTestimonials = withSession<
+  string,
+  ServerActionReturnType<{ textReview: string }[]>
+>(async (session, boardId) => {
+  if (!boardId || !session.user.id) {
+    throw new ErrorHandler("Board ID is required.", "BAD_REQUEST");
+  }
+  const testimonials = await prisma.testimonial.findMany({
+    where: {
+      boardId: boardId,
+    },
+    select: {
+      textReview: true,
+    },
+  });
+  const message = "Testimonials fetched successfully.";
+  return new SuccessResponse(message, 200, testimonials);
+});
 
 // fetch testimonial by id
 export const getTestimonialById = withSession<
