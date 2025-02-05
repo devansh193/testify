@@ -20,7 +20,6 @@ export const clientBoardDetails = atom<Board>({
     personalPageTitle: "",
     thankYouPageTitle: "",
     thankYouPageMessage: "",
-    thankYouPageImage: null,
     userId: "",
     createdAt: new Date(),
     updatedAt: new Date(),

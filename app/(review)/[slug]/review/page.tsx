@@ -36,7 +36,6 @@ const Welcome = () => {
         personalPageTitle: data.personalPageTitle || "",
         thankYouPageTitle: data.thankYouPageTitle || "",
         thankYouPageMessage: data.thankYouPageMessage || "",
-        thankYouPageImage: data.thankYouPageImage || null,
         userId: data.userId || "",
         createdAt: data.createdAt || new Date(),
         updatedAt: data.updatedAt || new Date(),
