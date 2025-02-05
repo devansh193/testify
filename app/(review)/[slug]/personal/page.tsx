@@ -25,6 +25,7 @@ import { testimonialState } from "@/recoil/testimonial-atom/atom";
 import { UserNav } from "../../_components/user-nav";
 import { useCreateTestimonial } from "@/features/testimonial/api/use-create-testimonial";
 import { toast } from "sonner";
+import { ThankYou } from "../../_components/thankyou-comp";
 
 const testimonialUserDetailSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -79,11 +80,11 @@ const Personal = () => {
 
     createTestimonial(
       {
-        name: "Devansh",
-        email: "devansh@gmail.com",
-        textReview: "",
-        rating: 0,
-        boardId: "",
+        name: data.name,
+        email: data.email,
+        textReview: "This is amazing",
+        rating: 4,
+        boardId: boardDetails?.id,
       },
       {
         onSuccess: (data) => {
@@ -243,30 +244,7 @@ const Personal = () => {
             </Form>
           </motion.div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full flex flex-col items-center justify-center max-w-3xl mt-12 md:mt-24 lg:mt-48"
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-4xl sm:text-5xl md:text-6xl text-center font-bold tracking-tight text-foreground mb-6"
-            >
-              {boardDetails?.thankYouPageTitle}
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="mt-4 text-center text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8"
-            >
-              {boardDetails?.thankYouPageMessage}
-            </motion.p>
-          </motion.div>
+          <ThankYou />
         )}
       </div>
     </div>

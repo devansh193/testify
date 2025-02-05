@@ -134,14 +134,14 @@ export const getBoardById = withSession<string, ServerActionReturnType<Board>>(
 export const getBoardByTitle = withServerActionAsyncCatcher<
   string,
   ServerActionReturnType<Board>
->(async (boardTitle) => {
-  if (!boardTitle) {
+>(async (boardId) => {
+  if (!boardId) {
     throw new ErrorHandler("Board title missing.", "BAD_REQUEST");
   }
   const board = await prisma.board.findFirst({
     where: {
       boardTitle: {
-        equals: boardTitle,
+        equals: boardId,
         mode: "insensitive",
       },
     },

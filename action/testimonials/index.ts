@@ -16,6 +16,9 @@ export const createTestimonial = withServerActionAsyncCatcher<
   const result = UserTestimonialSchema.parse(data);
   const { name, email, textReview, rating, userImageUrl, videoUrl, boardId } =
     result;
+  console.log(
+    "_____________________Testimonial me aagaya hu mai_________________"
+  );
   await prisma.testimonial.create({
     data: {
       name,
@@ -24,7 +27,7 @@ export const createTestimonial = withServerActionAsyncCatcher<
       textReview,
       rating,
       videoUrl,
-      boardId,
+      boardId: boardId,
     },
   });
   const message = "Testimonial submitted successfully.";
