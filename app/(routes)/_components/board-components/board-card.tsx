@@ -33,12 +33,10 @@ export const BoardCard = ({
     });
     mutate(boardId, {
       onSuccess: (data) => {
-        {
-          toast.success(data.message || "Board deleted successfully!", {
-            icon: "",
-            id: toastId,
-          });
-        }
+        toast.success(data.message || "Board deleted successfully!", {
+          icon: "",
+          id: toastId,
+        });
       },
       onError: (error) => {
         toast.error(
