@@ -41,7 +41,7 @@ const faqs = [
 
 export const Faq = () => {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-white mt-72 md:mt-0">
+    <section className="w-full  md:py-24 lg:py-32 mt-8 mb-12 bg-white md:mt-0">
       <div className="container px-4 md:px-6 mx-auto max-w-3xl">
         <h2 className="text-blue-500 text-xs text-center font-semibold uppercase tracking-wide">
           FAQ

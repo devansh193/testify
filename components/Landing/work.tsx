@@ -72,7 +72,9 @@ export default function HowItWorks() {
         <div className="space-y-8 sm:space-y-12">
           <div className="space-y-4"></div>
           <div className="space-y-8 sm:space-y-12 relative">
-            <ProgressBar progress={totalProgress} />
+            <div className="hidden md:block">
+              <ProgressBar progress={totalProgress} />
+            </div>
             {steps.map((step, index) => (
               <motion.div
                 key={index}
@@ -104,7 +106,7 @@ export default function HowItWorks() {
             ))}
           </div>
         </div>
-        <div className="lg:pl-8">
+        <div className="hidden md:block lg:pl-8">
           <StepImage currentStep={currentStep} />
         </div>
       </div>

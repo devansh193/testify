@@ -23,22 +23,22 @@ const Welcome = () => {
   useEffect(() => {
     if (data) {
       setClientBoardDetail({
-        id: data.id || "",
-        boardTitle: data.boardTitle || "",
+        id: data.id,
+        boardTitle: data.boardTitle,
         isActive: data.isActive,
-        pageTitle: data.pageTitle || "",
-        pageDescription: data.pageDescription || "",
-        isVideoReview: data.isVideoReview || false,
-        textReviewPageTitle: data.textReviewPageTitle || "",
-        textQuestions: data.textQuestions || [],
-        videoReviewPageTitle: data.videoReviewPageTitle || "",
-        videoQuestions: data.videoQuestions || [],
-        personalPageTitle: data.personalPageTitle || "",
-        thankYouPageTitle: data.thankYouPageTitle || "",
-        thankYouPageMessage: data.thankYouPageMessage || "",
-        userId: data.userId || "",
-        createdAt: data.createdAt || new Date(),
-        updatedAt: data.updatedAt || new Date(),
+        pageTitle: data.pageTitle,
+        pageDescription: data.pageDescription,
+        isVideoReview: data.isVideoReview,
+        textReviewPageTitle: data.textReviewPageTitle,
+        textQuestions: data.textQuestions,
+        videoReviewPageTitle: data.videoReviewPageTitle,
+        videoQuestions: data.videoQuestions,
+        personalPageTitle: data.personalPageTitle,
+        thankYouPageTitle: data.thankYouPageTitle,
+        thankYouPageMessage: data.thankYouPageMessage,
+        userId: data.userId,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
       });
     }
   }, [data, setClientBoardDetail]);

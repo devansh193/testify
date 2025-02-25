@@ -161,22 +161,29 @@ export const getBoardByTitle = withServerActionAsyncCatcher<
 });
 
 // Delete board by board Id
-export const deleteBoard = withSession<
-  string,
-  ServerActionReturnType<undefined>
->(async (session, boardId) => {
-  if (!boardId) {
-    throw new ErrorHandler("Board Id is required.", "BAD_REQUEST");
+export const deleteBoard = async (boardId: string) => {
+  try {
+    const session = getServerSession();
+    if (!session) {
+      return {
+        success: false,
+        message: "Unauthorized",
+      };
+    }
+    if (!boardId) {
+      console.log("BoardId missing");
+      return { success: false, message: "Board ID is required" };
+    }
+    const response = await prisma.board.delete({
+      where: { id: boardId },
+    });
+    return {
+      success: true,
+      message: "Board deleted successfully",
+      data: response,
+    };
+  } catch (error) {
+    console.error("Error deleting board:", error);
+    return { success: false, message: "Failed to delete board", error };
   }
-  const result = prisma.board.delete({
-    where: {
-      id: boardId,
-    },
-  });
-  if (!result) {
-    throw new ErrorHandler("Failed to delete board.", "CONFLICT");
-  }
-  console.log("Deleted");
-  const message = "Board deleted successfully.";
-  return new SuccessResponse(message, 200, undefined).serialize();
-});
+};
