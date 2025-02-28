@@ -13,7 +13,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
   return (
-    <nav className="h-16 border-b py-4 px-6 flex items-center justify-between bg-white z-50">
+    <nav className="h-16 border-b py-4 pl-2 pr-4 md:px-6 flex items-center justify-between bg-white z-50 gap-x-2">
       <div className="flex-col hidden lg:flex">
         <h1 className="font-medium">
           {" "}

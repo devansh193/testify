@@ -39,13 +39,10 @@ export const BoardCard = ({
         });
       },
       onError: (error) => {
-        toast.error(
-          error.message || "Failed to delete board. Please try again.",
-          {
-            icon: "",
-            id: toastId,
-          }
-        );
+        toast.error(error.message, {
+          icon: "",
+          id: toastId,
+        });
       },
     });
   };

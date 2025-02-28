@@ -77,7 +77,6 @@ export const getAllBoards = withSession<
   undefined,
   ServerActionReturnType<BoardResult[]>
 >(async (session) => {
-  console.log("____________________aagayaaaa___________________");
   const userId = session.user.id;
   const boards = await prisma.board.findMany({
     where: {
@@ -87,12 +86,12 @@ export const getAllBoards = withSession<
       id: true,
       isActive: true,
       boardTitle: true,
-      _count: {
+      createdAt: true,
+      testimonials: {
         select: {
-          testimonials: true,
+          id: true,
         },
       },
-      createdAt: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -101,7 +100,7 @@ export const getAllBoards = withSession<
     id: board.id,
     isActive: board.isActive ?? true,
     boardTitle: board.boardTitle,
-    testimonialCount: board._count.testimonials,
+    testimonialCount: board.testimonials.length,
     createdAt: board.createdAt.toISOString(),
   }));
   const message = "Boards fetched successfully";

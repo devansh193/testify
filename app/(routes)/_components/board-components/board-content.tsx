@@ -11,7 +11,7 @@ export const BoardContent = () => {
   ) : isError ? (
     <ErrorComponent onRetry={refetch} />
   ) : (
-    <div className="p-4">
+    <div className="">
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6">
         {data?.map((item) => (
           <BoardCard

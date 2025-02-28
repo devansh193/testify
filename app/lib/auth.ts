@@ -32,6 +32,7 @@ export const authOptions: NextAuthOptions = {
         try {
           const user = await prisma.user.findUnique({
             where: { email: credentials.email },
+            select: { id: true, email: true, password: true },
           });
 
           if (!user) {
@@ -42,8 +43,9 @@ export const authOptions: NextAuthOptions = {
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
 
             const updatedUser = await prisma.user.update({
-              where: { email: credentials.email },
+              where: { id: user.id },
               data: { password: hashedPassword },
+              select: { id: true, email: true },
             });
             return updatedUser;
           }
